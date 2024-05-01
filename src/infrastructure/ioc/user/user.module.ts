@@ -6,8 +6,10 @@ import { MongodbUserRepository } from 'src/infrastructure/database/mongodb/repos
 import { UserService } from 'src/services/service.user';
 import { AddUserUseCase } from 'src/usecases/user/add-user-usecase';
 import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
-import { LoadAllUsersUseCase } from 'src/usecases/user/load-all-users-usecase';
+import { FindByPropertyAndValueUsersUseCase } from 'src/usecases/user/find-by-property-and-value-user-usecase';
+import { FindAllUsersUseCase } from 'src/usecases/user/find-all-users-usecase';
 import { LoginUserUseCase } from 'src/usecases/user/login-user-usecase';
+import { FindPaginatedUsersUseCase } from 'src/usecases/user/find-paginated-users-usecase';
 
 /**
  * The UserModule is responsible for managing / inject user-related dependencies and controllers.
@@ -23,8 +25,10 @@ import { LoginUserUseCase } from 'src/usecases/user/login-user-usecase';
       useFactory: (userRepo: UserRepositoryInterface) => {
         return new UserService(
           new AddUserUseCase(userRepo),
-          new LoadAllUsersUseCase(userRepo),
+          new FindAllUsersUseCase(userRepo),
           new FindByIdUsersUseCase(userRepo),
+          new FindPaginatedUsersUseCase(userRepo),
+          new FindByPropertyAndValueUsersUseCase(userRepo),
           new LoginUserUseCase(userRepo),
         );
       },

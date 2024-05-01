@@ -37,7 +37,8 @@ export class MongodbUserRepository implements UserRepositoryInterface {
    * @returns A Promise that resolves to the created user document.
    */
   async create(data: User): Promise<UserModel> {
-    return await this.userCollection.create(data);
+    const result = await this.userCollection.create(data);
+    return result;
   }
 
   /**
@@ -80,6 +81,17 @@ export class MongodbUserRepository implements UserRepositoryInterface {
       { $set: dataUpdate },
       { new: true },
     );
+  }
+
+  /**
+   * Retrieves paginated users from the data storage.
+   * @param page The page number for pagination.
+   * @param limit The limit of users per page.
+   * @returns A Promise that resolves to an array of UserModel representing users for the specified page.
+   */
+  async findPaginated(page: number, limit: number): Promise<UserModel[]> {
+    const skip = (page - 1) * limit;
+    return await this.userCollection.find({}, { __v: false }).skip(skip).limit(limit);
   }
 
   /**

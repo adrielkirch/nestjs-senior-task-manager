@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { CreateRequestUserDto } from 'src/adapters/request/adapter.request.user';
 import { UserService } from 'src/services/service.user';
 
 
@@ -7,7 +8,7 @@ export class UserController {
   constructor(private readonly userService: UserService) { }
 
   @Post()
-  async create(@Body() dto: any) {
+  async create(@Body() dto: CreateRequestUserDto) {
     return await this.userService.create(dto);
   }
 
@@ -17,8 +18,13 @@ export class UserController {
   }
 
   @Get()
-  async load() {
-    return await this.userService.load();
+  async findAll() {
+    return await this.userService.findAll();
+  }
+
+  @Get('paginated')
+  async findPaginated(@Query('page') page: number, @Query('limit') limit: number){
+    return await this.userService.findPaginated(page,limit);
   }
 
   @Get('find-by-id')

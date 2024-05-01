@@ -1,4 +1,4 @@
-import { LoginRequestDto } from 'src/adapters/request/adapter.request.user';
+import { CreateRequestUserDto, LoginRequestDto } from 'src/adapters/request/adapter.request.user';
 import { User } from 'src/domain/user/user';
 import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
 
@@ -12,7 +12,7 @@ export interface UserRepositoryInterface {
    * @param data The user data to be stored.
    * @returns A Promise that resolves to the created UserModel.
    */
-  create: (data: User) => Promise<UserModel>;
+  create: (data: CreateRequestUserDto) => Promise<UserModel>;
 
   /**
    * Login an user
@@ -27,12 +27,20 @@ export interface UserRepositoryInterface {
    */
   find: () => Promise<UserModel[]>;
 
-   /**
-   * Retrieves users from the data storage that match a specific property and value.
-   * @param property The property to search by.
-   * @param value The value to search for.
-   * @returns A Promise that resolves to an array of UserModel representing matching users.
+  /**
+   * Retrieves paginated users from the data storage.
+   * @param page The page number for pagination.
+   * @param limit The limit of users per page.
+   * @returns A Promise that resolves to an array of UserModel representing users for the specified page.
    */
+  findPaginated: (page: number, limit: number) => Promise<UserModel[]>;
+
+  /**
+  * Retrieves users from the data storage that match a specific property and value.
+  * @param property The property to search by.
+  * @param value The value to search for.
+  * @returns A Promise that resolves to an array of UserModel representing matching users.
+  */
   findByPropertyAndValue: (property: string, value: any) => Promise<UserModel[]>;
 
   /**

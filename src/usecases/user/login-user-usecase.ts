@@ -21,12 +21,10 @@ export class LoginUserUseCase {
    * @returns A Promise that resolves to the simplified representation of the authenticated user.
    */
   async login(loginRequestDto: LoginRequestDto) {
-    loginRequestDto.password = SecurityUtil.generateHashWithSalt(loginRequestDto.password);
     const userDb = await this.userRepo.login(loginRequestDto);
-
-    const jsonWebToken = SecurityUtil.generateJsonwebtoken(userDb._id);
-    console.log(jsonWebToken);
-
+    if (!userDb) {
+      return null;
+    }
     return UserTransformer.toUser(userDb);
   }
 }
