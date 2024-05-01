@@ -29,7 +29,7 @@ export class User {
     return this.props.name;
   }
 
-  private set name(value: string) {
+  set name(value: string) {
     this.props.name = value;
   }
 
@@ -41,7 +41,7 @@ export class User {
     return this.props.surname;
   }
 
-  private set surname(value: string) {
+  set surname(value: string) {
     this.props.surname = value;
   }
 
@@ -53,7 +53,7 @@ export class User {
     return this.props.email;
   }
 
-  private set email(value: string) {
+  set email(value: string) {
     this.props.email = value;
   }
 
@@ -65,7 +65,7 @@ export class User {
     return this.props.password;
   }
 
-  private set password(value: string) {
+  set password(value: string) {
     this.props.password = value;
   }
 

@@ -1,6 +1,7 @@
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
 import { User } from 'src/domain/user/user';
-import { UserTransformer } from '../../../main/transformers/user/user.transformer';
+import { UserTransformer } from '../../main/transformers/user/user.transformer';
+import { SecurityUtil } from 'src/utils/util.security';
 
 /**
  * Use case class responsible for adding a new user to the system.
@@ -20,9 +21,17 @@ export class AddUserUseCase {
    * @returns A Promise that resolves to the simplified representation of the created user.
    */
   async create(user: User) {
-    // Call the create method of the UserRepositoryInterface to persist the user data.
+
+    const hashPassword = SecurityUtil.generateHashWithSalt(user.password);
+    user.password = hashPassword;
+
+    let existingUsers = await this.userRepo.findByPropertyAndValue("email", user.email);
+
+    if (existingUsers && existingUsers.length > 0) {
+      throw new Error('User with this email already exists');
+    }
+
     const userDb = await this.userRepo.create(user);
-    // Transform the database model to a simplified user representation using the UserTransformer.
     return UserTransformer.toUser(userDb);
   }
 }

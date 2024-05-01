@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { User } from 'src/domain/user/user';
 import { UserRepositoryInterface } from '../../../../../data/protocols/db/user/user-repository.interface';
 import { UserModel } from '../../models/user/user.model';
+import { LoginRequestDto } from 'src/adapters/request/adapter.request.user';
 
 /**
  * Repository implementation for MongoDB database.
@@ -15,7 +16,20 @@ export class MongodbUserRepository implements UserRepositoryInterface {
   constructor(
     @InjectModel(UserModel.name)
     private readonly userCollection: Model<UserModel>,
-  ) {}
+  ) { }
+
+
+  /**
+   * Authenticates a user based on the provided login credentials.
+   * @param loginRequestDto The login request data containing email and password.
+   * @returns A Promise that resolves to the authenticated user document, or null if authentication fails.
+   */
+  async login(loginRequestDto: LoginRequestDto): Promise<UserModel | null> {
+    return await this.userCollection.findOne({
+      email: loginRequestDto.email,
+      password: loginRequestDto.password,
+    });
+  }
 
   /**
    * Creates a new user document in the database.
@@ -41,6 +55,17 @@ export class MongodbUserRepository implements UserRepositoryInterface {
    */
   async findById(id: string): Promise<UserModel> {
     return await this.userCollection.findOne({ _id: { $eq: id } });
+  }
+
+
+  /**
+   * Retrieves all users from the data storage that match a specific property and value.
+   * @param property The property to search for.
+   * @param value The value to search for in the specified property.
+   * @returns A Promise that resolves to an array of user documents matching the criteria.
+   */
+  async findByPropertyAndValue(property: string, value: any): Promise<UserModel[]> {
+    return await this.userCollection.find({ [property]: value });
   }
 
   /**

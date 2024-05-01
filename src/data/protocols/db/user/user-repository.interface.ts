@@ -1,3 +1,4 @@
+import { LoginRequestDto } from 'src/adapters/request/adapter.request.user';
 import { User } from 'src/domain/user/user';
 import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
 
@@ -14,10 +15,25 @@ export interface UserRepositoryInterface {
   create: (data: User) => Promise<UserModel>;
 
   /**
+   * Login an user
+   * @param data The login Request to be loggin.
+   * @returns A Promise that resolves to the created UserModel.
+   */
+  login: (data: LoginRequestDto) => Promise<UserModel>;
+
+  /**
    * Retrieves all users from the data storage.
    * @returns A Promise that resolves to an array of UserModel representing all users.
    */
   find: () => Promise<UserModel[]>;
+
+   /**
+   * Retrieves users from the data storage that match a specific property and value.
+   * @param property The property to search by.
+   * @param value The value to search for.
+   * @returns A Promise that resolves to an array of UserModel representing matching users.
+   */
+  findByPropertyAndValue: (property: string, value: any) => Promise<UserModel[]>;
 
   /**
    * Retrieves a user by its unique identifier from the data storage.
