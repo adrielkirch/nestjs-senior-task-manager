@@ -1,6 +1,6 @@
 import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
 
-export class UserTranstormer {
+export class UserTransformer {
   static toUser(user: UserModel) {
     return {
       id: user.id,
