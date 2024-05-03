@@ -1,30 +1,31 @@
-import jwt, { JwtPayload } from "jsonwebtoken"; 
+import jwt, { JwtPayload } from "jsonwebtoken";
 import * as crypto from "crypto";
 import { Request } from "express";
+import { JWT_SECRET_KEY, SALT } from "src/config";
 
 export class SecurityUtil {
   static generateJsonwebtoken(userId: string): string {
     const payload = { user: userId };
-    return jwt.sign(payload, process.env.JWT_SECRET_KEY);
+    return jwt.sign(payload, JWT_SECRET_KEY);
   }
 
   static decodedJsonwebtoken(token: string): string {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY) as JwtPayload;
+    const decoded = jwt.verify(token, JWT_SECRET_KEY) as JwtPayload;
     return decoded.user as string;
   }
 
   static generateHashWithSalt(data: string): string {
-    
+
     return crypto
       .createHash("sha512")
-      .update(data + process.env.SALT) 
+      .update(data + SALT)
       .digest("hex");
   }
 
   static generateHashDigitalSignature(data: string): string {
     return crypto
       .createHash("sha512")
-      .update(data + new Date() + SecurityUtil.genRandomBytes(64)) 
+      .update(data + new Date() + SecurityUtil.genRandomBytes(64))
       .digest("hex");
   }
 
@@ -44,7 +45,7 @@ export class SecurityUtil {
       return false;
     }
     const tokenLength = authorizationHeader.split(' ')[1].length;
-    const expectedTokenLength = 167; 
+    const expectedTokenLength = 167;
     return tokenLength === expectedTokenLength;
   }
 }
