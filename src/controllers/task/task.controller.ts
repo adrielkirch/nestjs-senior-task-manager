@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Post, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, Req, UseInterceptors } from '@nestjs/common';
 import { TaskService } from 'src/services/service.task';
 import { DefaultMiddleware } from 'src/middlewares/default.middleware';
-import { CreateRequestTaskDto } from 'src/adapters/request/adapter.request.task';
+import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/adapter.request.task';
 import { Request } from 'express';
 
 @Controller('tasks')
@@ -12,6 +12,11 @@ export class TaskController {
   async create(@Body() dto: CreateRequestTaskDto, @Req() request: Request) {
     dto.userId = request.user
     return await this.taskService.create(dto);
+  }
+
+  @Put('')
+  async update(@Body() dto: UpdateRequestTaskDto,@Req() request: Request) {
+    return await this.taskService.update(dto);
   }
 
   @Get('paginated')

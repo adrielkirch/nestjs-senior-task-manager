@@ -1,5 +1,5 @@
 import { randomUUID } from 'crypto';
-import { Status } from "./types";
+import { StatusEnum } from "./types";
 
 export class Task {
   public readonly _id: string;
@@ -9,7 +9,7 @@ export class Task {
   private _updated: Date;
   private _expirationDate: Date;
   private _remindDate: Date;
-  private _status: Status;
+  private _status: StatusEnum;
   private _assignTo: string;
   private _userId: string;
 
@@ -21,7 +21,7 @@ export class Task {
     updated: Date,
     expirationDate: Date,
     remindDate: Date,
-    status: Status,
+    status: StatusEnum,
     assignTo: string,
     userId: string
   ) {
@@ -109,7 +109,7 @@ export class Task {
     this._remindDate = value;
   }
 
-  updateStatus(status: Status) {
+  updateStatus(status: StatusEnum) {
     this._status = status;
   }
 
@@ -117,7 +117,7 @@ export class Task {
     return this._status;
   }
 
-  set status(value: Status) {
+  set status(value: StatusEnum) {
     this._status = value;
   }
 

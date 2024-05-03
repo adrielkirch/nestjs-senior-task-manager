@@ -10,6 +10,7 @@ import { FindByPropertyAndValueUsersUseCase } from 'src/usecases/user/find-by-pr
 import { FindAllUsersUseCase } from 'src/usecases/user/find-all-users-usecase';
 import { LoginUserUseCase } from 'src/usecases/user/login-user-usecase';
 import { FindPaginatedUsersUseCase } from 'src/usecases/user/find-paginated-users-usecase';
+import { UpdateUserUseCase } from 'src/usecases/user/update-user-usecase';
 
 /**
  * The UserModule is responsible for managing / inject user-related dependencies and controllers.
@@ -25,6 +26,7 @@ import { FindPaginatedUsersUseCase } from 'src/usecases/user/find-paginated-user
       useFactory: (userRepo: UserRepositoryInterface) => {
         return new UserService(
           new AddUserUseCase(userRepo),
+          new UpdateUserUseCase(userRepo),
           new FindAllUsersUseCase(userRepo),
           new FindByIdUsersUseCase(userRepo),
           new FindPaginatedUsersUseCase(userRepo),

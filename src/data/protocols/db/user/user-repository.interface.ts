@@ -1,4 +1,4 @@
-import { CreateRequestUserDto, LoginRequestDto } from 'src/adapters/request/adapter.request.user';
+import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src/adapters/request/adapter.request.user';
 import { User } from 'src/domain/user/user';
 import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
 
@@ -13,6 +13,13 @@ export interface UserRepositoryInterface {
    * @returns A Promise that resolves to the created UserModel.
    */
   create: (data: CreateRequestUserDto) => Promise<UserModel>;
+
+  /**
+   * Updates a new user in the data storage.
+   * @param data The user data to be updated.
+   * @returns A Promise that resolves to the created UserModel.
+   */
+  update: (data: UpdateRequestUserDto) => Promise<UserModel>;
 
   /**
    * Login an user
@@ -49,14 +56,6 @@ export interface UserRepositoryInterface {
    * @returns A Promise that resolves to the UserModel representing the found user.
    */
   findById: (id: string) => Promise<UserModel>;
-
-  /**
-   * Updates an existing user in the data storage.
-   * @param id The unique identifier of the user to update.
-   * @param dataUpdate The updated user data.
-   * @returns A Promise that resolves to the updated UserModel.
-   */
-  update: (id: string, dataUpdate: User) => Promise<UserModel>;
 
   /**
    * Removes a user from the data storage by its unique identifier.

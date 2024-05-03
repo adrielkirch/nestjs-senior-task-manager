@@ -9,7 +9,7 @@ import { TaskModule } from './infrastructure/ioc/task/task.module';
 
 
 @Module({
-  imports: [ConfigureModule, DatabaseModule, UserModule,TaskModule],
+  imports: [ConfigureModule, DatabaseModule, UserModule, TaskModule],
   controllers: [DefaultController],
   providers: [
     {
@@ -27,6 +27,9 @@ export class AppModule implements NestModule {
         { path: '/users/login', method: RequestMethod.POST },
         { path: '/users/signup', method: RequestMethod.POST },
       )
-      .forRoutes('/users/*');
+      .forRoutes(
+        '/users/*',
+        '/tasks/*',
+      );
   }
 }

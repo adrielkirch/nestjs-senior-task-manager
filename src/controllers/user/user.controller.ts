@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Post, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common';
-import { CreateRequestUserDto } from 'src/adapters/request/adapter.request.user';
+import { Body, Controller, Get, Post, Put, Query, Req, UseInterceptors } from '@nestjs/common';
+import { CreateRequestUserDto, UpdateRequestUserDto } from 'src/adapters/request/adapter.request.user';
 import { UserService } from 'src/services/service.user';
 import { DefaultMiddleware } from 'src/middlewares/default.middleware';
 import { Request } from 'express';
@@ -11,6 +11,12 @@ export class UserController {
   @Post('signup')
   async create(@Body() dto: CreateRequestUserDto) {
     return await this.userService.create(dto);
+  }
+
+  @Put('')
+  async update(@Body() dto: UpdateRequestUserDto,@Req() request: Request) {
+    dto.id = request.user
+    return await this.userService.update(dto);
   }
 
   @Post('login')

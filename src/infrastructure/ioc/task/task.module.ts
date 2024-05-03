@@ -10,6 +10,7 @@ import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/find-by-pr
 import { FindAllTasksUseCase } from 'src/usecases/task/find-all-tasks-usecase';
 
 import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-tasks-usecase';
+import { UpdateTaskUseCase } from 'src/usecases/task/update-user-usecase';
 
 /**
  * The TaskModule is responsible for managing / inject task-related dependencies and controllers.
@@ -25,6 +26,7 @@ import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-task
       useFactory: (taskRepo: TaskRepositoryInterface) => {
         return new TaskService(
           new AddTaskUseCase(taskRepo),
+          new UpdateTaskUseCase(taskRepo),
           new FindAllTasksUseCase(taskRepo),
           new FindByIdTasksUseCase(taskRepo),
           new FindPaginatedTasksUseCase(taskRepo),
