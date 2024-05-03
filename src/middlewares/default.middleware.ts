@@ -40,11 +40,7 @@ export class ScopesGuard implements CanActivate {
 
     canActivate(context: ExecutionContext): boolean {
         const request = context.switchToHttp().getRequest();
-
-        // Extract scopes from the request headers or wherever they are provided
         const userScopes: string[] = request.headers['scopes']?.split(',') || [];
-
-        // Check if the user has all the required scopes
         return this.scopes.every(scope => userScopes.includes(scope));
     }
 }
