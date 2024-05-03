@@ -1,5 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken"; 
 import * as crypto from "crypto";
+import { Request } from "express";
 
 export class SecurityUtil {
   static generateJsonwebtoken(userId: string): string {
@@ -35,5 +36,15 @@ export class SecurityUtil {
   static sensiviteDataField(data: any, field: string): any {
     delete data[field];
     return data;
+  }
+
+  static isValidAuthorization(req: Request): boolean {
+    const authorizationHeader = req.headers.authorization;
+    if (!authorizationHeader || !/^Bearer [a-zA-Z0-9-._~+/]+$/i.test(authorizationHeader)) {
+      return false;
+    }
+    const tokenLength = authorizationHeader.split(' ')[1].length;
+    const expectedTokenLength = 167; 
+    return tokenLength === expectedTokenLength;
   }
 }

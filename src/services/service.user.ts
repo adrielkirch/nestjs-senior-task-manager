@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRequestUserDto, LoginRequestDto } from 'src/adapters/request/adapter.request.user';
 import { User } from 'src/domain/user/user';
 import { AddUserUseCase } from 'src/usecases/user/add-user-usecase';
@@ -19,7 +19,7 @@ export class UserService {
         private readonly findByPropertyAndValueUsersUseCase: FindByPropertyAndValueUsersUseCase,
         private readonly loginUserUseCase: LoginUserUseCase,
     ) { }
-    async create(data: CreateRequestUserDto) {
+    async create(data: CreateRequestUserDto)  {
         const existingUsers = await this.findByPropertyAndValue("email", data.email);
 
         if (existingUsers && existingUsers.length > 0) {
@@ -53,8 +53,12 @@ export class UserService {
     }
 
     async findById(id: string) {
-        return await this.findByIdUsersUseCase.findById(id);
-    }
+        const user = await this.findByIdUsersUseCase.findById(id);
+        if (!user) {
+          throw new NotFoundException('User not found');
+        }
+        return user;
+      }
 
     async findPaginated(page: number, limit: number) {
         return await this.findPaginatedUsersUseCase.findPaginated(page,limit);
