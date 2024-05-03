@@ -7,7 +7,6 @@ import { DefaultMiddleware } from './middlewares/default.middleware';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
 
-
 @Module({
   imports: [ConfigureModule, DatabaseModule, UserModule],
   controllers: [DefaultController],
