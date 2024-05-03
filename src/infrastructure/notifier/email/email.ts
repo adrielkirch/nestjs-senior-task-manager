@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { VariablesRequestDto } from 'src/adapters/shared/request/adapter.request.variable';
 import { EmailServiceInterface } from './email.service.interface';
+import nodemailer from 'nodemailer';
 
 @Injectable()
 export class EmailServiceImpl implements EmailServiceInterface {
