@@ -6,11 +6,10 @@ import { SecurityUtil } from 'src/utils/util.security';
 declare global {
     namespace Express {
         interface Request {
-            user?: any; // Define your custom property here
+            user?: any;
         }
     }
 }
-
 
 @Injectable()
 export class DefaultMiddleware implements NestMiddleware {
