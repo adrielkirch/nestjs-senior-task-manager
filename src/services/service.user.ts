@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRequestUserDto, LoginRequestDto } from 'src/adapters/request/adapter.request.user';
-import { User } from 'src/domain/user/user';
 import { AddUserUseCase } from 'src/usecases/user/add-user-usecase';
 import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
 import { FindByPropertyAndValueUsersUseCase } from 'src/usecases/user/find-by-property-and-value-user-usecase';

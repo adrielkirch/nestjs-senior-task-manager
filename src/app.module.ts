@@ -5,10 +5,11 @@ import { UserModule } from './infrastructure/ioc/user/user.module';
 import { DefaultController } from './controllers/default/default.controller';
 import { DefaultMiddleware } from './middlewares/default.middleware';
 import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TaskModule } from './infrastructure/ioc/task/task.module';
 
 
 @Module({
-  imports: [ConfigureModule, DatabaseModule, UserModule],
+  imports: [ConfigureModule, DatabaseModule, UserModule,TaskModule],
   controllers: [DefaultController],
   providers: [
     {
