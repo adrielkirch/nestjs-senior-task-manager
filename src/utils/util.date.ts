@@ -16,7 +16,6 @@ export default class DateUtil {
     }
 
     static defaultFormatToISO(dateTimeFormated: string): Date{
-     
         return moment.utc(dateTimeFormated, this.defaultFormat).toDate();
     }
 
@@ -31,6 +30,10 @@ export default class DateUtil {
 
     static futureDateByHours(hours: number): Date {
         return moment().add(hours, 'hours').toDate();
+    }
+
+    static getFefaultFormatRegex(): RegExp {
+        return this.defaultFormatRegex;
     }
 }
 
