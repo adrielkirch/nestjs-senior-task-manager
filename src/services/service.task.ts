@@ -9,6 +9,7 @@ import { UpdateTaskUseCase } from 'src/usecases/task/update-task-usecase';
 import DateUtil from 'src/utils/util.date';
 import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
 import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete-task-usecase';
+import { StatusEnum } from 'src/domain/task/types';
 
 @Injectable()
 export class TaskService {
@@ -31,7 +32,7 @@ export class TaskService {
         const expirationDateISO = DateUtil.defaultFormatToISO(data.expirationDate)
         console.log(`expirationDateISO: ${expirationDateISO}`)
         const remindDateISO = DateUtil.defaultFormatToISO(data.remindDate)
-        console.log(`expirationDateISO: ${expirationDateISO}`)
+        console.log(`remindDateISO: ${remindDateISO}`)
 
         const isExpirationDateSameOrAfter = DateUtil.isSameOrAfter(expirationDateISO, remindDateISO);
 
@@ -39,9 +40,8 @@ export class TaskService {
             throw new Error(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
-        console.log(`now: ${now}`)
+        console.log('now ', now);
         const isNowDateSameOrAfter = DateUtil.isSameOrAfter(now, remindDateISO);
-        console.log(" now ->", now)
         if (isNowDateSameOrAfter) {
             throw new Error(`Now date not must be same or after of remindDate`);
         }
@@ -55,6 +55,7 @@ export class TaskService {
             }
             console.log(`\n
             Reminding to complete task:\n
+            Now: ${new Date()}\n,
             Id:${taskId}\n
             Title:${taskFuture.title}\n
             Text:${taskFuture.text}\n
@@ -69,19 +70,10 @@ export class TaskService {
 
     }
 
-    async delete(id: string) {
-        const task = await this.findByIdTasksUseCase.findById(id);
-        if (!task) {
-            throw new NotFoundException('Task not found');
-        }
-        await this.deleteTaskByIdUseCase.deleteById(id);
-        this.scheduler.remove(id);
-    }
-
     async update(data: UpdateRequestTaskDto) {
-        const existingTask = await this.findById(data.id);
-
-        if (!existingTask) {
+        const task = await this.findById(data.id);
+        const taskId = task.id;
+        if (!task) {
             throw new NotFoundException('User does not exist');
         }
 
@@ -93,7 +85,58 @@ export class TaskService {
             }
         }
 
+        const status = data.hasOwnProperty('status') ? data.status : task.status;
+
+        if (status === StatusEnum.DONE) {
+            this.scheduler.remove(taskId)
+            return await this.updateTaskUseCase.update(data);
+        } else if (!data.hasOwnProperty('remindDate')) {
+            return await this.updateTaskUseCase.update(data);
+        }
+
+        data.expirationDate = data.hasOwnProperty('expirationDate') ? DateUtil.defaultFormatToISO(data.expirationDate.toString()) : task.expirationDate;
+        console.log("expirationDate ->",data.expirationDate)
+        data.remindDate = data.hasOwnProperty('remindDate') ? DateUtil.defaultFormatToISO(data.remindDate.toString()) : task.remindDate;
+        console.log("remindDate ->",data.remindDate)
+        const isExpirationDateSameOrAfter = DateUtil.isSameOrAfter(data.expirationDate, data.remindDate);
+        if (!isExpirationDateSameOrAfter) {
+            throw new Error(`expirationDate date must be same or after of remindDate`);
+        }
+
+        const now = new Date();
+        console.log('now ', now);
+        const ms = DateUtil.timeDifferenceInMs(data.remindDate, now)
+        console.log('ms', ms)
+        this.scheduler.remove(taskId);
+        this.scheduler.add(taskId, async () => {
+            const taskFuture = await this.findById(taskId);
+            if (!taskFuture) {
+                return;
+            }
+            console.log(`\n
+            Reminding to complete task:\n
+            Now: ${new Date()}\n,
+            Id:${taskId}\n
+            Title:${taskFuture.title}\n
+            Text:${taskFuture.text}\n
+            Expiration:${taskFuture.expirationDate}\n
+            Status: ${taskFuture.status}\n
+            `);
+
+            this.scheduler.remove(taskId)
+        }, ms);
+
+
         return await this.updateTaskUseCase.update(data);
+    }
+
+    async delete(id: string) {
+        const task = await this.findByIdTasksUseCase.findById(id);
+        if (!task) {
+            throw new NotFoundException('Task not found');
+        }
+        await this.deleteTaskByIdUseCase.deleteById(id);
+        this.scheduler.remove(id);
     }
 
 

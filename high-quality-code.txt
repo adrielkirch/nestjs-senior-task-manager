@@ -45,15 +45,5 @@
         racing: Integrate distributed tracing to track requests as they propagate through different components of the system. Trace spans provide visibility into the flow of requests and help identify performance bottlenecks and dependencies.
         onitoring: Set up monitoring tools and dashboards to visualize metrics and monitor the health of the system in real-time. Configure alerts to notify stakeholders of abnormal behavior or performance degradation.
         rror Handling: Implement robust error handling mechanisms to gracefully handle failures and exceptions. Log errors with contextual information to facilitate troubleshooting and debugging.
-        nstrumentation: Instrument code with observability libraries and frameworks to collect telemetry data. Use standard protocols such as OpenTelemetry or OpenTracing for compatibility with various observability tools and platforms.
+        Instrumentation: Instrument code with observability libraries and frameworks to collect telemetry data. Use standard protocols such as OpenTelemetry or OpenTracing for compatibility with various observability tools and platforms.
     
-    Webhooks:
-
-        Define webhook endpoints to receive HTTP requests from external systems.
-        Implement logic to handle webhook events, such as processing incoming data, triggering actions, or updating internal state.
-        Ensure security measures such as authentication and authorization are in place to validate incoming webhook requests and prevent unauthorized access.
-        Use webhooks for event-driven architecture, allowing the system to react to specific events or changes in real-time.
-        Provide documentation for webhook endpoints, including payload formats, supported events, and error handling.
-        Implement retries and error handling mechanisms for webhook delivery to ensure reliability and fault tolerance.
-        Monitor webhook activity and performance to detect and address issues promptly.
-        Consider scalability and performance implications when designing webhook endpoints to handle varying levels of traffic and load.

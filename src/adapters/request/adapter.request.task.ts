@@ -11,21 +11,21 @@ export class CreateRequestTaskDto {
     @IsString()
     text: string;
 
-    @IsOptional() 
+    @IsOptional()
     @IsString()
     userId?: string;
 
-    @IsOptional() 
+    @IsOptional()
     @IsString()
     @Matches(DateUtil.getFefaultFormatRegex())
     expirationDate: string;
 
-    @IsOptional() 
+    @IsOptional()
     @IsString()
     @Matches(DateUtil.getFefaultFormatRegex())
     remindDate: string;
 
-    @IsOptional() 
+    @IsOptional()
     @IsEnum(StatusEnum)
     status?: StatusEnum;
 
@@ -38,29 +38,32 @@ export class UpdateRequestTaskDto {
     @IsString()
     id: string;
 
-    @IsOptional() 
+    @IsOptional()
     @IsString()
     title: string;
 
-    @IsOptional() 
+    @IsOptional()
     @IsString()
     text: string;
 
-    @IsOptional() 
+    @IsOptional()
     @IsString()
     userId?: string;
 
-    @IsOptional() 
-    @IsString()
-    expirationDate?: string = DateUtil.futureDateByHours(24).toString(); ;
+    @IsOptional()
+    expirationDate?: string | Date = DateUtil.futureDateByHours(24).toISOString();
 
-    @IsOptional() 
-    @IsString()
-    remindDate?: string = DateUtil.futureDateByHours(23).toString(); ;
+    @IsOptional()
+    remindDate?: string  | Date  = DateUtil.futureDateByHours(23).toISOString();
+
 
     @IsOptional()
     @IsString()
-    assignTo?: string = ''; 
+    assignTo?: string;
+
+    @IsOptional()
+    @IsString()
+    status?: string;
 }
 
 
