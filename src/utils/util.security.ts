@@ -1,17 +1,27 @@
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import * as crypto from "crypto";
 import { Request } from "express";
 import { JWT_SECRET_KEY, SALT } from "src/config";
 
+interface JwtPayload {
+  user: string;
+  role: string;
+}
+
 export class SecurityUtil {
-  static generateJsonwebtoken(userId: string): string {
-    const payload = { user: userId };
+  static generateJsonwebtoken(userId: string, role: string): string {
+    const payload: JwtPayload = {
+      user: userId,
+      role: role
+    } as JwtPayload;
     return jwt.sign(payload, JWT_SECRET_KEY);
   }
 
-  static decodedJsonwebtoken(token: string): string {
+
+
+  static decodedJsonwebtoken(token: string): JwtPayload {
     const decoded = jwt.verify(token, JWT_SECRET_KEY) as JwtPayload;
-    return decoded.user as string;
+    return decoded;
   }
 
   static generateHashWithSalt(data: string): string {

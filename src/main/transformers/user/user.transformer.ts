@@ -17,7 +17,8 @@ export class UserTransformer {
       surname: user.surname,      
       email: user.email,            
       createdAt: user.createdAt,  
-      updatedAt: user.updatedAt   
+      updatedAt: user.updatedAt ,
+      role: user.role  
     };
   }
 

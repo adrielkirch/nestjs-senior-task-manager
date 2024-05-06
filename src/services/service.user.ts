@@ -65,7 +65,7 @@ export class UserService {
             throw new Error('E-mail or password incorrect(s)');
         }
         const id = user.id;
-        const token = SecurityUtil.generateJsonwebtoken(user.id);
+        const token = SecurityUtil.generateJsonwebtoken(user.id,user.role);
         return {
             token,
             id

@@ -6,7 +6,8 @@ import { SecurityUtil } from 'src/utils/util.security';
 declare global {
     namespace Express {
         interface Request {
-            user?: any;
+            user?: string;
+            role?: string;
         }
     }
 }
@@ -20,16 +21,18 @@ export class DefaultMiddleware implements NestMiddleware {
                 throw new UnauthorizedException('Invalid or missing authorization token');
             }
             const token = authorizationHeader.split(' ')[1];
-            const userId = SecurityUtil.decodedJsonwebtoken(token);
-            if (!userId) {
+            const decoded = SecurityUtil.decodedJsonwebtoken(token);
+            if (!decoded) {
                 throw new UnauthorizedException('Invalid authorization token');
             }
-            req.user = userId;
+            req.user = decoded.user;
+            req.role = decoded.role;
+            
             next();
         } catch (err) {
             throw new UnauthorizedException('Invalid authorization token');
         }
-            
+
     }
 }
 

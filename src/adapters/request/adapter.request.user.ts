@@ -34,5 +34,9 @@ export class UpdateRequestUserDto {
 
     @IsOptional() 
     @IsString()
+    role?: string = 'guest';
+
+    @IsOptional() 
+    @IsString()
     password?: string;
 }
