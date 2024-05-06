@@ -25,9 +25,7 @@ export class TaskController {
     return await this.taskService.update(dto);
   }
 
- 
-  
-  @UseGuards(DefaultMiddleware)
+  @UseGuards(DefaultMiddleware, PermissionGuard)
   @SetMetadata('permissions',['read:tasks'])
   @Get('paginated')
   async findPaginated(@Query('page') page: number, @Query('limit') limit: number) {
@@ -35,7 +33,7 @@ export class TaskController {
   }
 
   
-  @UseGuards(DefaultMiddleware)
+  @UseGuards(DefaultMiddleware, PermissionGuard)
   @SetMetadata('permissions',['read:tasks'])
   @Get('find-by-id')
   async findTaskById(@Query('id') id: string,) {
