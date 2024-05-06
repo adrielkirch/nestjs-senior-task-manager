@@ -78,7 +78,7 @@ describe('MongodbUserRepository Unit Test', () => {
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
 
-    await mongodbUserRepository.update(user.id, user);
+    await mongodbUserRepository.update(user);
 
     expect(userModelMock.findOneAndUpdate).toHaveBeenCalledTimes(1);
   });

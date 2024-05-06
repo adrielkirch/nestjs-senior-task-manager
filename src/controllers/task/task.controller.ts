@@ -14,6 +14,11 @@ export class TaskController {
     return await this.taskService.create(dto);
   }
 
+  @Post('delete')
+  async delete(@Query('id') id: string,) {
+    return await this.taskService.delete(id);
+  }
+
   @Put('')
   async update(@Body() dto: UpdateRequestTaskDto,@Req() request: Request) {
     return await this.taskService.update(dto);

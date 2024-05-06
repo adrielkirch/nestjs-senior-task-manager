@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { SmsServiceInterface } from './sms.service.interface';
+import { SmsServiceInterface } from '../../../data/protocols/notifier/sms/sms.interface';
 import twilio from 'twilio';
 
 @Injectable()

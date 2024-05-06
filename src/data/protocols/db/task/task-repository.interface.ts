@@ -23,6 +23,13 @@ export interface TaskRepositoryInterface {
    */
   update: (data: UpdateRequestUserDto) => Promise<TaskModel>;
 
+  /**
+   * Deletes a task by its unique identifier from the data storage.
+   * @param id The unique identifier of the task to retrieve.
+   * @returns A Promise that resolves to the TaskModel representing the deleted task.
+   */
+  delete: (id: string) => Promise<void>;
+
 
   /**
    * Retrieves paginated tasks from the data storage.
@@ -51,13 +58,7 @@ export interface TaskRepositoryInterface {
    * Retrieves all users from the data storage.
    * @returns A Promise that resolves to an array of UserModel representing all users.
    */
-    find: () => Promise<TaskModel[]>;
+  find: () => Promise<TaskModel[]>;
 
 
-  /**
-   * Removes a task from the data storage by its unique identifier.
-   * @param id The unique identifier of the task to remove.
-   * @returns A Promise that resolves when the task is successfully removed.
-   */
-  remove: (id: string) => Promise<void>;
 }

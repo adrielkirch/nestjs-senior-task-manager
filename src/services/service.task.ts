@@ -1,13 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { AddTaskUseCase } from 'src/usecases/task/add-task-usecase';
-import { FindByIdTasksUseCase } from 'src/usecases/task/find-by-id-tasks-usecase';
+import { FindByIdTasksUseCase } from 'src/usecases/task/find-by-id-task-usecase';
 import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/find-by-property-and-value-task-usecase';
-import { FindAllTasksUseCase } from 'src/usecases/task/find-all-tasks-usecase';
-import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-tasks-usecase';
+import { FindAllTasksUseCase } from 'src/usecases/task/find-all-task-usecase';
+import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-task-usecase';
 import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/adapter.request.task';
-import { UpdateTaskUseCase } from 'src/usecases/task/update-user-usecase';
+import { UpdateTaskUseCase } from 'src/usecases/task/update-task-usecase';
 import DateUtil from 'src/utils/util.date';
-import SchedulerService from 'src/infrastructure/scheduler/service.schedule'; 
+import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
+import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete-task-usecase';
 
 @Injectable()
 export class TaskService {
@@ -19,6 +20,7 @@ export class TaskService {
         private readonly findByIdTasksUseCase: FindByIdTasksUseCase,
         private readonly findPaginatedTasksUseCase: FindPaginatedTasksUseCase,
         private readonly findByPropertyAndValueTasksUseCase: FindByPropertyAndValueTasksUseCase,
+        private readonly deleteTaskByIdUseCase: DeleteTaskByIdUseCase,
 
 
     ) { }
@@ -27,24 +29,26 @@ export class TaskService {
         const taskId = newTask.id;
 
         const expirationDateISO = DateUtil.defaultFormatToISO(data.expirationDate)
-        console.log(expirationDateISO)
+        console.log(`expirationDateISO: ${expirationDateISO}`)
         const remindDateISO = DateUtil.defaultFormatToISO(data.remindDate)
-        console.log(remindDateISO)
+        console.log(`expirationDateISO: ${expirationDateISO}`)
+
         const isExpirationDateSameOrAfter = DateUtil.isSameOrAfter(expirationDateISO, remindDateISO);
 
         if (!isExpirationDateSameOrAfter) {
             throw new Error(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
+        console.log(`now: ${now}`)
         const isNowDateSameOrAfter = DateUtil.isSameOrAfter(now, remindDateISO);
-        console.log(" now ->",now)
+        console.log(" now ->", now)
         if (isNowDateSameOrAfter) {
             throw new Error(`Now date not must be same or after of remindDate`);
         }
 
         const ms = DateUtil.timeDifferenceInMs(remindDateISO, now)
 
-        this.scheduler.addScheduler(taskId, async () => {
+        this.scheduler.add(taskId, async () => {
             const taskFuture = await this.findById(taskId);
             if (!taskFuture) {
                 return;
@@ -58,17 +62,26 @@ export class TaskService {
             Status: ${taskFuture.status}\n
             `);
 
-            this.scheduler.removeScheduler(taskId)
+            this.scheduler.remove(taskId)
         }, ms);
 
         return newTask;
 
     }
 
-    async update(data: UpdateRequestTaskDto) {
-        const existingUser = await this.findById(data.id);
+    async delete(id: string) {
+        const task = await this.findByIdTasksUseCase.findById(id);
+        if (!task) {
+            throw new NotFoundException('Task not found');
+        }
+        await this.deleteTaskByIdUseCase.deleteById(id);
+        this.scheduler.remove(id);
+    }
 
-        if (!existingUser) {
+    async update(data: UpdateRequestTaskDto) {
+        const existingTask = await this.findById(data.id);
+
+        if (!existingTask) {
             throw new NotFoundException('User does not exist');
         }
 

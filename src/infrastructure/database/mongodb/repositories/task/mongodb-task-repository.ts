@@ -88,7 +88,9 @@ import { UpdateRequestUserDto } from 'src/adapters/request/adapter.request.user'
      * @param id The ID of the task document to remove.
      * @returns A Promise that resolves when the task document is successfully removed.
      */
-    async remove(id: string): Promise<void> {
+    async delete(id: string): Promise<void> {
       await this.taskCollection.deleteOne({ _id: { $eq: id } });
     }
+
+
   }
