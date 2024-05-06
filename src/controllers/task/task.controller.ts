@@ -1,6 +1,7 @@
-import { Body, Controller, Get, Post, Put, Query, Req, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, Req, SetMetadata, UseGuards, UseInterceptors } from '@nestjs/common';
 import { TaskService } from 'src/services/service.task';
 import { DefaultMiddleware } from 'src/middlewares/default.middleware';
+import { PermissionGuard } from 'src/middlewares/permissions.guard';
 import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/adapter.request.task';
 import { Request } from 'express';
 
@@ -24,14 +25,19 @@ export class TaskController {
     return await this.taskService.update(dto);
   }
 
+ 
+  
+  @UseGuards(DefaultMiddleware)
+  @SetMetadata('permissions',['read:tasks'])
   @Get('paginated')
-  @UseInterceptors(DefaultMiddleware)
   async findPaginated(@Query('page') page: number, @Query('limit') limit: number) {
     return await this.taskService.findPaginated(page, limit);
   }
 
+  
+  @UseGuards(DefaultMiddleware)
+  @SetMetadata('permissions',['read:tasks'])
   @Get('find-by-id')
-  @UseInterceptors(DefaultMiddleware)
   async findTaskById(@Query('id') id: string,) {
     return await this.taskService.findById(id);
   }

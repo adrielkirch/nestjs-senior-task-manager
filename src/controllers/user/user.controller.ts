@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Query, Req, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, Req, UseGuards, UseInterceptors } from '@nestjs/common';
 import { CreateRequestUserDto, UpdateRequestUserDto } from 'src/adapters/request/adapter.request.user';
 import { UserService } from 'src/services/service.user';
 import { DefaultMiddleware } from 'src/middlewares/default.middleware';
@@ -25,19 +25,19 @@ export class UserController {
   }
 
   @Get('paginated')
-  @UseInterceptors(DefaultMiddleware)
+  @UseGuards(DefaultMiddleware)
   async findPaginated(@Query('page') page: number, @Query('limit') limit: number) {
     return await this.userService.findPaginated(page, limit);
   }
 
   @Get('me')
-  @UseInterceptors(DefaultMiddleware)
+  @UseGuards(DefaultMiddleware)
   async findCurrentUser(@Req() request: Request) {
     return await this.userService.findById(request.user);
   }
 
   @Get('find-by-id')
-  @UseInterceptors(DefaultMiddleware)
+  @UseGuards(DefaultMiddleware)
   async findUserById(@Query('id') id: string,) {
     return await this.userService.findById(id);
   }
