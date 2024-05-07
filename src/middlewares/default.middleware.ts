@@ -26,8 +26,9 @@ export class DefaultMiddleware implements NestMiddleware {
                 throw new UnauthorizedException('Invalid authorization token');
             }
             req.user = decoded.user;
+            console.log("req.user ->",req.user);
             req.role = decoded.role;
-            
+            console.log("req.role ->",req.role);
             next();
         } catch (err) {
             throw new UnauthorizedException('Invalid authorization token');

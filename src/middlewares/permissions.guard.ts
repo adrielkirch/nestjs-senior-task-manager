@@ -4,10 +4,12 @@ import { Privileges } from 'src/domain/privilege/privilege';
 
 export class PermissionGuard implements CanActivate {
     canActivate(context: ExecutionContext): boolean {
-        const userRole: RoleEnum = context.switchToHttp().getRequest().user?.role || RoleEnum.GUEST;
+        const userRole: RoleEnum = context.switchToHttp().getRequest().role;
         const request = context.switchToHttp().getRequest();
         const httpMethod = request.method;
         const routeRoles = this.getRouteRoles(context);
+
+        console.log(routeRoles)
 
         const allowed = this.hasSufficientPermissions(routeRoles, userRole, httpMethod);
 
@@ -20,17 +22,14 @@ export class PermissionGuard implements CanActivate {
 
     private getRouteRoles(context: ExecutionContext): { [role in RoleEnum]: Privileges } {
         const routeRolesMap: { [route: string]: { [role in RoleEnum]: Privileges } } = {
-            "/tasks/paginated": {
-                [RoleEnum.GUEST]: new Privileges(true, false, false),
-                [RoleEnum.ADMIN]: new Privileges(true, true, true),
-                [RoleEnum.WRITER]: new Privileges(true, true, false)
-            },
+            "/tasks": {[RoleEnum.GUEST]: new Privileges(false, false, false),[RoleEnum.ADMIN]: new Privileges(true, true, true),[RoleEnum.WRITER]: new Privileges(true, true, false)},
+
         };
 
         const request = context.switchToHttp().getRequest();
-        const fullUrl: string = request.url.split('?')[0];
-    
-        return routeRolesMap[fullUrl] || {
+        const pathname = request.url.match(/^\/[^/]+/)?.[0] || '/';
+        
+        return routeRolesMap[pathname] || {
             [RoleEnum.GUEST]: new Privileges(false, false, false),
             [RoleEnum.ADMIN]: new Privileges(false, false, false),
             [RoleEnum.WRITER]: new Privileges(false, false, false)
@@ -39,6 +38,7 @@ export class PermissionGuard implements CanActivate {
 
     private hasSufficientPermissions(routeRoles: { [role in RoleEnum]: Privileges }, userRole: RoleEnum, httpMethod: string): boolean {
         let hasSufficientPrivileges = false;
+        console.log("userRole ->",userRole)
         if (routeRoles[userRole]) {
             const privileges = routeRoles[userRole];
             switch (httpMethod) {

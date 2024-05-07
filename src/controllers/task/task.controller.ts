@@ -9,34 +9,39 @@ import { Request } from 'express';
 export class TaskController {
   constructor(private readonly taskService: TaskService) { }
 
+  @UseGuards(DefaultMiddleware, PermissionGuard)
+  @SetMetadata('permissions', ['write:tasks'])
   @Post('create')
   async create(@Body() dto: CreateRequestTaskDto, @Req() request: Request) {
     dto.userId = request.user
     return await this.taskService.create(dto);
   }
 
-  @Post('delete')
-  async delete(@Query('id') id: string,) {
-    return await this.taskService.delete(id);
-  }
-
+  @UseGuards(DefaultMiddleware, PermissionGuard)
+  @SetMetadata('permissions', ['write:tasks'])
   @Put('')
-  async update(@Body() dto: UpdateRequestTaskDto,@Req() request: Request) {
+  async update(@Body() dto: UpdateRequestTaskDto, @Req() request: Request) {
     return await this.taskService.update(dto);
   }
 
   @UseGuards(DefaultMiddleware, PermissionGuard)
-  @SetMetadata('permissions',['read:tasks'])
+  @SetMetadata('permissions', ['read:tasks'])
   @Get('paginated')
   async findPaginated(@Query('page') page: number, @Query('limit') limit: number) {
     return await this.taskService.findPaginated(page, limit);
   }
 
-  
   @UseGuards(DefaultMiddleware, PermissionGuard)
-  @SetMetadata('permissions',['read:tasks'])
+  @SetMetadata('permissions', ['read:tasks'])
   @Get('find-by-id')
   async findTaskById(@Query('id') id: string,) {
     return await this.taskService.findById(id);
+  }
+
+  @UseGuards(DefaultMiddleware, PermissionGuard)
+  @SetMetadata('permissions', ['delete:tasks'])
+  @Post('delete')
+  async delete(@Query('id') id: string,) {
+    return await this.taskService.delete(id);
   }
 }
