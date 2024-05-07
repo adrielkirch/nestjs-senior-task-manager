@@ -1,6 +1,6 @@
 import { Injectable, NestMiddleware, UnauthorizedException, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
-import { UserService } from 'src/services/service.user';
+import { UserService } from 'src/services/user.service';
 import { SecurityUtil } from 'src/utils/util.security';
 
 declare global {

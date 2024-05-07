@@ -1,6 +1,6 @@
 
-import { CreateRequestTaskDto } from 'src/adapters/request/adapter.request.task';
-import { UpdateRequestUserDto } from 'src/adapters/request/adapter.request.user';
+import { CreateRequestTaskDto } from 'src/adapters/request/task.request.dto';
+import { UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
 import { Task } from 'src/domain/task/task';
 import { TaskModel } from 'src/infrastructure/database/mongodb/models/task/task.model';
 

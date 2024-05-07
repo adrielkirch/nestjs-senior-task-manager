@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { EmailServiceInterface } from '../../data/protocols/notifier/email/email.interface';
 import { SmsServiceInterface } from '../../data/protocols/notifier/sms/sms.interface';
 import { PushNotificationServiceInterface } from '../../data/protocols/notifier/push_notification/push.notification.interface';
-import { NotifyRequestDto } from 'src/adapters/request/adapter.request.notification';
+import { NotifyRequestDto } from 'src/adapters/request/notification.request.dto';
 
 @Injectable()
 export class Notifier {

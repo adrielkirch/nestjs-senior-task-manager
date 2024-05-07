@@ -3,7 +3,7 @@ import { TaskController } from 'src/controllers/task/task.controller';
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
 import { DatabaseModule } from 'src/infrastructure/database/database.module';
 import { MongodbTaskRepository } from 'src/infrastructure/database/mongodb/repositories/task/mongodb-task-repository';
-import { TaskService } from 'src/services/service.task';
+import { TaskService } from 'src/services/task.service';
 import { AddTaskUseCase } from 'src/usecases/task/add-task-usecase';
 import { FindByIdTasksUseCase } from 'src/usecases/task/find-by-id-task-usecase';
 import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/find-by-property-and-value-task-usecase';

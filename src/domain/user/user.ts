@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { randomUUID } from 'crypto';
 
 export type UserProps = {

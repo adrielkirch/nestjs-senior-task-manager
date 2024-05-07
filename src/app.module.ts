@@ -15,7 +15,8 @@ import { TaskModule } from './infrastructure/ioc/task/task.module';
     {
       provide: APP_INTERCEPTOR,
       useClass: DefaultMiddleware,
-    }
+    },
+
 
   ],
 })

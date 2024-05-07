@@ -40,7 +40,7 @@ export class TaskModel extends Document {
   remindDate: Date;
 
   @Prop({
-    type: String, // Specify type as String
+    type: String, 
     enum: ["DONE", "IN-PROGRESS", "TODO", "ARCHIVED"],
     default: "TODO",
   })

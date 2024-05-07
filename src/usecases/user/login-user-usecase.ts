@@ -1,6 +1,6 @@
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
 import { UserTransformer } from '../../main/transformers/user/user.transformer';
-import { LoginRequestDto } from 'src/adapters/request/adapter.request.user';
+import { LoginRequestDto } from 'src/adapters/request/user.request.dto';
 import { SecurityUtil } from 'src/utils/util.security';
 
 /**

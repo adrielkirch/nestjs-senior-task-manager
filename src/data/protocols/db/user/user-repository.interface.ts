@@ -1,4 +1,4 @@
-import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src/adapters/request/adapter.request.user';
+import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
 import { User } from 'src/domain/user/user';
 import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
 

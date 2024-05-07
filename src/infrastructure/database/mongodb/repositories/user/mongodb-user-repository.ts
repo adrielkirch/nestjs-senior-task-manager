@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { User } from 'src/domain/user/user';
 import { UserRepositoryInterface } from '../../../../../data/protocols/db/user/user-repository.interface';
 import { UserModel } from '../../models/user/user.model';
-import { LoginRequestDto } from 'src/adapters/request/adapter.request.user';
+import { LoginRequestDto } from 'src/adapters/request/user.request.dto';
 
 /**
  * Repository implementation for MongoDB database.
@@ -17,7 +17,6 @@ export class MongodbUserRepository implements UserRepositoryInterface {
     @InjectModel(UserModel.name)
     private readonly userCollection: Model<UserModel>,
   ) { }
-
 
   /**
    * Authenticates a user based on the provided login credentials.

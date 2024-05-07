@@ -1,7 +1,7 @@
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
 import { User } from 'src/domain/user/user';
 import { UserTransformer } from '../../main/transformers/user/user.transformer';
-import {  UpdateRequestUserDto } from 'src/adapters/request/adapter.request.user';
+import {  UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
 
 /**
  * Use case class responsible for updating a new user to the system.

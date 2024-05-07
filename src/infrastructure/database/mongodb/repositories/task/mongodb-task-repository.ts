@@ -3,8 +3,8 @@
   import { Task } from 'src/domain/task/task';
   import { TaskRepositoryInterface } from '../../../../../data/protocols/db/task/task-repository.interface';
   import { TaskModel } from '../../models/task/task.model';
-import { CreateRequestTaskDto } from 'src/adapters/request/adapter.request.task';
-import { UpdateRequestUserDto } from 'src/adapters/request/adapter.request.user';
+import { CreateRequestTaskDto } from 'src/adapters/request/task.request.dto';
+import { UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
 
   /**
    * Repository implementation for MongoDB database.

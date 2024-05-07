@@ -1,6 +1,6 @@
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
 import { TaskTransformer } from '../../main/transformers/task/task.transformer';
-import {  UpdateRequestTaskDto } from 'src/adapters/request/adapter.request.task';
+import {  UpdateRequestTaskDto } from 'src/adapters/request/task.request.dto';
 
 /**
  * Use case class responsible for updating a new task to the system.

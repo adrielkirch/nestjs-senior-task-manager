@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src/adapters/request/adapter.request.user';
+import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
 import { AddUserUseCase } from 'src/usecases/user/add-user-usecase';
 import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
 import { FindByPropertyAndValueUsersUseCase } from 'src/usecases/user/find-by-property-and-value-user-usecase';
@@ -8,6 +8,7 @@ import { LoginUserUseCase } from 'src/usecases/user/login-user-usecase';
 import { SecurityUtil } from 'src/utils/util.security';
 import { FindPaginatedUsersUseCase } from 'src/usecases/user/find-paginated-users-usecase';
 import { UpdateUserUseCase } from 'src/usecases/user/update-user-usecase';
+import { LoginResponseDto } from 'src/adapters/response/user.response.dto';
 
 @Injectable()
 export class UserService {
@@ -66,10 +67,11 @@ export class UserService {
         }
         const id = user.id;
         const token = SecurityUtil.generateJsonwebtoken(user.id,user.role);
+        
         return {
             token,
             id
-        }
+        } as LoginResponseDto
     }
 
     async findAll() {

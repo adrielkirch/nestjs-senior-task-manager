@@ -4,7 +4,7 @@ import { FindByIdTasksUseCase } from 'src/usecases/task/find-by-id-task-usecase'
 import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/find-by-property-and-value-task-usecase';
 import { FindAllTasksUseCase } from 'src/usecases/task/find-all-task-usecase';
 import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-task-usecase';
-import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/adapter.request.task';
+import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/task.request.dto';
 import { UpdateTaskUseCase } from 'src/usecases/task/update-task-usecase';
 import DateUtil from 'src/utils/util.date';
 import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
@@ -26,6 +26,7 @@ export class TaskService {
 
     ) { }
     async create(data: CreateRequestTaskDto) {
+
         const newTask = await this.addTaskUseCase.create(data);
         const taskId = newTask.id;
 
@@ -74,7 +75,7 @@ export class TaskService {
         const task = await this.findById(data.id);
         const taskId = task.id;
         if (!task) {
-            throw new NotFoundException('User does not exist');
+            throw new NotFoundException('Task does not exist');
         }
 
         for (const key in data) {
@@ -92,12 +93,14 @@ export class TaskService {
             return await this.updateTaskUseCase.update(data);
         } else if (!data.hasOwnProperty('remindDate')) {
             return await this.updateTaskUseCase.update(data);
+        } else if (!data.hasOwnProperty('expirationDate') && !data.hasOwnProperty('remindDate')) {
+            return await this.updateTaskUseCase.update(data);
         }
 
         data.expirationDate = data.hasOwnProperty('expirationDate') ? DateUtil.defaultFormatToISO(data.expirationDate.toString()) : task.expirationDate;
-        console.log("expirationDate ->",data.expirationDate)
+        console.log("expirationDate ->", data.expirationDate)
         data.remindDate = data.hasOwnProperty('remindDate') ? DateUtil.defaultFormatToISO(data.remindDate.toString()) : task.remindDate;
-        console.log("remindDate ->",data.remindDate)
+        console.log("remindDate ->", data.remindDate)
         const isExpirationDateSameOrAfter = DateUtil.isSameOrAfter(data.expirationDate, data.remindDate);
         if (!isExpirationDateSameOrAfter) {
             throw new Error(`expirationDate date must be same or after of remindDate`);

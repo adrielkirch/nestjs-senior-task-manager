@@ -1,0 +1,49 @@
+
+📜 Swagger API DOCS
+
+    Add appropriate body response in Swagger
+
+       📁 Users:
+
+            TODO POST /users/signup  
+            TODO PUT  /users 
+            TODO POST /users/login 
+            TODO GET /users/paginated 
+            TODO GET /users/find-by-id 
+            TODO GET /users/me 
+
+        📁 Tasks:
+
+            TODO POST /tasks/create  
+            TODO PUT /tasks  
+            TODO GET /tasks/paginated  
+            TODO GET /tasks/find-by-id  
+            TODO DELETE /tasks/delete  
+
+    JWT Swagger integration
+
+        TODO Add JWT for Bearer authentication token in swagger http://localhost:3003/api/docs 
+        
+    Separate each ENDPOINT in its correct group of routes Tags:
+
+        User controller ✅
+        Task controller ✅
+
+    Add correct body request for each routes:
+    
+        📁 Users:
+
+            POST /users/signup  ✅
+            PUT  /users ✅
+            POST /users/login ✅
+            GET /users/paginated ✅
+            GET /users/find-by-id ✅
+            GET /users/me ✅
+
+        📁 Tasks:
+
+            POST /tasks/create  ✅
+            PUT /tasks  ✅
+            GET /tasks/paginated  ✅
+            GET /tasks/find-by-id  ✅
+            DELETE /tasks/delete  ✅
