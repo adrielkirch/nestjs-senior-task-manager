@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { randomUUID } from 'crypto';
-import { StatusEnum } from "src/domain/task/types";
+import { StatusEnum } from "../../../../../domain/task/types";
 
 @Schema({
   collection: 'tasks',
@@ -23,16 +23,6 @@ export class TaskModel extends Document {
   })
   text: string;
 
-  @Prop({
-    default: Date.now,
-  })
-  created: Date;
-
-  @Prop({
-    default: Date.now,
-  })
-  updated: Date;
-
   @Prop()
   expirationDate: Date;
 
@@ -51,6 +41,16 @@ export class TaskModel extends Document {
 
   @Prop()
   userId: string;
+
+  @Prop({
+    type: Date,
+  })
+  createdAt: Date;
+
+  @Prop({
+    type: Date,
+  })
+  updatedAt: Date;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(TaskModel);

@@ -1,10 +1,10 @@
 import { Body, Controller, Get, Post, Put, Query, Req, SetMetadata, UseGuards } from '@nestjs/common';
 import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
-import { UserService } from 'src/services/user.service';
+import { UserService } from 'src/services/user/user.service';
 import { DefaultMiddleware } from 'src/middlewares/default.middleware';
 import { Request } from 'express';
 import { PermissionGuard } from 'src/middlewares/permissions.guard';
-import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserResponseDto } from 'src/adapters/response/user.response.dto';
 
 @ApiTags('User')
@@ -42,9 +42,10 @@ export class UserController {
 
   @UseGuards(DefaultMiddleware, PermissionGuard)
   @SetMetadata('permissions', ['read:users'])
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: "It should correctly return Users[]",
-    type: [UserResponseDto] 
+    type: [UserResponseDto]
   })
   @Get('paginated')
   async findPaginated(@Query('page') page: number, @Query('limit') limit: number) {
@@ -53,6 +54,7 @@ export class UserController {
 
   @UseGuards(DefaultMiddleware, PermissionGuard)
   @SetMetadata('permissions', ['read:users'])
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: "It should correctly return User",
     type: UserResponseDto
@@ -61,8 +63,9 @@ export class UserController {
   async findUserById(@Query('id') id: string,) {
     return await this.userService.findById(id);
   }
- 
+
   @UseGuards(DefaultMiddleware)
+  @ApiBearerAuth()
   @ApiOkResponse({
     description: "It should correctly return User",
     type: UserResponseDto

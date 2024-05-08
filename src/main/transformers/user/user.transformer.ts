@@ -1,5 +1,5 @@
 import { UserResponseDto } from 'src/adapters/response/user.response.dto';
-import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
+import { UserModel } from '../../../infrastructure/database/mongodb/models/user/user.model';
 
 /**
  * Utility class for transforming MongoDB user models to a simpler format.

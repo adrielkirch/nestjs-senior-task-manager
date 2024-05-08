@@ -1,13 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
-import { AddUserUseCase } from 'src/usecases/user/add-user-usecase';
-import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
-import { FindByPropertyAndValueUsersUseCase } from 'src/usecases/user/find-by-property-and-value-user-usecase';
-import { FindAllUsersUseCase } from 'src/usecases/user/find-all-users-usecase';
-import { LoginUserUseCase } from 'src/usecases/user/login-user-usecase';
-import { SecurityUtil } from 'src/utils/util.security';
-import { FindPaginatedUsersUseCase } from 'src/usecases/user/find-paginated-users-usecase';
-import { UpdateUserUseCase } from 'src/usecases/user/update-user-usecase';
+import { AddUserUseCase } from '../../usecases/user/add-user-usecase';
+import { FindByIdUsersUseCase } from '../../usecases/user/find-by-id-users-usecase';
+import { FindByPropertyAndValueUsersUseCase } from '../../usecases/user/find-by-property-and-value-user-usecase';
+import { FindAllUsersUseCase } from '../../usecases/user/find-all-users-usecase';
+import { LoginUserUseCase } from '../../usecases/user/login-user-usecase';
+import { SecurityUtil } from '../../utils/util.security';
+import { FindPaginatedUsersUseCase } from '../../usecases/user/find-paginated-users-usecase';
+import { UpdateUserUseCase } from '../../usecases/user/update-user-usecase';
 import { LoginResponseDto, UserResponseDto } from 'src/adapters/response/user.response.dto';
 
 @Injectable()
@@ -64,7 +64,7 @@ export class UserService {
         const user = await this.loginUserUseCase.login(data);
 
         if (!user) {
-            throw new Error('E-mail or password incorrect(s)');
+            throw new NotFoundException('E-mail or password incorrect(s)');
         }
         const id = user.id;
         const token = SecurityUtil.generateJsonwebtoken(user.id, user.role);

@@ -1,9 +1,11 @@
 
+
+
 📜 Swagger API DOCS
 
     JWT Swagger integration
 
-        TODO Add JWT for Bearer authentication token in swagger http://localhost:3003/api/docs 
+        Add JWT for Bearer authentication token in swagger http://localhost:3003/api/docs  ✅
 
     Add appropriate body response in Swagger
 

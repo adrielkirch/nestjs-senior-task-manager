@@ -1,162 +1,119 @@
 import { randomUUID } from 'crypto';
 import { StatusEnum } from "./types";
 
-export class Task {
-  public readonly _id: string;
-  private _title: string;
-  private _text: string;
-  private _created: Date;
-  private _updated: Date;
-  private _expirationDate: Date;
-  private _remindDate: Date;
-  private _status: StatusEnum;
-  private _assignTo: string;
-  private _userId: string;
+export interface TaskProps {
+  title: string;
+  text: string;
+  expirationDate: Date;
+  remindDate: Date;
+  status: StatusEnum;
+  assignTo: string;
+  userId: string;
+}
 
-  constructor(
-    _id: string = randomUUID(),
-    title: string,
-    text: string,
-    created: Date,
-    updated: Date,
-    expirationDate: Date,
-    remindDate: Date,
-    status: StatusEnum,
-    assignTo: string,
-    userId: string
-  ) {
-    this._id = _id;
-    this._title = title;
-    this._text = text;
-    this._created = created;
-    this._updated = updated;
-    this._expirationDate = expirationDate;
-    this._remindDate = remindDate;
-    this._status = status;
-    this._assignTo = assignTo;
-    this._userId = userId;
+export class Task {
+  public readonly id: string;
+  public props: Required<TaskProps>;
+
+  constructor(props: TaskProps, id: string = randomUUID()) {
+    this.id = id;
+    this.props = {
+      ...props,
+    };
+  }
+
+  static create(props: TaskProps, id?: string): Task {
+    return new Task(props, id);
   }
 
   updateTitle(title: string) {
-    this._title = title;
+    this.props.title = title;
   }
 
   get title() {
-    return this._title;
+    return this.props.title;
   }
 
   set title(value: string) {
-    this._title = value;
+    this.props.title = value;
   }
 
   updateText(text: string) {
-    this._text = text;
+    this.props.text = text;
   }
 
   get text() {
-    return this._text;
+    return this.props.text;
   }
 
   set text(value: string) {
-    this._text = value;
-  }
-
-  updateCreated(created: Date) {
-    this._created = created;
-  }
-
-  get created() {
-    return this._created;
-  }
-
-  set created(value: Date) {
-    this._created = value;
-  }
-
-  updateUpdated(updated: Date) {
-    this._updated = updated;
-  }
-
-  get updated() {
-    return this._updated;
-  }
-
-  set updated(value: Date) {
-    this._updated = value;
+    this.props.text = value;
   }
 
   updateExpirationDate(expirationDate: Date) {
-    this._expirationDate = expirationDate;
+    this.props.expirationDate = expirationDate;
   }
 
   get expirationDate() {
-    return this._expirationDate;
+    return this.props.expirationDate;
   }
 
   set expirationDate(value: Date) {
-    this._expirationDate = value;
+    this.props.expirationDate = value;
   }
 
   updateRemindDate(remindDate: Date) {
-    this._remindDate = remindDate;
+    this.props.remindDate = remindDate;
   }
 
   get remindDate() {
-    return this._remindDate;
+    return this.props.remindDate;
   }
 
   set remindDate(value: Date) {
-    this._remindDate = value;
+    this.props.remindDate = value;
   }
 
   updateStatus(status: StatusEnum) {
-    this._status = status;
+    this.props.status = status;
   }
 
   get status() {
-    return this._status;
+    return this.props.status;
   }
 
   set status(value: StatusEnum) {
-    this._status = value;
+    this.props.status = value;
   }
 
   updateAssignTo(assignTo: string) {
-    this._assignTo = assignTo;
+    this.props.assignTo = assignTo;
   }
 
   get assignTo() {
-    return this._assignTo;
+    return this.props.assignTo;
   }
 
   set assignTo(value: string) {
-    this._assignTo = value;
+    this.props.assignTo = value;
   }
 
   updateUserId(userId: string) {
-    this._userId = userId;
+    this.props.userId = userId;
   }
 
   get userId() {
-    return this._userId;
+    return this.props.userId;
   }
 
   set userId(value: string) {
-    this._userId = value;
+    this.props.userId = value;
   }
 
   toJSON() {
     return {
-      _id: this._id,
-      title: this._title,
-      text: this._text,
-      created: this._created,
-      updated: this._updated,
-      expirationDate: this._expirationDate,
-      remindDate: this._remindDate,
-      status: this._status,
-      assignTo: this._assignTo,
-      userId: this._userId
+      id: this.id,
+      ...this.props,
     };
   }
 }

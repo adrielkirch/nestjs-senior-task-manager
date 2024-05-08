@@ -1,6 +1,5 @@
 
-import moment from 'moment-timezone';
-
+import moment from 'moment-timezone'; 
 
 export default class DateUtil {
     public static defaultFormat: string = "MM/DD/YYYY HH:mm:ss";
@@ -29,12 +28,10 @@ export default class DateUtil {
     }
 
     static futureDateByHours(hours: number): Date {
-        return moment().add(hours, 'hours').toDate();
+        return moment().add(11, 'minutes').toDate();
     }
 
     static getFefaultFormatRegex(): RegExp {
         return this.defaultFormatRegex;
     }
 }
-
-

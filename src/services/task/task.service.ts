@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { AddTaskUseCase } from 'src/usecases/task/add-task-usecase';
 import { FindByIdTasksUseCase } from 'src/usecases/task/find-by-id-task-usecase';
 import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/find-by-property-and-value-task-usecase';
@@ -40,13 +40,13 @@ export class TaskService {
         const isExpirationDateSameOrAfter = DateUtil.isSameOrAfter(expirationDateISO, remindDateISO);
 
         if (!isExpirationDateSameOrAfter) {
-            throw new Error(`expirationDate date must be same or after of remindDate`);
+            throw new BadRequestException(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
         console.log('now ', now);
         const isNowDateSameOrAfter = DateUtil.isSameOrAfter(now, remindDateISO);
         if (isNowDateSameOrAfter) {
-            throw new Error(`Now date not must be same or after of remindDate`);
+            throw new BadRequestException(`Now date not must be same or after of remindDate`);
         }
 
         const ms = DateUtil.timeDifferenceInMs(remindDateISO, now)

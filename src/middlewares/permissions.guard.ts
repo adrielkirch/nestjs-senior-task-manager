@@ -5,13 +5,11 @@ import { Privileges } from 'src/domain/privilege/privilege';
 export class PermissionGuard implements CanActivate {
     canActivate(context: ExecutionContext): boolean {
         const userRole: RoleEnum = context.switchToHttp().getRequest().role;
-        console.log(userRole);
         const request = context.switchToHttp().getRequest();
         const httpMethod = request.method;
         const routeRoles = this.getRouteRoles(context);
 
         const allowed = this.hasSufficientPermissions(routeRoles, userRole, httpMethod);
-
         if (allowed) {
             return true;
         }
@@ -26,11 +24,8 @@ export class PermissionGuard implements CanActivate {
         };
 
         const request = context.switchToHttp().getRequest();
-        console.log(request.url)
         const pathname = request.url.match(/^\/[^/]+/)?.[0] || '/';
-        console.log(pathname)
 
-        console.log(routeRolesMap[pathname])
         return routeRolesMap[pathname] || {
             [RoleEnum.GUEST]: new Privileges(false, false, false),
             [RoleEnum.ADMIN]: new Privileges(false, false, false),

@@ -12,7 +12,7 @@ export class FindAllTasksUseCase {
    * Constructs a new instance of the FindAllTasksUseCase class.
    * @param taskRepo An instance of the TaskRepositoryInterface to interact with the task data storage.
    */
-  constructor(private readonly taskRepo: TaskRepositoryInterface) {}
+  constructor(private readonly taskRepo: TaskRepositoryInterface) { }
 
   /**
    * Loads all tasks from the system.

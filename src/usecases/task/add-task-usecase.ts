@@ -22,7 +22,7 @@ export class AddTaskUseCase {
    * @returns A Promise that resolves to the simplified representation of the created task.
    */
   async create(task: CreateRequestTaskDto): Promise<TaskResponseDto> {
-    
+
     const taskDb = await this.taskRepo.create(task);
     return TaskTransformer.toTask(taskDb);
   }

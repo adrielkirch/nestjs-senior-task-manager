@@ -12,14 +12,14 @@ export class FindByIdTasksUseCase {
    * Constructs a new instance of the FindByIdTasksUseCase class.
    * @param taskRepo An instance of the TaskRepositoryInterface to interact with the task data storage.
    */
-  constructor(private readonly taskRepo: TaskRepositoryInterface) {}
+  constructor(private readonly taskRepo: TaskRepositoryInterface) { }
 
   /**
    * Loads a task by their ID from the system.
    * @param id The ID of the task to load.
    * @returns A Promise that resolves to the simplified representation of the loaded task.
    */
-  async findById(id: string):Promise<TaskResponseDto> {
+  async findById(id: string): Promise<TaskResponseDto> {
     // Retrieve the task from the task data storage using the TaskRepositoryInterface.
     const task = await this.taskRepo.findById(id);
     // If task is not found, return null

@@ -1,6 +1,5 @@
 
-import { CreateRequestTaskDto } from 'src/adapters/request/task.request.dto';
-import { UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
+import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/task.request.dto';
 import { Task } from 'src/domain/task/task';
 import { TaskModel } from 'src/infrastructure/database/mongodb/models/task/task.model';
 
@@ -17,11 +16,11 @@ export interface TaskRepositoryInterface {
   create: (data: CreateRequestTaskDto) => Promise<TaskModel>;
 
   /**
-   * Updates a new user in the data storage.
-   * @param data The user data to be updated.
-   * @returns A Promise that resolves to the created UserModel.
+   * Updates a new task in the data storage.
+   * @param data The task data to be updated.
+   * @returns A Promise that resolves to the created TaskModel.
    */
-  update: (data: UpdateRequestUserDto) => Promise<TaskModel>;
+  update: (data: UpdateRequestTaskDto) => Promise<TaskModel>;
 
   /**
    * Deletes a task by its unique identifier from the data storage.
@@ -55,8 +54,8 @@ export interface TaskRepositoryInterface {
   findById: (id: string) => Promise<TaskModel>;
 
   /**
-   * Retrieves all users from the data storage.
-   * @returns A Promise that resolves to an array of UserModel representing all users.
+   * Retrieves all tasks from the data storage.
+   * @returns A Promise that resolves to an array of TaskModel representing all tasks.
    */
   find: () => Promise<TaskModel[]>;
 

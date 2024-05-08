@@ -31,18 +31,21 @@ describe('MongodbUserRepository Unit Test', () => {
       surname: 'any_surname',
       email: 'any_email@mail.com',
       password: 'any_pass',
+      role:'admin',
     };
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
     expect(userModelMock.create).toHaveBeenCalledWith(user);
   });
 
+  
   it('should find a array the users', async () => {
     const userProps: UserProps = {
       name: 'any_name',
       surname: 'any_surname',
       email: 'any_email@mail.com',
       password: 'any_pass',
+      role:'admin',
     };
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
@@ -59,6 +62,7 @@ describe('MongodbUserRepository Unit Test', () => {
       surname: 'any_surname',
       email: 'any_email@mail.com',
       password: 'any_pass',
+      role:'admin',
     };
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
@@ -74,6 +78,7 @@ describe('MongodbUserRepository Unit Test', () => {
       surname: 'any_surname',
       email: 'any_email@mail.com',
       password: 'any_pass',
+      role:'admin',
     };
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
@@ -89,6 +94,7 @@ describe('MongodbUserRepository Unit Test', () => {
       surname: 'any_surname',
       email: 'any_email@mail.com',
       password: 'any_pass',
+      role:'admin',
     };
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);

@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import * as crypto from "crypto";
 import { Request } from "express";
-import { JWT_SECRET_KEY, SALT } from "src/config";
+import { JWT_SECRET_KEY, SALT } from "../config";
 
 interface JwtPayload {
   user: string;

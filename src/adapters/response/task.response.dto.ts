@@ -23,13 +23,13 @@ export class TaskResponseDto {
         description: "The timestamp when the task was created",
         example: "2024-05-08T12:00:00.000Z"
     })
-    created: Date;
+    createdAt: Date;
 
     @ApiProperty({
         description: "The timestamp when the task was last updated",
         example: "2024-05-08T12:00:00.000Z"
     })
-    updated: Date;
+    updatedAt: Date;
 
     @ApiProperty({
         description: "The task's expiration date",

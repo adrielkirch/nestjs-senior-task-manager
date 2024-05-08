@@ -3,7 +3,7 @@ import { UserController } from 'src/controllers/user/user.controller';
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
 import { DatabaseModule } from 'src/infrastructure/database/database.module';
 import { MongodbUserRepository } from 'src/infrastructure/database/mongodb/repositories/user/mongodb-user-repository';
-import { UserService } from 'src/services/user.service';
+import { UserService } from 'src/services/user/user.service';
 import { AddUserUseCase } from 'src/usecases/user/add-user-usecase';
 import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
 import { FindByPropertyAndValueUsersUseCase } from 'src/usecases/user/find-by-property-and-value-user-usecase';
