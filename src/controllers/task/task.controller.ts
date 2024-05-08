@@ -5,6 +5,7 @@ import { PermissionGuard } from 'src/middlewares/permissions.guard';
 import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/task.request.dto';
 import { Request } from 'express';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { TaskResponseDto } from 'src/adapters/response/task.response.dto';
 
 @ApiTags('Task')
 @Controller('tasks')
@@ -16,6 +17,7 @@ export class TaskController {
   @Post('create')
   @ApiCreatedResponse({
     description: "Task created successfully",
+    type: TaskResponseDto
   })
   async create(@Body() dto: CreateRequestTaskDto, @Req() request: Request) {
     dto.userId = request.user;
@@ -27,6 +29,7 @@ export class TaskController {
   @Put('')
   @ApiOkResponse({
     description: "Task updated successfully",
+    type: TaskResponseDto
   })
   async update(@Body() dto: UpdateRequestTaskDto, @Req() request: Request) {
     return await this.taskService.update(dto);
@@ -37,6 +40,7 @@ export class TaskController {
   @Get('paginated')
   @ApiOkResponse({
     description: "Tasks found successfully",
+    type: [TaskResponseDto]
   })
   async findPaginated(@Query('page') page: number, @Query('limit') limit: number) {
     return await this.taskService.findPaginated(page, limit);
@@ -47,6 +51,7 @@ export class TaskController {
   @Get('find-by-id')
   @ApiOkResponse({
     description: "Task found successfully",
+    type: TaskResponseDto
   })
   async findTaskById(@Query('id') id: string) {
     return await this.taskService.findById(id);
@@ -54,7 +59,7 @@ export class TaskController {
 
   @UseGuards(DefaultMiddleware, PermissionGuard)
   @SetMetadata('permissions', ['delete:tasks'])
-  @Delete('delete')
+  @Delete('remove')
   @ApiOkResponse({
     description: "Task deleted successfully",
   })

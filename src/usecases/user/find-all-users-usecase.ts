@@ -1,3 +1,4 @@
+import { UserResponseDto } from 'src/adapters/response/user.response.dto';
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
 import { UserTransformer } from 'src/main/transformers/user/user.transformer';
 
@@ -17,7 +18,7 @@ export class FindAllUsersUseCase {
    * Loads all users from the system.
    * @returns A Promise that resolves to an array of simplified user representations.
    */
-  async findAll() {
+  async findAll(): Promise<UserResponseDto[]> {
     // Retrieve all users from the user data storage using the UserRepositoryInterface.
     const users = await this.userRepo.find();
     // Transform the database models to simplified user representations using the UserTransformer.

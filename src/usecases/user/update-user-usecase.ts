@@ -1,7 +1,8 @@
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
 import { User } from 'src/domain/user/user';
 import { UserTransformer } from '../../main/transformers/user/user.transformer';
-import {  UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
+import { UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
+import { UserResponseDto } from 'src/adapters/response/user.response.dto';
 
 /**
  * Use case class responsible for updating a new user to the system.
@@ -16,11 +17,11 @@ export class UpdateUserUseCase {
   constructor(private readonly userRepo: UserRepositoryInterface) { }
 
   /**
-   * Creates a new user in the system.
-   * @param user The user object containing the details of the user to be created.
-   * @returns A Promise that resolves to the simplified representation of the created user.
+   * Updates a new user in the system.
+   * @param user The user object containing the details of the user to be updated.
+   * @returns A Promise that resolves to the simplified representation of the updated user.
    */
-  async update(user: UpdateRequestUserDto) {
+  async update(user: UpdateRequestUserDto): Promise<UserResponseDto> {
     const userDb = await this.userRepo.update(user);
     return UserTransformer.toUser(userDb);
   }

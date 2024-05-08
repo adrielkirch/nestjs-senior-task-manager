@@ -1,3 +1,4 @@
+import { TaskResponseDto } from 'src/adapters/response/task.response.dto';
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
 import { TaskTransformer } from 'src/main/transformers/task/task.transformer';
 
@@ -18,7 +19,7 @@ export class FindByIdTasksUseCase {
    * @param id The ID of the task to load.
    * @returns A Promise that resolves to the simplified representation of the loaded task.
    */
-  async findById(id: string) {
+  async findById(id: string):Promise<TaskResponseDto> {
     // Retrieve the task from the task data storage using the TaskRepositoryInterface.
     const task = await this.taskRepo.findById(id);
     // If task is not found, return null

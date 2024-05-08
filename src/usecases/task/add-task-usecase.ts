@@ -1,7 +1,7 @@
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
-import { Task } from 'src/domain/task/task';
 import { TaskTransformer } from '../../main/transformers/task/task.transformer';
 import { CreateRequestTaskDto } from 'src/adapters/request/task.request.dto';
+import { TaskResponseDto } from 'src/adapters/response/task.response.dto';
 
 
 /**
@@ -21,7 +21,7 @@ export class AddTaskUseCase {
    * @param task The task object containing the details of the task to be created.
    * @returns A Promise that resolves to the simplified representation of the created task.
    */
-  async create(task: CreateRequestTaskDto) {
+  async create(task: CreateRequestTaskDto): Promise<TaskResponseDto> {
     
     const taskDb = await this.taskRepo.create(task);
     return TaskTransformer.toTask(taskDb);

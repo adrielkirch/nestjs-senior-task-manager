@@ -2,6 +2,7 @@ import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-reposit
 import { UserTransformer } from '../../main/transformers/user/user.transformer';
 import { LoginRequestDto } from 'src/adapters/request/user.request.dto';
 import { SecurityUtil } from 'src/utils/util.security';
+import { UserResponseDto } from 'src/adapters/response/user.response.dto';
 
 /**
  * Use case class responsible for handling user login functionality.
@@ -20,7 +21,7 @@ export class LoginUserUseCase {
    * @param loginRequestDto The login request data containing email and password.
    * @returns A Promise that resolves to the simplified representation of the authenticated user.
    */
-  async login(loginRequestDto: LoginRequestDto) {
+  async login(loginRequestDto: LoginRequestDto): Promise<UserResponseDto> {
     const userDb = await this.userRepo.login(loginRequestDto);
     if (!userDb) {
       return null;

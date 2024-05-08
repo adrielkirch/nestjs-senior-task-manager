@@ -17,8 +17,6 @@ export class SecurityUtil {
     return jwt.sign(payload, JWT_SECRET_KEY);
   }
 
-
-
   static decodedJsonwebtoken(token: string): JwtPayload {
     const decoded = jwt.verify(token, JWT_SECRET_KEY) as JwtPayload;
     return decoded;

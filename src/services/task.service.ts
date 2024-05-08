@@ -10,10 +10,12 @@ import DateUtil from 'src/utils/util.date';
 import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
 import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete-task-usecase';
 import { StatusEnum } from 'src/domain/task/types';
+import { TaskResponseDto } from 'src/adapters/response/task.response.dto';
 
 @Injectable()
 export class TaskService {
     private scheduler = SchedulerService.getInstance();
+
     constructor(
         private readonly addTaskUseCase: AddTaskUseCase,
         private readonly updateTaskUseCase: UpdateTaskUseCase,
@@ -25,8 +27,8 @@ export class TaskService {
 
 
     ) { }
-    async create(data: CreateRequestTaskDto) {
 
+    async create(data: CreateRequestTaskDto): Promise<TaskResponseDto> {
         const newTask = await this.addTaskUseCase.create(data);
         const taskId = newTask.id;
 
@@ -143,11 +145,7 @@ export class TaskService {
     }
 
 
-    async findAll() {
-        return await this.FindAllTasksUseCase.findAll();
-    }
-
-    async findById(id: string) {
+    async findById(id: string): Promise<TaskResponseDto> {
         const task = await this.findByIdTasksUseCase.findById(id);
         if (!task) {
             throw new NotFoundException('Task not found');
@@ -155,12 +153,16 @@ export class TaskService {
         return task;
     }
 
-    async findPaginated(page: number, limit: number) {
+
+    async findPaginated(page: number, limit: number): Promise<TaskResponseDto[]> {
         return await this.findPaginatedTasksUseCase.findPaginated(page, limit);
     }
 
-    async findByPropertyAndValue(property: string, value: any) {
+    async findByPropertyAndValue(property: string, value: any): Promise<TaskResponseDto[]> {
         return await this.findByPropertyAndValueTasksUseCase.findByPropertyAndValue(property, value);
     }
 
+    async findAll(): Promise<TaskResponseDto[]> {
+        return await this.FindAllTasksUseCase.findAll();
+    }
 }

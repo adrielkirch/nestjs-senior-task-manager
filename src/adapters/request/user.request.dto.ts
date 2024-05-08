@@ -50,7 +50,7 @@ export class CreateRequestUserDto {
 export class UpdateRequestUserDto {
     @ApiProperty({
         description: "The unique identifier of the user",
-        example: "1234567890"
+        example: "08afddc9-5b82-43ce-bcec-5187f31913a"
     })
     @IsOptional()
     @IsString()

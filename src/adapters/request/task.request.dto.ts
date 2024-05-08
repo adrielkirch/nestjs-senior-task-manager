@@ -53,7 +53,7 @@ export class CreateRequestTaskDto {
 
     @ApiProperty({
         description: "The ID of the user to whom the task is assigned (optional)",
-        example: "08afddc9-5b82-43ce-bcec-5187f31913a"
+        example: "08afddc9-5b82-43ce-bcec-5187f31900a"
     })
     @IsOptional()
     @IsString()
@@ -63,7 +63,7 @@ export class CreateRequestTaskDto {
 export class UpdateRequestTaskDto {
     @ApiProperty({
         description: "The ID of the task to update",
-        example: "1234567890"
+        example: "08afddc9-5b82-43ce-bcec-5187f31913a"
     })
     @IsString()
     id: string;
@@ -86,7 +86,7 @@ export class UpdateRequestTaskDto {
 
     @ApiProperty({
         description: "The ID of the user to whom the task is assigned (optional)",
-        example: "1234567890"
+        example: "08afddc9-5b82-43ce-bcec-5123f31913a"
     })
     @IsOptional()
     @IsString()
@@ -108,7 +108,7 @@ export class UpdateRequestTaskDto {
 
     @ApiProperty({
         description: "The updated ID of the user to whom the task is assigned (optional)",
-        example: "1234567890"
+        example: "08afddc9-5b82-43ce-bcec-5187f31913a"
     })
     @IsOptional()
     @IsString()

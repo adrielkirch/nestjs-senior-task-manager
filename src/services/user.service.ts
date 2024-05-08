@@ -8,7 +8,7 @@ import { LoginUserUseCase } from 'src/usecases/user/login-user-usecase';
 import { SecurityUtil } from 'src/utils/util.security';
 import { FindPaginatedUsersUseCase } from 'src/usecases/user/find-paginated-users-usecase';
 import { UpdateUserUseCase } from 'src/usecases/user/update-user-usecase';
-import { LoginResponseDto } from 'src/adapters/response/user.response.dto';
+import { LoginResponseDto, UserResponseDto } from 'src/adapters/response/user.response.dto';
 
 @Injectable()
 export class UserService {
@@ -21,7 +21,8 @@ export class UserService {
         private readonly findByPropertyAndValueUsersUseCase: FindByPropertyAndValueUsersUseCase,
         private readonly loginUserUseCase: LoginUserUseCase,
     ) { }
-    async create(data: CreateRequestUserDto)  {
+
+    async create(data: CreateRequestUserDto): Promise<UserResponseDto> {
         const existingUsers = await this.findByPropertyAndValue("email", data.email);
 
         if (existingUsers && existingUsers.length > 0) {
@@ -34,7 +35,7 @@ export class UserService {
         return await this.addUserUseCase.create(data);
     }
 
-    async update(data: UpdateRequestUserDto)  {
+    async update(data: UpdateRequestUserDto): Promise<UserResponseDto> {
         const existingUser = await this.findById(data.id);
 
         if (!existingUser) {
@@ -48,16 +49,16 @@ export class UserService {
                 }
             }
         }
-        
-        if(data.password) {
+
+        if (data.password) {
             const hashPassword = SecurityUtil.generateHashWithSalt(data.password);
             data.password = hashPassword;
         }
-      
+
         return await this.updateUserUseCase.update(data);
     }
 
-    async login(data: LoginRequestDto) {
+    async login(data: LoginRequestDto): Promise<LoginResponseDto> {
         const hashPassword = SecurityUtil.generateHashWithSalt(data.password);
         data.password = hashPassword;
         const user = await this.loginUserUseCase.login(data);
@@ -66,31 +67,31 @@ export class UserService {
             throw new Error('E-mail or password incorrect(s)');
         }
         const id = user.id;
-        const token = SecurityUtil.generateJsonwebtoken(user.id,user.role);
-        
+        const token = SecurityUtil.generateJsonwebtoken(user.id, user.role);
+
         return {
             token,
             id
         } as LoginResponseDto
     }
 
-    async findAll() {
+    async findById(id: string): Promise<UserResponseDto> {
+        const user = await this.findByIdUsersUseCase.findById(id);
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+        return user;
+    }
+
+    async findAll(): Promise<UserResponseDto[]> {
         return await this.FindAllUsersUseCase.findAll();
     }
 
-    async findById(id: string) {
-        const user = await this.findByIdUsersUseCase.findById(id);
-        if (!user) {
-          throw new NotFoundException('User not found');
-        }
-        return user;
-      }
-
-    async findPaginated(page: number, limit: number) {
-        return await this.findPaginatedUsersUseCase.findPaginated(page,limit);
+    async findPaginated(page: number, limit: number): Promise<UserResponseDto[]> {
+        return await this.findPaginatedUsersUseCase.findPaginated(page, limit);
     }
 
-    async findByPropertyAndValue(property: string, value: any) {
+    async findByPropertyAndValue(property: string, value: any): Promise<UserResponseDto[]> {
         return await this.findByPropertyAndValueUsersUseCase.findByPropertyAndValue(property, value);
     }
 

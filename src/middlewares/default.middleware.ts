@@ -21,14 +21,15 @@ export class DefaultMiddleware implements NestMiddleware {
                 throw new UnauthorizedException('Invalid or missing authorization token');
             }
             const token = authorizationHeader.split(' ')[1];
+            console.log(token);
             const decoded = SecurityUtil.decodedJsonwebtoken(token);
             if (!decoded) {
                 throw new UnauthorizedException('Invalid authorization token');
             }
             req.user = decoded.user;
-            console.log("req.user ->",req.user);
+            console.log("req.user ->", req.user);
             req.role = decoded.role;
-            console.log("req.role ->",req.role);
+            console.log("req.role ->", req.role);
             next();
         } catch (err) {
             throw new UnauthorizedException('Invalid authorization token');
@@ -36,7 +37,6 @@ export class DefaultMiddleware implements NestMiddleware {
 
     }
 }
-
 
 @Injectable()
 export class ScopesGuard implements CanActivate {

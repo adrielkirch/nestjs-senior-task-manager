@@ -1,3 +1,4 @@
+import { TaskResponseDto } from 'src/adapters/response/task.response.dto';
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
 import { TaskTransformer } from 'src/main/transformers/task/task.transformer';
 
@@ -17,7 +18,7 @@ export class FindAllTasksUseCase {
    * Loads all tasks from the system.
    * @returns A Promise that resolves to an array of simplified task representations.
    */
-  async findAll() {
+  async findAll(): Promise<TaskResponseDto[]> {
     // Retrieve all tasks from the task data storage using the TaskRepositoryInterface.
     const tasks = await this.taskRepo.find();
     // Transform the database models to simplified task representations using the TaskTransformer.

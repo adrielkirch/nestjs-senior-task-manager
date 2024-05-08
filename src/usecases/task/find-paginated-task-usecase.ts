@@ -1,3 +1,4 @@
+import { TaskResponseDto } from 'src/adapters/response/task.response.dto';
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
 import { TaskTransformer } from 'src/main/transformers/task/task.transformer';
 
@@ -17,7 +18,7 @@ export class FindPaginatedTasksUseCase {
    * Loads paginated tasks from the system.
    * @returns A Promise that resolves to an array of simplified task representations.
    */
-  async findPaginated(page: number, limit: number) { 
+  async findPaginated(page: number, limit: number): Promise<TaskResponseDto[]> {
     const tasks = await this.taskRepo.findPaginated(page, limit);
     return TaskTransformer.toTasks(tasks);
   }

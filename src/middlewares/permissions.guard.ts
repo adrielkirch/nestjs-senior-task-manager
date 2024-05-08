@@ -5,9 +5,11 @@ import { Privileges } from 'src/domain/privilege/privilege';
 export class PermissionGuard implements CanActivate {
     canActivate(context: ExecutionContext): boolean {
         const userRole: RoleEnum = context.switchToHttp().getRequest().role;
+        console.log(userRole);
         const request = context.switchToHttp().getRequest();
         const httpMethod = request.method;
         const routeRoles = this.getRouteRoles(context);
+
         const allowed = this.hasSufficientPermissions(routeRoles, userRole, httpMethod);
 
         if (allowed) {
@@ -19,13 +21,16 @@ export class PermissionGuard implements CanActivate {
 
     private getRouteRoles(context: ExecutionContext): { [role in RoleEnum]: Privileges } {
         const routeRolesMap: { [route: string]: { [role in RoleEnum]: Privileges } } = {
-            "/users": { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, false) },
+            "/users": { [RoleEnum.GUEST]: new Privileges(true, true, true), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, true) },
             "/tasks": { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, false) },
         };
 
         const request = context.switchToHttp().getRequest();
+        console.log(request.url)
         const pathname = request.url.match(/^\/[^/]+/)?.[0] || '/';
+        console.log(pathname)
 
+        console.log(routeRolesMap[pathname])
         return routeRolesMap[pathname] || {
             [RoleEnum.GUEST]: new Privileges(false, false, false),
             [RoleEnum.ADMIN]: new Privileges(false, false, false),

@@ -1,3 +1,4 @@
+import { UserResponseDto } from 'src/adapters/response/user.response.dto';
 import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
 
 /**
@@ -10,7 +11,7 @@ export class UserTransformer {
    * @param user The UserModel object to be transformed.
    * @returns An object containing only essential user properties.
    */
-  static toUser(user: UserModel) {
+  static toUser(user: UserModel): UserResponseDto {
     return {
       id: user.id,                
       name: user.name,            
@@ -19,7 +20,7 @@ export class UserTransformer {
       createdAt: user.createdAt,  
       updatedAt: user.updatedAt ,
       role: user.role  
-    };
+    } as UserResponseDto;
   }
 
   /**

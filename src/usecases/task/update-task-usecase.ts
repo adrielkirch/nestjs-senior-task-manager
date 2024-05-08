@@ -1,6 +1,7 @@
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
 import { TaskTransformer } from '../../main/transformers/task/task.transformer';
 import {  UpdateRequestTaskDto } from 'src/adapters/request/task.request.dto';
+import { TaskResponseDto } from 'src/adapters/response/task.response.dto';
 
 /**
  * Use case class responsible for updating a new task to the system.
@@ -15,11 +16,11 @@ export class UpdateTaskUseCase {
   constructor(private readonly taskRepo: TaskRepositoryInterface) { }
 
   /**
-   * Creates a new task in the system.
-   * @param task The task object containing the details of the task to be created.
-   * @returns A Promise that resolves to the simplified representation of the created task.
+   * Updates a new task in the system.
+   * @param task The task object containing the details of the task to be updated.
+   * @returns A Promise that resolves to the simplified representation of the updated task.
    */
-  async update(task: UpdateRequestTaskDto) {
+  async update(task: UpdateRequestTaskDto): Promise<TaskResponseDto> {
     const taskDb = await this.taskRepo.update(task);
     return TaskTransformer.toTask(taskDb);
   }

@@ -17,7 +17,7 @@ export class DeleteTaskByIdUseCase {
    * @param id The ID of the task to delete.
    * @returns A Promise that resolves to a boolean indicating whether the task was successfully deleted.
    */
-  async deleteById(id: string) {
+  async deleteById(id: string): Promise<void> {
     await this.taskRepo.delete(id);
   }
 }
