@@ -3,8 +3,6 @@ import { MongodbTaskRepository } from './mongodb-task-repository';
 import { TaskModel } from '../../models/task/task.model';
 import { TaskProps } from '../../../../../domain/task/task';
 import { Task } from '../../../../../domain/task/task';
-import { UpdateRequestUserDto } from '../../../../../adapters/request/user.request.dto';
-import { StatusEnum } from '../../../../../domain/task/types';
 import DateUtil from '../../../../../utils/util.date';
 
 const taskModelMock = {

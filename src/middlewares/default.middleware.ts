@@ -2,6 +2,7 @@ import { Injectable, NestMiddleware, UnauthorizedException, CanActivate, Executi
 import { Request, Response, NextFunction } from 'express';
 import { SecurityUtil } from 'src/utils/util.security';
 
+ 
 declare global {
     namespace Express {
         interface Request {

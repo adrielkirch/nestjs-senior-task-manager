@@ -13,7 +13,7 @@ describe('Task Unit Tests', () => {
       "assignTo": "5a4704c2-5d82-4522-9a61-ba30f7b9113d",
       "userId": "5a4704c2-5d82-4522-9a61-ba30f7b9113d"
     };
-    let taskProps: TaskProps = newTask
+    let taskProps: TaskProps = newTask;
 
     let task = Task.create(taskProps);
     expect(task.props).toEqual({
@@ -30,7 +30,7 @@ describe('Task Unit Tests', () => {
   });
 
   it('should update methods', () => {
-    let userProps: TaskProps = {
+    const userProps: TaskProps = {
       "title": "Lorem ipsum dolor tortor",
       "text": "Lorem ipsum ...",
       "remindDate": DateUtil.futureDateByHours(10),
@@ -43,8 +43,7 @@ describe('Task Unit Tests', () => {
     const newTitle = 'Lorem ipsum dolor tortor!';
     const newText = 'Lorem ipsum.';
     const newStatus = "DONE";
-    const newRemindDate = DateUtil.futureDateByHours(11);
-    const newExpirationDate = DateUtil.futureDateByHours(11);
+
 
     task.updateTitle(newTitle);
     task.updateText(newText);
@@ -66,8 +65,8 @@ describe('Task Unit Tests', () => {
       "status": 'TODO',
       "assignTo": "5a4704c2-5d82-4522-9a61-ba30f7b9113d",
       "userId": "5a4704c2-5d82-4522-9a61-ba30f7b9113d"
-    }
-    let taskProps: TaskProps = data;
+    };
+    const taskProps: TaskProps = data;
     const task = Task.create(taskProps);
     task.toJSON();
     data['id'] = task.id;

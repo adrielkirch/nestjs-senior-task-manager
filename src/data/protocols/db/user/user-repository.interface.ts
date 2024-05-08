@@ -1,4 +1,4 @@
-import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
+
 import { User } from 'src/domain/user/user';
 import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
 
@@ -48,7 +48,7 @@ export interface UserRepositoryInterface {
   * @param value The value to search for.
   * @returns A Promise that resolves to an array of UserModel representing matching users.
   */
-  findByPropertyAndValue: (property: string, value: any) => Promise<UserModel[]>;
+  findByPropertyAndValue: <T>(property: string, value: T) => Promise<UserModel[]>;
 
   /**
    * Retrieves a user by its unique identifier from the data storage.

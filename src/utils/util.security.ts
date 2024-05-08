@@ -42,7 +42,7 @@ export class SecurityUtil {
     return buf.toString("hex");
   }
 
-  static sensiviteDataField(data: any, field: string): any {
+  static sensiviteDataField<T>(data: T, field: string): T {
     delete data[field];
     return data;
   }

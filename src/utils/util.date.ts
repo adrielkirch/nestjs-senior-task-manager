@@ -28,7 +28,7 @@ export default class DateUtil {
     }
 
     static futureDateByHours(hours: number): Date {
-        return moment().add(11, 'minutes').toDate();
+        return moment().add(hours, 'hours').toDate();
     }
 
     static getFefaultFormatRegex(): RegExp {

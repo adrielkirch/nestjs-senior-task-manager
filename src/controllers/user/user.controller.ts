@@ -27,7 +27,7 @@ export class UserController {
     type: UserResponseDto
   })
   async update(@Body() dto: UpdateRequestUserDto, @Req() request: Request) {
-    dto.id = request.user
+    dto.id = request.user;
     return await this.userService.update(dto);
   }
 

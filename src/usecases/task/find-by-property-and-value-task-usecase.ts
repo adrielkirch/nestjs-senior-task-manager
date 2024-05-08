@@ -11,7 +11,7 @@ export class FindByPropertyAndValueTasksUseCase {
  * @param value The value of the property to match.
  * @returns A Promise that resolves to the simplified representation of the loaded task, or null if not found.
  */
-  async findByPropertyAndValue(property: string, value: any): Promise<TaskResponseDto[]> {
+  async findByPropertyAndValue<T>(property: string, value: T): Promise<TaskResponseDto[]> {
     const tasks = await this.taskRepo.findByPropertyAndValue(property, value);
     if (!tasks || tasks.length === 0) return null;
     return TaskTransformer.toTasks(tasks);

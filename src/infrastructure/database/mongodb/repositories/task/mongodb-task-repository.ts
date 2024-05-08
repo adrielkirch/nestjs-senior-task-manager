@@ -2,8 +2,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
 import { TaskModel } from '../../models/task/task.model';
-import { CreateRequestTaskDto } from 'src/adapters/request/task.request.dto';
-import { UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
 import { Task } from 'src/domain/task/task';
 
 /**
@@ -53,7 +51,7 @@ export class MongodbTaskRepository implements TaskRepositoryInterface {
    * @param value The value to search for in the specified property.
    * @returns A Promise that resolves to an array of task documents matching the criteria.
    */
-  async findByPropertyAndValue(property: string, value: any): Promise<TaskModel[]> {
+  async findByPropertyAndValue<T>(property: string, value: T): Promise<TaskModel[]> {
     return await this.taskCollection.find({ [property]: value });
   }
 

@@ -1,5 +1,5 @@
 
-import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/task.request.dto';
+
 import { Task } from 'src/domain/task/task';
 import { TaskModel } from 'src/infrastructure/database/mongodb/models/task/task.model';
 
@@ -44,7 +44,7 @@ export interface TaskRepositoryInterface {
   * @param value The value to search for.
   * @returns A Promise that resolves to an array of TaskModel representing matching tasks.
   */
-  findByPropertyAndValue: (property: string, value: any) => Promise<TaskModel[]>;
+  findByPropertyAndValue: <T>(property: string, value: T) => Promise<TaskModel[]>;
 
   /**
    * Retrieves a task by its unique identifier from the data storage.

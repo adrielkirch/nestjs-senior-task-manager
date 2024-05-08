@@ -33,7 +33,7 @@ export class TaskController {
     type: TaskResponseDto
   })
   @Put('')
-  async update(@Body() dto: UpdateRequestTaskDto, @Req() request: Request) {
+  async update(@Body() dto: UpdateRequestTaskDto) {
     return await this.taskService.update(dto);
   }
 

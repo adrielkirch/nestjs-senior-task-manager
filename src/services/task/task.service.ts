@@ -27,13 +27,13 @@ export class TaskService {
     ) { }
 
     async create(data: CreateRequestTaskDto): Promise<TaskResponseDto> {
-        const expirationDateISO = DateUtil.defaultFormatToISO(data.expirationDate.toString())
-        const remindDateISO = DateUtil.defaultFormatToISO(data.expirationDate.toString())
+        const expirationDateISO = DateUtil.defaultFormatToISO(data.expirationDate.toString());
+        const remindDateISO = DateUtil.defaultFormatToISO(data.expirationDate.toString());
         data.expirationDate = expirationDateISO;
         data.remindDate = remindDateISO;
 
 
-        const task = Task.create(data)
+        const task = Task.create(data);
         const newTask = await this.addTaskUseCase.create(task);
         const taskId = newTask.id;
         const isExpirationDateSameOrAfter = DateUtil.isSameOrAfter(expirationDateISO, remindDateISO);
@@ -47,7 +47,7 @@ export class TaskService {
             throw new BadRequestException(`Now date not must be same or after of remindDate`);
         }
 
-        const ms = DateUtil.timeDifferenceInMs(remindDateISO, now)
+        const ms = DateUtil.timeDifferenceInMs(remindDateISO, now);
 
         this.scheduler.add(taskId, async () => {
             const taskFuture = await this.findById(taskId);
@@ -64,7 +64,7 @@ export class TaskService {
             Status: ${taskFuture.status}\n
             `);
 
-            this.scheduler.remove(taskId)
+            this.scheduler.remove(taskId);
         }, ms);
 
         return newTask;
@@ -86,11 +86,11 @@ export class TaskService {
             }
         }
 
-        const task = Task.create(data, taskId)
+        const task = Task.create(data, taskId);
         const status = data.hasOwnProperty('status') ? data.status : existingTask.status;
 
         if (status === "DONE") {
-            this.scheduler.remove(taskId)
+            this.scheduler.remove(taskId);
             return await this.updateTaskUseCase.update(task);
         } else if (!data.hasOwnProperty('remindDate')) {
             return await this.updateTaskUseCase.update(task);
@@ -106,7 +106,7 @@ export class TaskService {
             throw new Error(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
-        const ms = DateUtil.timeDifferenceInMs(data.remindDate, now)
+        const ms = DateUtil.timeDifferenceInMs(data.remindDate, now);
         this.scheduler.remove(taskId);
         this.scheduler.add(taskId, async () => {
             const taskFuture = await this.findById(taskId);
@@ -123,7 +123,7 @@ export class TaskService {
             Status: ${taskFuture.status}\n
             `);
 
-            this.scheduler.remove(taskId)
+            this.scheduler.remove(taskId);
         }, ms);
 
 
@@ -153,7 +153,7 @@ export class TaskService {
         return await this.findPaginatedTasksUseCase.findPaginated(page, limit);
     }
 
-    async findByPropertyAndValue(property: string, value: any): Promise<TaskResponseDto[]> {
+    async findByPropertyAndValue<T>(property: string, value: T): Promise<TaskResponseDto[]> {
         return await this.findByPropertyAndValueTasksUseCase.findByPropertyAndValue(property, value);
     }
 

@@ -1,5 +1,4 @@
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
-import { TaskModel } from 'src/infrastructure/database/mongodb/models/task/task.model';
 
 /**
  * Use case class responsible for deleting a task by its ID from the system.

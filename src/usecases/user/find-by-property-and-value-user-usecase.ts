@@ -11,7 +11,7 @@ export class FindByPropertyAndValueUsersUseCase {
  * @param value The value of the property to match.
  * @returns A Promise that resolves to the simplified representation of the loaded user, or null if not found.
  */
-  async findByPropertyAndValue(property: string, value: any): Promise<UserResponseDto []> {
+  async findByPropertyAndValue<T>(property: string, value: T): Promise<UserResponseDto []> {
     const users = await this.userRepo.findByPropertyAndValue(property, value);
     if (!users || users.length === 0) return null;
     return UserTransformer.toUsers(users);

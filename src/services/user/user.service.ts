@@ -33,7 +33,7 @@ export class UserService {
         const hashPassword = SecurityUtil.generateHashWithSalt(data.password);
         data.password = hashPassword;
         data.role = "guest";
-        const user = User.create(data)
+        const user = User.create(data);
         return await this.addUserUseCase.create(user);
     }
 
@@ -56,14 +56,14 @@ export class UserService {
             const hashPassword = SecurityUtil.generateHashWithSalt(data.password);
             data.password = hashPassword;
         }
-        const user = User.create(data,existingUser.id)
+        const user = User.create(data,existingUser.id);
         return await this.updateUserUseCase.update(user);
     }
 
     async login(data: LoginRequestDto): Promise<LoginResponseDto> {
         const hashPassword = SecurityUtil.generateHashWithSalt(data.password);
         data.password = hashPassword;
-        const user = User.create(data)
+        const user = User.create(data);
         const userLogin = await this.loginUserUseCase.login(user);
 
         if (!userLogin) {
@@ -75,7 +75,7 @@ export class UserService {
         return {
             token,
             id
-        } as LoginResponseDto
+        } as LoginResponseDto;
     }
 
     async findById(id: string): Promise<UserResponseDto> {
@@ -94,7 +94,7 @@ export class UserService {
         return await this.findPaginatedUsersUseCase.findPaginated(page, limit);
     }
 
-    async findByPropertyAndValue(property: string, value: any): Promise<UserResponseDto[]> {
+    async findByPropertyAndValue<T>(property: string, value: T): Promise<UserResponseDto[]> {
         return await this.findByPropertyAndValueUsersUseCase.findByPropertyAndValue(property, value);
     }
 

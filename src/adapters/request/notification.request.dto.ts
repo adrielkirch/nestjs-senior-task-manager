@@ -11,8 +11,7 @@ export class NotifyRequestDto {
     @IsString()
     recipients: string[];
 
-    @IsOptional() 
-    data?: any;
+    
 }
 
 

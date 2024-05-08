@@ -3,7 +3,7 @@ import { Model } from 'mongoose';
 import { User } from 'src/domain/user/user';
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
 import { UserModel } from '../../models/user/user.model';
-import { LoginRequestDto } from 'src/adapters/request/user.request.dto';
+
 
 /**
  * Repository implementation for MongoDB database.
@@ -64,7 +64,7 @@ export class MongodbUserRepository implements UserRepositoryInterface {
    * @param value The value to search for in the specified property.
    * @returns A Promise that resolves to an array of user documents matching the criteria.
    */
-  async findByPropertyAndValue(property: string, value: any): Promise<UserModel[]> {
+  async findByPropertyAndValue<T>(property: string, value: T): Promise<UserModel[]> {
     return await this.userCollection.find({ [property]: value });
   }
 

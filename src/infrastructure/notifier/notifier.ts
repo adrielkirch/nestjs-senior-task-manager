@@ -41,7 +41,7 @@ export class Notifier {
                 await this.sendSms(notificationData.recipients, notificationData.message);
                 break;
             case 'notification':
-                await this.sendPushNotification(notificationData.recipients, notificationData.data, notificationData.message);
+                await this.sendPushNotification(notificationData.recipients, notificationData.message);
                 break;
             default:
                 throw new Error(`Unsupported notification type: ${deliveryMethod}`);
@@ -56,7 +56,7 @@ export class Notifier {
         await this.smsService.send(recipients, message);
     }
     
-    private async sendPushNotification(recipients: string[], data: any, message: string): Promise<void> {
-        await this.pushNotificationService.send(recipients, data, message);
+    private async sendPushNotification(recipients: string[], message: string): Promise<void> {
+        await this.pushNotificationService.send(recipients, message);
     }
 }

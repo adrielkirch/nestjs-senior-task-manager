@@ -30,9 +30,9 @@ export default class SchedulerService {
         let cb;
 
         if (i < intervals - 1) {
-          cb = () => console.log(`Current interval: ${i}/${intervals}`)
+          cb = () => console.log(`Current interval: ${i}/${intervals}`);
         } else {
-          cb = callback
+          cb = callback;
         }
         setTimeout(cb, currentDelay);
         remainingDelay -= maxDelay;

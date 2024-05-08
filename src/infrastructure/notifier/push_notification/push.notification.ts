@@ -17,13 +17,12 @@ export class PushNotificationServiceImpl implements PushNotificationServiceInter
     });
   }
 
-  async send(recipients: string[], data: any, message: string): Promise<void> {
+  async send(recipients: string[], message: string): Promise<void> {
     try {
       await Promise.all(
         recipients.map(async (recipient) => {
           await this.admin.messaging().send({
             token: recipient,
-            data,
             notification: {
               title: 'Title of the notification',
               body: message,

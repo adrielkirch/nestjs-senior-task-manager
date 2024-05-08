@@ -1,8 +1,8 @@
-export type VariablesRequestDto = {
-    variables: Variables[];
+type Variables<T> = {
+    variable: string;
+    value: T;
 };
 
-type Variables = {
-    variable: string;
-    value: any;
+export type VariablesRequestDto<T> = {
+    variables: Variables<T>[];
 };
