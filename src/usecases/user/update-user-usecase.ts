@@ -21,7 +21,7 @@ export class UpdateUserUseCase {
    * @param user The user object containing the details of the user to be updated.
    * @returns A Promise that resolves to the simplified representation of the updated user.
    */
-  async update(user: UpdateRequestUserDto): Promise<UserResponseDto> {
+  async update(user: User): Promise<UserResponseDto> {
     const userDb = await this.userRepo.update(user);
     return UserTransformer.toUser(userDb);
   }

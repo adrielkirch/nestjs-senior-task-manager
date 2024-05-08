@@ -1,7 +1,7 @@
-export type StatusType = "DONE" | "IN-PROGRESS" | "TODO" | "ARCHIVED";
+export type StatusType = "DONE" | "IN-PROGRESS" | 'TODO' | "ARCHIVED";
 
 export enum StatusEnum {
-    TODO = 'TODO',
-    IN_PROGRESS = 'IN_PROGRESS',
-    DONE = 'DONE',
-  }
+  TO_DO = 'TODO',
+  IN_PROGRESS = 'IN_PROGRESS',
+  DONE = 'DONE',
+}

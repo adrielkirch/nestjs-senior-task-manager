@@ -4,6 +4,7 @@ import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-reposit
 import { TaskModel } from '../../models/task/task.model';
 import { CreateRequestTaskDto } from 'src/adapters/request/task.request.dto';
 import { UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
+import { Task } from 'src/domain/task/task';
 
 /**
  * Repository implementation for MongoDB database.
@@ -24,8 +25,8 @@ export class MongodbTaskRepository implements TaskRepositoryInterface {
    * @param data The task data to be saved.
    * @returns A Promise that resolves to the created task document.
    */
-  async create(data: CreateRequestTaskDto): Promise<TaskModel> {
-    return  await this.taskCollection.create(data);
+  async create(data: Task): Promise<TaskModel> {
+    return await this.taskCollection.create(data.toJSON());
   }
 
   /**
@@ -62,7 +63,7 @@ export class MongodbTaskRepository implements TaskRepositoryInterface {
    * @param dataUpdate The updated task data.
    * @returns A Promise that resolves to the updated task document.
    */
-  async update(dataUpdate: UpdateRequestUserDto): Promise<TaskModel> {
+  async update(dataUpdate: Task): Promise<TaskModel> {
     return await this.taskCollection.findOneAndUpdate(
       { _id: { $eq: dataUpdate.id } },
       { $set: dataUpdate },

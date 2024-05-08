@@ -13,14 +13,14 @@ export interface TaskRepositoryInterface {
    * @param data The task data to be stored.
    * @returns A Promise that resolves to the created TaskModel.
    */
-  create: (data: CreateRequestTaskDto) => Promise<TaskModel>;
+  create: (data: Task) => Promise<TaskModel>;
 
   /**
    * Updates a new task in the data storage.
    * @param data The task data to be updated.
    * @returns A Promise that resolves to the created TaskModel.
    */
-  update: (data: UpdateRequestTaskDto) => Promise<TaskModel>;
+  update: (data: Task) => Promise<TaskModel>;
 
   /**
    * Deletes a task by its unique identifier from the data storage.

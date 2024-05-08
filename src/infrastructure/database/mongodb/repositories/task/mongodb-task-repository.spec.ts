@@ -16,27 +16,16 @@ const taskModelMock = {
   deleteOne: jest.fn(),
 } as unknown as Model<TaskModel>;
 
-const newDate = new Date();
-
 const newTask = {
   title: 'any_title',
   text: 'any_text',
   expirationDate: DateUtil.defaultFormatToISO("01/01/2100 00:00:00"),
   remindDate: DateUtil.defaultFormatToISO("01/01/2100 00:00:00"),
-  status: StatusEnum.TODO,
+  status: 'TODO',
   assignTo: 'assignTo_id',
   userId: 'user_id',
 };
 
-const newTaskRequestDto = {
-  title: 'any_title',
-  text: 'any_text',
-  expirationDate: "01/01/2100 00:00:00",
-  remindDate: "01/01/2100 00:00:00",
-  status: StatusEnum.TODO,
-  assignTo: 'assignTo_id',
-  userId: 'user_id',
-};
 
 describe('MongodbTaskRepository Unit Test', () => {
   let mongodbTaskRepository: MongodbTaskRepository;
@@ -55,26 +44,24 @@ describe('MongodbTaskRepository Unit Test', () => {
   it('should create new task', async () => {
     const taskProps: TaskProps = newTask;
     const task = Task.create(taskProps);
-
-    await mongodbTaskRepository.create(newTaskRequestDto); 
-    expect(taskModelMock.create).toHaveBeenCalledWith(newTaskRequestDto);
+    await mongodbTaskRepository.create(task); 
     expect(taskModelMock.create).toHaveBeenCalledTimes(1);
   });
 
   it('should find an array of tasks', async () => {
     const taskProps: TaskProps = newTask;
     const task = Task.create(taskProps);
-    await mongodbTaskRepository.create(newTaskRequestDto);
-    await mongodbTaskRepository.create(newTaskRequestDto);
+    await mongodbTaskRepository.create(task);
+    await mongodbTaskRepository.create(task);
     await mongodbTaskRepository.find();
-    expect(taskModelMock.create).toHaveBeenCalledWith(newTaskRequestDto);
+    expect(taskModelMock.create).toHaveBeenCalledTimes(2);
     expect(taskModelMock.find).toHaveBeenCalledTimes(1);
   });
 
   it('should find a task by id', async () => {
     const taskProps: TaskProps = newTask;
     const task = Task.create(taskProps);
-    await mongodbTaskRepository.create(newTaskRequestDto);
+    await mongodbTaskRepository.create(task);
 
     await mongodbTaskRepository.findById(task.id);
 
@@ -84,13 +71,13 @@ describe('MongodbTaskRepository Unit Test', () => {
   it('should update a task by id', async () => {
     const taskProps: TaskProps = newTask;
     const task = Task.create(taskProps);
-    await mongodbTaskRepository.create(newTaskRequestDto);
+    await mongodbTaskRepository.create(task);
+    
+    task.text = 'new text';
+    task.status = 'IN_PROGRESS';
 
-    const updateDto: UpdateRequestUserDto = {
-      id: task.id,
-      // Include properties you want to update
-    };
-    await mongodbTaskRepository.update(updateDto);
+   
+    await mongodbTaskRepository.update(task);
 
     expect(taskModelMock.findOneAndUpdate).toHaveBeenCalledTimes(1);
   });
@@ -98,7 +85,7 @@ describe('MongodbTaskRepository Unit Test', () => {
   it('should remove a task by id', async () => {
     const taskProps: TaskProps = newTask;
     const task = Task.create(taskProps);
-    await mongodbTaskRepository.create(newTaskRequestDto);
+    await mongodbTaskRepository.create(task);
 
     await mongodbTaskRepository.delete(task.id);
     expect(taskModelMock.deleteOne).toHaveBeenCalledTimes(1);

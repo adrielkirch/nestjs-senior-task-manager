@@ -2,18 +2,18 @@ import { randomUUID } from 'crypto';
 import { StatusEnum } from "./types";
 
 export interface TaskProps {
-  title: string;
-  text: string;
-  expirationDate: Date;
-  remindDate: Date;
-  status: StatusEnum;
-  assignTo: string;
-  userId: string;
+  title?: string;
+  text?: string;
+  expirationDate?: Date | string;
+  remindDate?: Date | string;
+  status?: string;
+  assignTo?: string;
+  userId?: string;
 }
 
 export class Task {
   public readonly id: string;
-  public props: Required<TaskProps>;
+  public props: TaskProps;
 
   constructor(props: TaskProps, id: string = randomUUID()) {
     this.id = id;
@@ -54,10 +54,6 @@ export class Task {
     this.props.expirationDate = expirationDate;
   }
 
-  get expirationDate() {
-    return this.props.expirationDate;
-  }
-
   set expirationDate(value: Date) {
     this.props.expirationDate = value;
   }
@@ -66,15 +62,11 @@ export class Task {
     this.props.remindDate = remindDate;
   }
 
-  get remindDate() {
-    return this.props.remindDate;
-  }
-
   set remindDate(value: Date) {
     this.props.remindDate = value;
   }
 
-  updateStatus(status: StatusEnum) {
+  updateStatus(status: string) {
     this.props.status = status;
   }
 
@@ -82,7 +74,7 @@ export class Task {
     return this.props.status;
   }
 
-  set status(value: StatusEnum) {
+  set status(value: string) {
     this.props.status = value;
   }
 

@@ -1,17 +1,17 @@
-import { ApiProperty } from '@nestjs/swagger';
+
 import { randomUUID } from 'crypto';
 
 export type UserProps = {
-  name: string;
-  surname: string;
-  email: string;
-  password: string;
-  role: string; 
+  name?: string;
+  surname?: string;
+  email?: string;
+  password?: string;
+  role?: string; 
 };
 
 export class User {
   public readonly id: string;
-  public props: Required<UserProps>;
+  public props: UserProps;
   private constructor(props: UserProps, id?: string) {
     this.id = id || randomUUID();
     this.props = {

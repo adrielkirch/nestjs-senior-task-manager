@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, Matches } from 'class-validator';
+import { IsString, IsOptional, Matches, IsIn } from 'class-validator';
+
 import DateUtil from 'src/utils/util.date';
 
 export class CreateRequestTaskDto {
@@ -32,7 +33,7 @@ export class CreateRequestTaskDto {
     @IsOptional()
     @IsString()
     @Matches(DateUtil.getFefaultFormatRegex(), { message: "Invalid date format. Please use YYYY-MM-DD HH:MM:SS" })
-    expirationDate: string;
+    expirationDate: string | Date;
 
     @ApiProperty({
         description: "The date and time for reminding about the task in the format YYYY-MM-DD HH:MM:SS (optional)",
@@ -41,15 +42,9 @@ export class CreateRequestTaskDto {
     @IsOptional()
     @IsString()
     @Matches(DateUtil.getFefaultFormatRegex(), { message: "Invalid date format. Please use YYYY-MM-DD HH:MM:SS" })
-    remindDate: string;
+    remindDate: string | Date;
 
-    @ApiProperty({
-        description: "The status of the task (optional)",
-        example: "TODO"
-    })
-    @IsOptional()
-    @IsString()
-    status?: string = "TODO";
+ 
 
     @ApiProperty({
         description: "The ID of the user to whom the task is assigned (optional)",
@@ -116,11 +111,12 @@ export class UpdateRequestTaskDto {
 
     @ApiProperty({
         description: "The status of the task (optional)",
-        example: "TODO"
-    })
-    @IsOptional()
-    @IsString()
-    status?: string;
+        example: 'TODO',
+        enum: ['TODO', 'IN_PROGRESS', 'DONE'], 
+      })
+      @IsOptional()
+      @IsIn(['TODO', 'IN_PROGRESS', 'DONE'])
+      status?: string;
 }
 
 

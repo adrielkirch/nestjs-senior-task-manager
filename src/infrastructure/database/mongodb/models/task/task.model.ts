@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { randomUUID } from 'crypto';
-import { StatusEnum } from "../../../../../domain/task/types";
+
 
 @Schema({
   collection: 'tasks',
@@ -31,10 +31,9 @@ export class TaskModel extends Document {
 
   @Prop({
     type: String, 
-    enum: ["DONE", "IN-PROGRESS", "TODO", "ARCHIVED"],
-    default: "TODO",
+    default: 'TODO',
   })
-  status: StatusEnum;
+  status: string;
 
   @Prop()
   assignTo: string;

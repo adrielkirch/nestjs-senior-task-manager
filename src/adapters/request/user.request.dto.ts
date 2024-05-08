@@ -45,6 +45,14 @@ export class CreateRequestUserDto {
     })
     @IsString()
     password: string;
+
+    @ApiProperty({
+        description: "The user's updated role",
+        example: "admin"
+    })
+    @IsOptional()
+    @IsString()
+    role: string = 'guest';
 }
 
 export class UpdateRequestUserDto {

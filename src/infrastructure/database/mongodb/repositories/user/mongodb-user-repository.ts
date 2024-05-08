@@ -20,13 +20,13 @@ export class MongodbUserRepository implements UserRepositoryInterface {
 
   /**
    * Authenticates a user based on the provided login credentials.
-   * @param loginRequestDto The login request data containing email and password.
+   * @param user The User data containing email and password.
    * @returns A Promise that resolves to the authenticated user document, or null if authentication fails.
    */
-  async login(loginRequestDto: LoginRequestDto): Promise<UserModel | null> {
+  async login(user: User): Promise<UserModel | null> {
     return await this.userCollection.findOne({
-      email: loginRequestDto.email,
-      password: loginRequestDto.password,
+      email: user.email,
+      password: user.password,
     });
   }
 
@@ -36,7 +36,7 @@ export class MongodbUserRepository implements UserRepositoryInterface {
    * @returns A Promise that resolves to the created user document.
    */
   async create(data: User): Promise<UserModel> {
-    const result = await this.userCollection.create(data);
+    const result = await this.userCollection.create(data.toJSON());
     return result;
   }
 

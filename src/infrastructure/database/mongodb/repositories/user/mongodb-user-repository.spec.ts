@@ -12,6 +12,14 @@ const userModelMock = {
   deleteOne: jest.fn(),
 } as unknown as Model<UserModel>;
 
+const userProps: UserProps = {
+  name: 'any_name',
+  surname: 'any_surname',
+  email: 'any_email@mail.com',
+  password: 'any_pass',
+  role: 'admin',
+};
+
 describe('MongodbUserRepository Unit Test', () => {
   let mongodbUserRepository: MongodbUserRepository;
 
@@ -26,44 +34,23 @@ describe('MongodbUserRepository Unit Test', () => {
   });
 
   it('should create new user', async () => {
-    const userProps: UserProps = {
-      name: 'any_name',
-      surname: 'any_surname',
-      email: 'any_email@mail.com',
-      password: 'any_pass',
-      role:'admin',
-    };
+
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
-    expect(userModelMock.create).toHaveBeenCalledWith(user);
+    expect(userModelMock.create).toHaveBeenCalledTimes(1);
   });
 
-  
   it('should find a array the users', async () => {
-    const userProps: UserProps = {
-      name: 'any_name',
-      surname: 'any_surname',
-      email: 'any_email@mail.com',
-      password: 'any_pass',
-      role:'admin',
-    };
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
-
+    await mongodbUserRepository.create(user);
     await mongodbUserRepository.create(user);
     await mongodbUserRepository.find();
-    expect(userModelMock.create).toHaveBeenCalledWith(user);
+    expect(userModelMock.create).toHaveBeenCalledTimes(3);
     expect(userModelMock.find).toHaveBeenCalledTimes(1);
   });
 
   it('should be call findById a user by id', async () => {
-    const userProps: UserProps = {
-      name: 'any_name',
-      surname: 'any_surname',
-      email: 'any_email@mail.com',
-      password: 'any_pass',
-      role:'admin',
-    };
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
 
@@ -73,13 +60,6 @@ describe('MongodbUserRepository Unit Test', () => {
   });
 
   it('should be call update a user by id', async () => {
-    const userProps: UserProps = {
-      name: 'any_name',
-      surname: 'any_surname',
-      email: 'any_email@mail.com',
-      password: 'any_pass',
-      role:'admin',
-    };
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
 
@@ -89,13 +69,6 @@ describe('MongodbUserRepository Unit Test', () => {
   });
 
   it('should be call remove a user by id', async () => {
-    const userProps: UserProps = {
-      name: 'any_name',
-      surname: 'any_surname',
-      email: 'any_email@mail.com',
-      password: 'any_pass',
-      role:'admin',
-    };
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
 

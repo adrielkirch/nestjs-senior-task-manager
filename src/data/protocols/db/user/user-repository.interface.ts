@@ -12,21 +12,21 @@ export interface UserRepositoryInterface {
    * @param data The user data to be stored.
    * @returns A Promise that resolves to the created UserModel.
    */
-  create: (data: CreateRequestUserDto) => Promise<UserModel>;
+  create: (data: User) => Promise<UserModel>;
 
   /**
    * Updates a new user in the data storage.
    * @param data The user data to be updated.
    * @returns A Promise that resolves to the created UserModel.
    */
-  update: (data: UpdateRequestUserDto) => Promise<UserModel>;
+  update: (data: User) => Promise<UserModel>;
 
   /**
    * Login an user
    * @param data The login Request to be loggin.
    * @returns A Promise that resolves to the created UserModel.
    */
-  login: (data: LoginRequestDto) => Promise<UserModel>;
+  login: (data: User) => Promise<UserModel>;
 
   /**
    * Retrieves all users from the data storage.

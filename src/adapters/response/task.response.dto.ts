@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+
 export class TaskResponseDto {
     @ApiProperty({
         description: "The task's ID",
@@ -45,7 +46,7 @@ export class TaskResponseDto {
 
     @ApiProperty({
         description: "The task's status",
-        example: "Pending"
+        example: "TODO"
     })
     status: string;
 

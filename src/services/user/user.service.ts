@@ -9,6 +9,7 @@ import { SecurityUtil } from '../../utils/util.security';
 import { FindPaginatedUsersUseCase } from '../../usecases/user/find-paginated-users-usecase';
 import { UpdateUserUseCase } from '../../usecases/user/update-user-usecase';
 import { LoginResponseDto, UserResponseDto } from 'src/adapters/response/user.response.dto';
+import { User } from 'src/domain/user/user';
 
 @Injectable()
 export class UserService {
@@ -31,8 +32,9 @@ export class UserService {
 
         const hashPassword = SecurityUtil.generateHashWithSalt(data.password);
         data.password = hashPassword;
-
-        return await this.addUserUseCase.create(data);
+        data.role = "guest";
+        const user = User.create(data)
+        return await this.addUserUseCase.create(user);
     }
 
     async update(data: UpdateRequestUserDto): Promise<UserResponseDto> {
@@ -54,20 +56,21 @@ export class UserService {
             const hashPassword = SecurityUtil.generateHashWithSalt(data.password);
             data.password = hashPassword;
         }
-
-        return await this.updateUserUseCase.update(data);
+        const user = User.create(data,existingUser.id)
+        return await this.updateUserUseCase.update(user);
     }
 
     async login(data: LoginRequestDto): Promise<LoginResponseDto> {
         const hashPassword = SecurityUtil.generateHashWithSalt(data.password);
         data.password = hashPassword;
-        const user = await this.loginUserUseCase.login(data);
+        const user = User.create(data)
+        const userLogin = await this.loginUserUseCase.login(user);
 
-        if (!user) {
+        if (!userLogin) {
             throw new NotFoundException('E-mail or password incorrect(s)');
         }
-        const id = user.id;
-        const token = SecurityUtil.generateJsonwebtoken(user.id, user.role);
+        const id = userLogin.id;
+        const token = SecurityUtil.generateJsonwebtoken(userLogin.id, userLogin.role);
 
         return {
             token,
