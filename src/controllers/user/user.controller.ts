@@ -1,38 +1,77 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
-import { AddUserUseCase } from '../../usecases/user/add-user/add-user-usecase';
-import { LoadAllUsersUseCase } from 'src/usecases/user/load-all-users/load-all-users-usecase';
+import { Body, Controller, Get, Post, Put, Query, Req, SetMetadata, UseGuards } from '@nestjs/common';
+import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
+import { UserService } from 'src/services/user/user.service';
+import { DefaultMiddleware } from 'src/middlewares/default.middleware';
+import { Request } from 'express';
+import { PermissionGuard } from 'src/middlewares/permissions.guard';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { UserResponseDto } from 'src/adapters/response/user.response.dto';
 
-/**
- * Controller responsible for handling user-related HTTP requests.
- */
+@ApiTags('User')
 @Controller('users')
 export class UserController {
-  /**
-   * Creates an instance of UserController.
-   * @param addUserUseCase Instance of the AddUserUseCase for adding users.
-   * @param loadAllUsersUseCase Instance of the LoadAllUsersUseCase for loading all users.
-   */
-  constructor(
-    private readonly addUserUseCase: AddUserUseCase,
-    private readonly loadAllUsersUseCase: LoadAllUsersUseCase,
-  ) {}
+  constructor(private readonly userService: UserService) { }
 
-  /**
-   * Handles HTTP POST request to create a new user.
-   * @param dto The request body containing user data.
-   * @returns A Promise that resolves to the result of the create operation.
-   */
-  @Post()
-  async create(@Body() dto: any) {
-    return await this.addUserUseCase.create(dto);
+  @Post('signup')
+  @ApiCreatedResponse({
+    description: "It should correctly return User",
+    type: UserResponseDto
+  })
+  async create(@Body() dto: CreateRequestUserDto) {
+    return await this.userService.create(dto);
   }
 
-  /**
-   * Handles HTTP GET request to load all users.
-   * @returns A Promise that resolves to the result of loading all users.
-   */
-  @Get()
-  async load() {
-    return await this.loadAllUsersUseCase.load();
+  @Put('')
+  @ApiCreatedResponse({
+    description: "It should correctly return User",
+    type: UserResponseDto
+  })
+  async update(@Body() dto: UpdateRequestUserDto, @Req() request: Request) {
+    dto.id = request.user;
+    return await this.userService.update(dto);
+  }
+
+  @Post('login')
+  @ApiOkResponse({
+    description: "It should correctly return LoginResponseDto",
+    type: LoginRequestDto
+  })
+  async login(@Body() dto: LoginRequestDto) {
+    return await this.userService.login(dto);
+  }
+
+  @UseGuards(DefaultMiddleware, PermissionGuard)
+  @SetMetadata('permissions', ['read:users'])
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: "It should correctly return Users[]",
+    type: [UserResponseDto]
+  })
+  @Get('paginated')
+  async findPaginated(@Query('page') page: number, @Query('limit') limit: number) {
+    return await this.userService.findPaginated(page, limit);
+  }
+
+  @UseGuards(DefaultMiddleware, PermissionGuard)
+  @SetMetadata('permissions', ['read:users'])
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: "It should correctly return User",
+    type: UserResponseDto
+  })
+  @Get('find-by-id')
+  async findUserById(@Query('id') id: string,) {
+    return await this.userService.findById(id);
+  }
+
+  @UseGuards(DefaultMiddleware)
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: "It should correctly return User",
+    type: UserResponseDto
+  })
+  @Get('me')
+  async findCurrentUser(@Req() request: Request) {
+    return await this.userService.findById(request.user);
   }
 }

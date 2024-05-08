@@ -1,0 +1,74 @@
+🏛️ Pillars of high quality coding 🏛️
+
+    Absolute Path Usage:
+        Utilize absolute paths instead of relative paths for importing modules and files.
+        Configure your build tools or TypeScript compiler to support absolute paths by setting up path aliases in your tsconfig.json or build configuration.
+        Use a consistent naming convention for path aliases to ensure readability and maintainability across the codebase.
+        Regularly review and update path aliases as the project structure evolves to prevent broken imports.
+
+    ESLint:
+        Establish a comprehensive ESLint configuration tailored to your project's requirements and coding standards.
+        Enable rules that enforce consistent code formatting, best practices, and potential code quality issues detection.
+        Customize ESLint rules to align with your team's preferences and project-specific needs, considering factors such as code readability, maintainability, and performance.
+        Integrate ESLint into your development workflow to automatically catch and fix code issues during development, ensuring adherence to coding standards and minimizing technical debt.
+        Regularly review and update ESLint configuration to incorporate new rules, address emerging code quality issues, and adapt to evolving best practices in the JavaScript ecosystem.
+
+    Domain-Driven Design (DDD):
+        Clear domain model representing the problem space.
+        Bounded contexts defining clear boundaries within the system.
+        Ubiquitous language used throughout the project for consistent communication.
+        Entities, Value Objects, Aggregates, and Domain Events to model the domain.
+        Domain Services encapsulating domain logic that doesn't naturally fit into entities or value objects.
+
+    Error Handling:
+        Implement robust error handling mechanisms to gracefully manage failures and exceptions in your application.
+        Use try-catch blocks or error middleware to catch and handle errors at appropriate levels of your application stack.
+        Log errors with contextual information such as error messages, stack traces, and relevant metadata to facilitate troubleshooting and debugging.
+        Provide informative error messages and HTTP status codes to communicate errors effectively to clients and API consumers.
+
+    Test-Driven Development (TDD):
+        Writing tests before writing production code.
+        Unit tests covering individual components, integration tests covering interactions between components, and end-to-end tests covering entire user flows.
+        Continuous integration and automated testing pipelines to ensure code quality and reliability.
+
+    Swagger for Documentation:
+        OpenAPI (formerly Swagger) specifications for documenting APIs.
+        Automatically generated API documentation from code annotations.
+        Detailed descriptions of endpoints, request parameters, response payloads, and error codes.
+
+    Dependency Injection (DI):
+        Inversion of Control (IoC) container managing dependencies and their lifecycles.
+        Constructor injection, property injection, or method injection for providing dependencies to classes.
+        Decoupling of components, allowing for easier testing, maintenance, and scalability.
+
+    Use Cases:
+        Application services implementing high-level use cases or business operations.
+        Use case classes encapsulating business logic and coordinating interactions between domain entities and infrastructure services.
+        Single Responsibility Principle (SRP) adhered to, with each use case responsible for a specific task or operation.
+
+    Interface Repository for DI in the Database:
+        Repository interfaces defining contracts for interacting with the database.
+        Multiple implementations of repository interfaces for different database technologies (e.g., SQL, NoSQL) or for different environments (e.g., production, testing).
+        Dependency injection of repository implementations into application services or domain services.
+
+    Cybersecurity with Multiple Roles:
+        Role-based access contro defining permissions and access levels for different roles within the system.
+        Authentication mechanisms such as JSON Web Tokens (JWT) for verifying the identity of users.
+        Authorization middleware or filters enforcing access control policies based on the roles and permissions of authenticated users.
+        Security best practices followed throughout the development process, including input validation, encryption, and protection against common security vulnerabilities.
+        Limiter for security in HTTP requests to avoid brute force attacks.
+    
+    Docker Integration:
+        Dockerize your application to create lightweight, portable, and self-contained containers.
+        Define Dockerfiles to specify steps for building images, including installing dependencies and configuring environment variables.
+        Use multi-stage builds to optimize images, separating build dependencies from runtime dependencies.
+        Leverage Docker Compose for managing multi-container applications, facilitating local development, testing, and deployment.
+
+    Observability:
+        Logging: Implement logging mechanisms throughout the application to capture important events, errors, and information about the system's behavior. Use structured logging for easier analysis and correlation of log data.
+        etrics: Define and collect metrics that provide insights into the performance and behavior of the system. Measure key indicators such as request latency, throughput, error rates, and resource utilization.
+        racing: Integrate distributed tracing to track requests as they propagate through different components of the system. Trace spans provide visibility into the flow of requests and help identify performance bottlenecks and dependencies.
+        onitoring: Set up monitoring tools and dashboards to visualize metrics and monitor the health of the system in real-time. Configure alerts to notify stakeholders of abnormal behavior or performance degradation.
+        rror Handling: Implement robust error handling mechanisms to gracefully handle failures and exceptions. Log errors with contextual information to facilitate troubleshooting and debugging.
+        Instrumentation: Instrument code with observability libraries and frameworks to collect telemetry data. Use standard protocols such as OpenTelemetry or OpenTracing for compatibility with various observability tools and platforms.
+    

@@ -1,15 +1,17 @@
+
 import { randomUUID } from 'crypto';
 
 export type UserProps = {
-  name: string;
-  surname: string;
-  email: string;
-  password: string;
+  name?: string;
+  surname?: string;
+  email?: string;
+  password?: string;
+  role?: string; 
 };
 
 export class User {
   public readonly id: string;
-  public props: Required<UserProps>;
+  public props: UserProps;
   private constructor(props: UserProps, id?: string) {
     this.id = id || randomUUID();
     this.props = {
@@ -29,7 +31,7 @@ export class User {
     return this.props.name;
   }
 
-  private set name(value: string) {
+  set name(value: string) {
     this.props.name = value;
   }
 
@@ -41,7 +43,7 @@ export class User {
     return this.props.surname;
   }
 
-  private set surname(value: string) {
+  set surname(value: string) {
     this.props.surname = value;
   }
 
@@ -53,7 +55,7 @@ export class User {
     return this.props.email;
   }
 
-  private set email(value: string) {
+  set email(value: string) {
     this.props.email = value;
   }
 
@@ -65,8 +67,16 @@ export class User {
     return this.props.password;
   }
 
-  private set password(value: string) {
+  set password(value: string) {
     this.props.password = value;
+  }
+
+  get role() {
+    return this.props.role; // Define getter for role
+  }
+
+  set role(value: string) {
+    this.props.role = value; // Define setter for role
   }
 
   toJSON() {

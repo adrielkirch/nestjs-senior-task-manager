@@ -37,6 +37,12 @@ export class UserModel {
   password: string;
 
   @Prop({
+    type: String,
+    required: true,
+  })
+  role: string;
+
+  @Prop({
     type: Date,
   })
   createdAt: Date;

@@ -1,23 +1,36 @@
-// Import the Module decorator from the '@nestjs/common' package
-import { Module } from '@nestjs/common';
-
-// Import modules from their respective directories
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { ConfigureModule } from './infrastructure/configure/configure.module';
 import { DatabaseModule } from './infrastructure/database/database.module';
 import { UserModule } from './infrastructure/ioc/user/user.module';
-
-// Import the DefaultController
 import { DefaultController } from './controllers/default/default.controller';
+import { DefaultMiddleware } from './middlewares/default.middleware';
+import { APP_INTERCEPTOR } from '@nestjs/core';
+import { TaskModule } from './infrastructure/ioc/task/task.module';
 
-// Decorate the AppModule class with the @Module decorator
+
 @Module({
-  // Specify the modules to be imported by the AppModule
-  imports: [ConfigureModule, DatabaseModule, UserModule],
-  
-  // Specify the controllers to be included in the AppModule
+  imports: [ConfigureModule, DatabaseModule, UserModule, TaskModule],
   controllers: [DefaultController],
-  
-  // Specify the providers (services) to be included in the AppModule
-  providers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: DefaultMiddleware,
+    },
+
+
+  ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(DefaultMiddleware)
+      .exclude(
+        { path: '/users/login', method: RequestMethod.POST },
+        { path: '/users/signup', method: RequestMethod.POST },
+      )
+      .forRoutes(
+        '/users/*',
+        '/tasks/*',
+      );
+  }
+}

@@ -1,4 +1,5 @@
-import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
+import { UserResponseDto } from 'src/adapters/response/user.response.dto';
+import { UserModel } from '../../../infrastructure/database/mongodb/models/user/user.model';
 
 /**
  * Utility class for transforming MongoDB user models to a simpler format.
@@ -10,16 +11,16 @@ export class UserTransformer {
    * @param user The UserModel object to be transformed.
    * @returns An object containing only essential user properties.
    */
-  static toUser(user: UserModel) {
+  static toUser(user: UserModel): UserResponseDto {
     return {
-      id: user.id,                // The unique identifier of the user.
-      name: user.name,            // The user's first name.
-      surname: user.surname,      // The user's last name.
-      email: user.email,          // The user's email address.
-      password: user.password,    // The user's password (hashed or encrypted).
-      createdAt: user.createdAt,  // The timestamp when the user was created.
-      updatedAt: user.updatedAt   // The timestamp when the user was last updated.
-    };
+      id: user.id,                
+      name: user.name,            
+      surname: user.surname,      
+      email: user.email,            
+      createdAt: user.createdAt,  
+      updatedAt: user.updatedAt ,
+      role: user.role  
+    } as UserResponseDto;
   }
 
   /**

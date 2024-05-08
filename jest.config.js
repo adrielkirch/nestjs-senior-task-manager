@@ -1,7 +1,6 @@
 module.exports = {
   roots: ['<rootDir>/src'],
   collectCoverageFrom: [
-    
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/main.ts',
     '!<rootDir>/src/app.module.ts',
@@ -24,4 +23,5 @@ module.exports = {
       statements: 80,
     },
   },
+  modulePaths: ['<rootDir>/src'],
 };

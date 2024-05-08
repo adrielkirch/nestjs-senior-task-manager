@@ -5,7 +5,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ConfigService } from '@nestjs/config';
 import { swaggerConfig } from './main/config/docs/swagger-config';
 
-
 /**
  * Bootstrap the Nest.js application.
  * This function initializes the application, sets up global middleware,

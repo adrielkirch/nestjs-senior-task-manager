@@ -1,6 +1,7 @@
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
+import { UserTransformer } from '../../main/transformers/user/user.transformer';
+import { UserResponseDto } from 'src/adapters/response/user.response.dto';
 import { User } from 'src/domain/user/user';
-import { UserTransformer } from '../../../main/transformers/user/user.transformer';
 
 /**
  * Use case class responsible for adding a new user to the system.
@@ -19,10 +20,8 @@ export class AddUserUseCase {
    * @param user The user object containing the details of the user to be created.
    * @returns A Promise that resolves to the simplified representation of the created user.
    */
-  async create(user: User) {
-    // Call the create method of the UserRepositoryInterface to persist the user data.
+  async create(user: User): Promise<UserResponseDto> {
     const userDb = await this.userRepo.create(user);
-    // Transform the database model to a simplified user representation using the UserTransformer.
     return UserTransformer.toUser(userDb);
   }
 }
