@@ -6,6 +6,7 @@ import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request
 import { Request } from 'express';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { TaskResponseDto } from 'src/adapters/response/task.response.dto';
+import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
 
 @ApiTags('Task')
 @Controller('tasks')
@@ -71,4 +72,22 @@ export class TaskController {
   async delete(@Query('id') id: string) {
     return await this.taskService.delete(id);
   }
+
+  @Post('test')
+  async test(@Body() data: any, @Req() request: Request) {
+    console.log(`Requested at: ${Date.now()}`);
+    const segs = data.seconds
+    const scheduler = SchedulerService.getInstance();
+    const id = Date.now().toLocaleString();
+    scheduler.onAdd(id, async () => {
+      console.log(`\nEvent triggered at: ${Date.now()}\n`);
+      scheduler.onDelete(id, async () => {
+        console.log(`Event ${id} removed successfully`);
+      }, segs * 1000)
+      scheduler.emitRemoveEvent(id);
+    }, segs * 1000);
+    scheduler.emitAddEvent(id)
+    return data;
+  }
+
 }

@@ -49,7 +49,7 @@ export class TaskService {
 
         const ms = DateUtil.timeDifferenceInMs(remindDateISO, now);
 
-        this.scheduler.add(taskId, async () => {
+        this.scheduler.onAdd(taskId, async () => {
             const taskFuture = await this.findById(taskId);
             if (!taskFuture) {
                 return;
@@ -64,8 +64,13 @@ export class TaskService {
             Status: ${taskFuture.status}\n
             `);
 
-            this.scheduler.remove(taskId);
+            this.scheduler.onDelete(taskId, async () => {
+                console.log(`Event ${taskId} removed successfully`);
+            }, 1000)
+            this.scheduler.emitRemoveEvent(taskId);
         }, ms);
+
+        this.scheduler.emitAddEvent(taskId)
 
         return newTask;
 
@@ -90,7 +95,10 @@ export class TaskService {
         const status = data.hasOwnProperty('status') ? data.status : existingTask.status;
 
         if (status === "DONE") {
-            this.scheduler.remove(taskId);
+            this.scheduler.onDelete(taskId, async () => {
+                console.log(`Event ${taskId} removed successfully`);
+            }, 1)
+            this.scheduler.emitRemoveEvent(taskId);
             return await this.updateTaskUseCase.update(task);
         } else if (!data.hasOwnProperty('remindDate')) {
             return await this.updateTaskUseCase.update(task);
@@ -107,8 +115,15 @@ export class TaskService {
         }
         const now = new Date();
         const ms = DateUtil.timeDifferenceInMs(data.remindDate, now);
-        this.scheduler.remove(taskId);
-        this.scheduler.add(taskId, async () => {
+
+
+        this.scheduler.onDelete(taskId, async () => {
+            console.log(`Event ${taskId} removed successfully`);
+        }, 1)
+        this.scheduler.emitRemoveEvent(taskId);
+
+
+        this.scheduler.onAdd(taskId, async () => {
             const taskFuture = await this.findById(taskId);
             if (!taskFuture) {
                 return;
@@ -123,8 +138,13 @@ export class TaskService {
             Status: ${taskFuture.status}\n
             `);
 
-            this.scheduler.remove(taskId);
+            this.scheduler.onDelete(taskId, async () => {
+                console.log(`Event ${taskId} removed successfully`);
+            }, 1000)
+            this.scheduler.emitRemoveEvent(taskId);
         }, ms);
+
+        this.scheduler.emitAddEvent(taskId)
 
 
         return await this.updateTaskUseCase.update(task);
@@ -136,7 +156,10 @@ export class TaskService {
             throw new NotFoundException('Task not found');
         }
         await this.deleteTaskByIdUseCase.deleteById(id);
-        this.scheduler.remove(id);
+        this.scheduler.onDelete(id, async () => {
+            console.log(`Event ${id} removed successfully`);
+        }, 1000)
+        this.scheduler.emitRemoveEvent(id);
     }
 
 
