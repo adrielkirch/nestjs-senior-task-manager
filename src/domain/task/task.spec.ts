@@ -1,5 +1,5 @@
-import DateUtil from '../../utils/util.date';
-import { Task, TaskProps } from './task';
+import DateUtil from 'src/utils/util.date';
+import { Task, TaskProps } from 'src/domain/task/task';
 
 
 describe('Task Unit Tests', () => {

@@ -1,11 +1,11 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
-import { ConfigureModule } from './infrastructure/configure/configure.module';
-import { DatabaseModule } from './infrastructure/database/database.module';
-import { UserModule } from './infrastructure/ioc/user/user.module';
-import { DefaultController } from './controllers/default/default.controller';
-import { DefaultMiddleware } from './middlewares/default.middleware';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { TaskModule } from './infrastructure/ioc/task/task.module';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { ConfigureModule } from 'src/infrastructure/configure/configure.module';
+import { DatabaseModule } from 'src/infrastructure/database/database.module';
+import { UserModule } from 'src/infrastructure/ioc/user/user.module';
+import { DefaultController } from 'src/controllers/default/default.controller';
+import { DefaultMiddleware } from 'src/middlewares/default.middleware';
+import { TaskModule } from 'src/infrastructure/ioc/task/task.module';
 
 
 @Module({

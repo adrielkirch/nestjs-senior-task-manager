@@ -1,6 +1,6 @@
 import { UserResponseDto } from 'src/adapters/response/user.response.dto';
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
-import { UserTransformer } from '../../main/transformers/user/user.transformer';
+import { UserTransformer } from 'src/main/transformers/user/user.transformer';
 
 /**
  * Use case class responsible for loading all users from the system.

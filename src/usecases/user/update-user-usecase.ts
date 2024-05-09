@@ -1,6 +1,6 @@
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
 import { User } from 'src/domain/user/user';
-import { UserTransformer } from '../../main/transformers/user/user.transformer';
+import { UserTransformer } from 'src/main/transformers/user/user.transformer';
 import { UserResponseDto } from 'src/adapters/response/user.response.dto';
 
 /**

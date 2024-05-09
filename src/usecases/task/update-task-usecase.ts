@@ -1,5 +1,5 @@
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
-import { TaskTransformer } from '../../main/transformers/task/task.transformer';
+import { TaskTransformer } from 'src/main/transformers/task/task.transformer';
 import { TaskResponseDto } from 'src/adapters/response/task.response.dto';
 import { Task } from 'src/domain/task/task';
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { EmailServiceInterface } from '../../data/protocols/notifier/email/email.interface';
-import { SmsServiceInterface } from '../../data/protocols/notifier/sms/sms.interface';
-import { PushNotificationServiceInterface } from '../../data/protocols/notifier/push_notification/push.notification.interface';
+import { EmailServiceInterface } from 'src/data/protocols/notifier/email/email.interface';
+import { SmsServiceInterface } from 'src/data/protocols/notifier/sms/sms.interface';
+import { PushNotificationServiceInterface } from 'src/data/protocols/notifier/push_notification/push.notification.interface';
 import { NotifyRequestDto } from 'src/adapters/request/notification.request.dto';
 
 @Injectable()

@@ -2,7 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/domain/user/user';
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
-import { UserModel } from '../../models/user/user.model';
+import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
 
 
 /**

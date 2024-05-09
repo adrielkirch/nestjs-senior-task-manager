@@ -1,9 +1,13 @@
 
+🗃️ General 
+
+    ✅ Refactor every path to be absolute
+
 🧪 Test driven development
 
     Absolute paths
 
-        TODO Make Jest recognize absolute paths in .spec tests 
+        Make Jest recognize absolute paths in .spec tests ✅
 
     Create service tests
 

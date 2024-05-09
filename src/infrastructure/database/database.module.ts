@@ -4,16 +4,16 @@ import { Module } from '@nestjs/common';
 // Import the MongooseModule from the '@nestjs/mongoose' package
 import { MongooseModule } from '@nestjs/mongoose';
 
-// Import the MongodbModule from the './mongodb/mongodb.module' file
-import { MongodbModule } from './mongodb/mongodb.module';
+// Import the MongodbModule from the 'src/infrastructure/database/mongodb/mongodb.module' file
+import { MongodbModule } from 'src/infrastructure/database/mongodb/mongodb.module';
 
-// Import the UserModel and UserSchema from the './mongodb/models/user/user.model' file
-import { UserModel, UserSchema } from './mongodb/models/user/user.model';
+// Import the UserModel and UserSchema from the 'src/infrastructure/database/mongodb/models/user/user.model' file
+import { UserModel, UserSchema } from 'src/infrastructure/database/mongodb/models/user/user.model';
 
-// Import the MongodbUserRepository from the './mongodb/repositories/user/mongodb-user-repository' file
-import { MongodbUserRepository } from './mongodb/repositories/user/mongodb-user-repository';
-import { MongodbTaskRepository } from './mongodb/repositories/task/mongodb-task-repository';
-import { TaskModel, TaskSchema } from './mongodb/models/task/task.model';
+// Import the MongodbUserRepository from the 'src/infrastructure/database/mongodb/repositories/user/mongodb-user-repository' file
+import { MongodbUserRepository } from 'src/infrastructure/database/mongodb/repositories/user/mongodb-user-repository';
+import { MongodbTaskRepository } from 'src/infrastructure/database/mongodb/repositories/task/mongodb-task-repository';
+import { TaskModel, TaskSchema } from 'src/infrastructure/database/mongodb/models/task/task.model';
 
 // Decorate the DatabaseModule class with the @Module decorator
 @Module({

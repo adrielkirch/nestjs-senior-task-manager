@@ -1,9 +1,9 @@
 import { Model } from 'mongoose';
-import { MongodbTaskRepository } from './mongodb-task-repository';
-import { TaskModel } from '../../models/task/task.model';
-import { TaskProps } from '../../../../../domain/task/task';
-import { Task } from '../../../../../domain/task/task';
-import DateUtil from '../../../../../utils/util.date';
+import { MongodbTaskRepository } from 'src/infrastructure/database/mongodb/repositories/task/mongodb-task-repository';
+import { TaskModel } from 'src/infrastructure/database/mongodb/models/task/task.model';
+import { TaskProps } from 'src/domain/task/task';
+import { Task } from 'src/domain/task/task';
+import DateUtil from 'src/utils/util.date';
 
 const taskModelMock = {
   create: jest.fn(),

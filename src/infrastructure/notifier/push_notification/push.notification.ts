@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PushNotificationServiceInterface } from '../../../data/protocols/notifier/push_notification/push.notification.interface';
+import { PushNotificationServiceInterface } from 'src/data/protocols/notifier/push_notification/push.notification.interface';
 import admin from 'firebase-admin';
 import { FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY, FIREBASE_PROJECT_ID } from 'src/config';
 
