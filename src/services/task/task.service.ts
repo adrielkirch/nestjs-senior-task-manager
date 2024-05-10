@@ -26,11 +26,10 @@ export class TaskService {
 
     async create(data: CreateRequestTaskDto): Promise<TaskResponseDto> {
         const expirationDateISO = DateUtil.defaultFormatToISO(data.expirationDate.toString());
-        const remindDateISO = DateUtil.defaultFormatToISO(data.expirationDate.toString());
+        const remindDateISO = DateUtil.defaultFormatToISO(data.remindDate.toString());
         data.expirationDate = expirationDateISO;
         data.remindDate = remindDateISO;
-
-
+        
         const task = Task.create(data);
         const newTask = await this.addTaskUseCase.create(task);
         const taskId = newTask.id;
@@ -40,6 +39,7 @@ export class TaskService {
             throw new BadRequestException(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
+
         const isNowDateSameOrAfter = DateUtil.isSameOrAfter(now, remindDateISO);
         if (isNowDateSameOrAfter) {
             throw new BadRequestException(`Now date not must be same or after of remindDate`);
@@ -107,6 +107,8 @@ export class TaskService {
         data.expirationDate = data.hasOwnProperty('expirationDate') ? DateUtil.defaultFormatToISO(data.expirationDate.toString()) : existingTask.expirationDate;
         data.remindDate = data.hasOwnProperty('remindDate') ? DateUtil.defaultFormatToISO(data.remindDate.toString()) : existingTask.remindDate;
 
+        console.log('expirationDate ->', data.expirationDate)
+        console.log('remindDate ->', data.remindDate)
         const isExpirationDateSameOrAfter = DateUtil.isSameOrAfter(data.expirationDate, data.remindDate);
         if (!isExpirationDateSameOrAfter) {
             throw new Error(`expirationDate date must be same or after of remindDate`);
@@ -178,5 +180,5 @@ export class TaskService {
         return await this.findByPropertyAndValueTasksUseCase.findByPropertyAndValue(property, value);
     }
 
-  
+
 }

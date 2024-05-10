@@ -72,7 +72,7 @@ describe('MongodbUserRepository Unit Test', () => {
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
 
-    await mongodbUserRepository.remove(user.id);
+    await mongodbUserRepository.delete(user.id);
     expect(userModelMock.deleteOne).toHaveBeenCalledTimes(1);
   });
 });

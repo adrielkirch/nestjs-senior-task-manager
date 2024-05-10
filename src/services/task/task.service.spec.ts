@@ -13,74 +13,87 @@ import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
 
 const schedule = SchedulerService.getInstance();
 
-const newTaskDto = {
-    id: "123",
-    title: "Sample Task",
-    text: "This is a sample task description.",
-    expirationDate: "01/01/2100 01:01:01",
-    remindDate: "01/01/2100 00:00:00",
-    status: "TODO",
-    assignTo: "John Doe",
-    userId: "456",
-    createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
-    updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
-
+function getTaskData(taskId: string) {
+    return {
+        id: taskId,
+        title: "Sample Task",
+        text: "This is a sample task description.",
+        expirationDate: DateUtil.defaultFormatToISO("01/01/2099 00:00:00") ,
+        remindDate: DateUtil.defaultFormatToISO("01/01/2100 00:00:00"),
+        status: "TODO",
+        assignTo: "John Doe",
+        userId: "456",
+        createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+        updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+    }
 }
 
-const newTask = {
-    id: "123",
-    title: "Sample Task",
-    text: "This is a sample task description.",
-    expirationDate: DateUtil.futureDateByHours(30),
-    remindDate: DateUtil.futureDateByHours(20),
-    status: "TODO",
-    assignTo: "John Doe",
-    userId: "456",
-    createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
-    updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+function getTaskUpdateDataModel(taskId: string): TaskModel {
+    return {
+        _id: taskId,
+        id: taskId,
+        title: "Simple Task!",
+        text: "This is a Simple task description!",
+        expirationDate: DateUtil.defaultFormatToISO("01/01/2100 01:01:01"),
+        remindDate: DateUtil.defaultFormatToISO("01/01/2100 00:00:01"),
+        status: "DONE",
+        assignTo: "John Doe",
+        userId: "456",
+        createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+        updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00")
+    } as TaskModel;
+}
+
+function getTaskUpdateData(taskId: string) {
+    return {
+        id: taskId,
+        title: "Simple Task!",
+        text: "This is a Simple task description!",
+        expirationDate: DateUtil.defaultFormatToISO("01/01/2100 01:01:01"),
+        remindDate: DateUtil.defaultFormatToISO("01/01/2100 00:00:01"),
+        status: "DONE",
+        assignTo: "John Doe",
+        userId: "456",
+        createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+        updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00")
+    } 
 }
 
 
-const newTaskUpdated: TaskModel = {
-    _id: "123",
-    id: "123",
-    title: "Simple Task!",
-    text: "This is a Simple task description!",
-    expirationDate: DateUtil.futureDateByHours(30),
-    remindDate: DateUtil.futureDateByHours(20),
-    status: "DONE",
-    assignTo: "John Doe",
-    userId: "456",
-    createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
-    updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:01"),
-} as TaskModel
-
-const newTaskUpdatedDto = {
-    id: "123",
-    title: "Simple Task!",
-    text: "This is a Simple task description!",
-    status: "DONE",
-    assignTo: "John Doe",
-    userId: "456",
+function getTaskUpdateDataDto(taskId: string){
+    return {
+        id: taskId,
+        title: "Simple Task!",
+        text: "This is a Simple task description!",
+        status: "DONE",
+        assignTo: "John Doe",
+        userId: "456",
+        expirationDate: "01/01/2100 01:01:01",
+        remindDate: "01/01/2100 00:00:01",
+    }
 }
 
+function getTaskDataDto(taskId: string) {
+    return {
+        id: taskId,
+        title: "Sample Task",
+        text: "This is a sample task description.",
+        expirationDate: "01/01/2100 01:01:01",
+        remindDate: "01/01/2099 00:00:00",
+        status: "TODO",
+        assignTo: "John Doe",
+        userId: "456",
+        createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+        updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+    }
+}
 
 export class MockTaskRepository implements TaskRepositoryInterface {
-
-
-    async login(task: Task): Promise<TaskModel | null> {
-        const result: TaskModel = {
-            _id: "123",
-            ...newTask
-        } as TaskModel;
-        return result;
-    }
-
 
     async create(data: Task): Promise<TaskModel> {
         const result: TaskModel = {
             _id: "123",
-            ...newTask
+            ...getTaskData('123')
         } as TaskModel;
         return result;
     }
@@ -89,7 +102,7 @@ export class MockTaskRepository implements TaskRepositoryInterface {
     async find(): Promise<TaskModel[]> {
         const result: TaskModel = {
             _id: "123",
-            ...newTask
+            ...getTaskData('123')
         } as TaskModel;
         return [result]
     }
@@ -98,7 +111,7 @@ export class MockTaskRepository implements TaskRepositoryInterface {
     async findById(id: string): Promise<TaskModel> {
         const result: TaskModel = {
             _id: "123",
-            ...newTask
+            ...getTaskData('123')
         } as TaskModel;
         return result;
     }
@@ -109,13 +122,13 @@ export class MockTaskRepository implements TaskRepositoryInterface {
 
 
     async update(dataUpdate: Task): Promise<TaskModel> {
-        return newTaskUpdated
+        return getTaskUpdateDataModel('123')
     }
 
     async findPaginated(page: number, limit: number): Promise<TaskModel[]> {
         const result: TaskModel = {
             _id: "123",
-            ...newTask
+            ...getTaskData('123')
         } as TaskModel;
         return [result];
     }
@@ -124,7 +137,6 @@ export class MockTaskRepository implements TaskRepositoryInterface {
 
     }
 }
-
 
 describe('TaskService', () => {
     let taskService: TaskService;
@@ -141,7 +153,7 @@ describe('TaskService', () => {
         findByIdTasksUseCase = new FindByIdTasksUseCase(new MockTaskRepository());
         findPaginatedTasksUseCase = new FindPaginatedTasksUseCase(new MockTaskRepository());
         findByPropertyAndValueTasksUseCase = new FindByPropertyAndValueTasksUseCase(new MockTaskRepository())
-     
+
         taskService = new TaskService(
             addTaskUseCase,
             updateTaskUseCase,
@@ -156,74 +168,49 @@ describe('TaskService', () => {
 
     describe('create', () => {
         it('should create a new task', async () => {
-            const expected = newTask;
-            const result = await taskService.create(newTaskDto);
+            
+            const result = await taskService.create(getTaskDataDto('123'));
+            const expected = getTaskData('123');
             expect(result).toEqual(expected);
-            schedule.remove("123", () => console.log("task removed"),1)
+            schedule.remove("123", () => console.log("task removed"), 1)
         });
     });
 
 
     describe('update', () => {
         it('should update an task', async () => {
-            const data = {
-                id: "123",
-                title: "Simple Task!",
-                text: "This is a Simple task description!",
-                expirationDate: "01/01/2100 00:00:00",
-                remindDate: "01/01/2100 00:00:00",
-                status: "DONE",
-                assignTo: "John Doe",
-                userId: "456",
-            }
-            const expected = {
-                id: newTaskUpdated.id,
-                title: newTaskUpdated.title,
-                text: newTaskUpdated.text,
-                expirationDate: newTaskUpdated.expirationDate,
-                remindDate: newTaskUpdated.remindDate,
-                status: newTaskUpdated.status,
-                assignTo: newTaskUpdated.assignTo,
-                userId: newTaskUpdated.userId,
-                createdAt: newTaskUpdated.createdAt,
-                updatedAt: newTaskUpdated.updatedAt,
-            }
 
-            await taskService.create(newTaskDto);
-            const result = await taskService.update(newTaskUpdatedDto);
+            await taskService.create(getTaskDataDto('123'));
+            const result = await taskService.update(getTaskUpdateDataDto('123'));
+            const expected = getTaskUpdateData('123')
             expect(result).toEqual(expected);
-            schedule.remove("123", () => console.log("task removed"),1)
+            schedule.remove("123", () => console.log("task removed"), 1)
         });
     });
 
     describe('findById', () => {
         it('should find an task by id', async () => {
-            const expected = newTask;
-            await taskService.create(newTask);
-            const result = await taskService.findById(newTask.id);
+            await taskService.create(getTaskDataDto('123'));
+            const result = await taskService.findById('123');
+            const expected = getTaskData('123');
             expect(result).toEqual(expected);
-            schedule.remove("123", () => console.log("task removed"),1)
+            schedule.remove("123", () => console.log("task removed"), 1)
         });
     });
 
     describe('findPaginated', () => {
         it('should find paginated tasks', async () => {
-            const expected = [{
-
-            }];
             const result = await taskService.findPaginated(1, 1);
+            const expected = [getTaskData('123')];    
             expect(result).toEqual(expected);
-            schedule.remove("123", () => console.log("task removed"),1)
-
+            schedule.remove("123", () => console.log("task removed"), 1)
         });
     });
 
     describe('findByFieldAndValue', () => {
         it('should find all tasks', async () => {
-
-            const result = await taskService.findByPropertyAndValue("email", "nonExistentEmail@test.com");
+            const result = await taskService.findByPropertyAndValue("name", "nonExistentTask");
             expect(result).toBeNull()
-
         });
     });
 });
