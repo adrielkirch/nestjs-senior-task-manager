@@ -3,7 +3,6 @@ import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src
 import { AddUserUseCase } from 'src/usecases/user/add-user-usecase';
 import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
 import { FindByPropertyAndValueUsersUseCase } from 'src/usecases/user/find-by-property-and-value-user-usecase';
-import { FindAllUsersUseCase } from 'src/usecases/user/find-all-users-usecase';
 import { LoginUserUseCase } from 'src/usecases/user/login-user-usecase';
 import { SecurityUtil } from 'src/utils/util.security';
 import { FindPaginatedUsersUseCase } from 'src/usecases/user/find-paginated-users-usecase';
@@ -16,7 +15,6 @@ export class UserService {
     constructor(
         private readonly addUserUseCase: AddUserUseCase,
         private readonly updateUserUseCase: UpdateUserUseCase,
-        private readonly FindAllUsersUseCase: FindAllUsersUseCase,
         private readonly findByIdUsersUseCase: FindByIdUsersUseCase,
         private readonly findPaginatedUsersUseCase: FindPaginatedUsersUseCase,
         private readonly findByPropertyAndValueUsersUseCase: FindByPropertyAndValueUsersUseCase,
@@ -34,6 +32,7 @@ export class UserService {
         data.password = hashPassword;
         data.role = "guest";
         const user = User.create(data);
+      
         return await this.addUserUseCase.create(user);
     }
 
@@ -86,10 +85,7 @@ export class UserService {
         return user;
     }
 
-    async findAll(): Promise<UserResponseDto[]> {
-        return await this.FindAllUsersUseCase.findAll();
-    }
-
+   
     async findPaginated(page: number, limit: number): Promise<UserResponseDto[]> {
         return await this.findPaginatedUsersUseCase.findPaginated(page, limit);
     }

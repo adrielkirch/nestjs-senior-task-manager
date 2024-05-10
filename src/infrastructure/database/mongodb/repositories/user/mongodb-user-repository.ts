@@ -98,7 +98,7 @@ export class MongodbUserRepository implements UserRepositoryInterface {
    * @param id The ID of the user document to remove.
    * @returns A Promise that resolves when the user document is successfully removed.
    */
-  async remove(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.userCollection.deleteOne({ _id: { $eq: id } });
   }
 }

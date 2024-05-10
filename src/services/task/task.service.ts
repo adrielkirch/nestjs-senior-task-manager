@@ -2,7 +2,6 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { AddTaskUseCase } from 'src/usecases/task/add-task-usecase';
 import { FindByIdTasksUseCase } from 'src/usecases/task/find-by-id-task-usecase';
 import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/find-by-property-and-value-task-usecase';
-import { FindAllTasksUseCase } from 'src/usecases/task/find-all-task-usecase';
 import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-task-usecase';
 import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/task.request.dto';
 import { UpdateTaskUseCase } from 'src/usecases/task/update-task-usecase';
@@ -19,7 +18,6 @@ export class TaskService {
     constructor(
         private readonly addTaskUseCase: AddTaskUseCase,
         private readonly updateTaskUseCase: UpdateTaskUseCase,
-        private readonly FindAllTasksUseCase: FindAllTasksUseCase,
         private readonly findByIdTasksUseCase: FindByIdTasksUseCase,
         private readonly findPaginatedTasksUseCase: FindPaginatedTasksUseCase,
         private readonly findByPropertyAndValueTasksUseCase: FindByPropertyAndValueTasksUseCase,
@@ -180,7 +178,5 @@ export class TaskService {
         return await this.findByPropertyAndValueTasksUseCase.findByPropertyAndValue(property, value);
     }
 
-    async findAll(): Promise<TaskResponseDto[]> {
-        return await this.FindAllTasksUseCase.findAll();
-    }
+  
 }

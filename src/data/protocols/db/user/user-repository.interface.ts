@@ -58,9 +58,9 @@ export interface UserRepositoryInterface {
   findById: (id: string) => Promise<UserModel>;
 
   /**
-   * Removes a user from the data storage by its unique identifier.
-   * @param id The unique identifier of the user to remove.
-   * @returns A Promise that resolves when the user is successfully removed.
+   * Delete a user from the data storage by its unique identifier.
+   * @param id The unique identifier of the user to deletes.
+   * @returns A Promise that resolves when the user is successfully delete.
    */
-  remove: (id: string) => Promise<void>;
+  delete: (id: string) => Promise<void>;
 }
