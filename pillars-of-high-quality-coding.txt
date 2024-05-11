@@ -59,7 +59,7 @@
         Multiple implementations of repository interfaces for different database technologies (e.g., SQL, NoSQL) or for different environments (e.g., production, testing).
         Dependency injection of repository implementations into application services or domain services.
 
-    Cybersecurity with Multiple Roles:
+    Cybersecurity:
         Role-based access contro defining permissions and access levels for different roles within the system.
         Authentication mechanisms such as JSON Web Tokens (JWT) for verifying the identity of users.
         Authorization middleware or filters enforcing access control policies based on the roles and permissions of authenticated users.
