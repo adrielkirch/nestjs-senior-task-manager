@@ -3,27 +3,17 @@ import * as crypto from "crypto";
 import { Request } from "express";
 import { JWT_SECRET_KEY, SALT } from "src/config";
 
-interface JwtPayload {
-  user: string;
-  role: string;
-}
-
 export class SecurityUtil {
-  static generateJsonwebtoken(userId: string, role: string): string {
-    const payload: JwtPayload = {
-      user: userId,
-      role: role
-    } as JwtPayload;
-    return jwt.sign(payload, JWT_SECRET_KEY);
+  static generateJsonwebtoken<T extends object>(data: T): string {
+    return jwt.sign(data, JWT_SECRET_KEY);
   }
 
-  static decodedJsonwebtoken(token: string): JwtPayload {
-    const decoded = jwt.verify(token, JWT_SECRET_KEY) as JwtPayload;
+  static decodedJsonwebtoken<T extends object>(token: string): T {
+    const decoded = jwt.verify(token, JWT_SECRET_KEY) as T;
     return decoded;
   }
 
   static generateHashWithSalt(data: string): string {
-
     return crypto
       .createHash("sha512")
       .update(data + SALT)
@@ -49,11 +39,20 @@ export class SecurityUtil {
 
   static isValidAuthorization(req: Request): boolean {
     const authorizationHeader = req.headers.authorization;
-    if (!authorizationHeader || !/^Bearer [a-zA-Z0-9-._~+/]+$/i.test(authorizationHeader)) {
+    if (
+      !authorizationHeader ||
+      !/^Bearer [a-zA-Z0-9-._~+/]+$/i.test(authorizationHeader)
+    ) {
       return false;
     }
-    const tokenLength = authorizationHeader.split(' ')[1].length;
+    const tokenLength = authorizationHeader.split(" ")[1].length;
     const expectedTokenLength = 167;
     return tokenLength === expectedTokenLength;
+  }
+
+  static strongPasswordRegex() {
+    const pattern =
+      /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]).{8,}$/;
+    return pattern;
   }
 }

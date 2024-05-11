@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { PushNotificationServiceInterface } from 'src/data/protocols/notifier/push_notification/push.notification.interface';
 import admin from 'firebase-admin';
 import { FIREBASE_CLIENT_EMAIL, FIREBASE_PRIVATE_KEY, FIREBASE_PROJECT_ID } from 'src/config';
@@ -31,7 +31,7 @@ export class PushNotificationServiceImpl implements PushNotificationServiceInter
         }),
       );
     } catch (error) {
-      throw new Error(`Error sending push notification: ${error.message}`);
+      throw new InternalServerErrorException(`Error sending push notification: ${error.message}`);
     }
   }
 }

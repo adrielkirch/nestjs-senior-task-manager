@@ -21,6 +21,7 @@ export class PermissionGuard implements CanActivate {
         const routeRolesMap: { [route: string]: { [role in RoleEnum]: Privileges } } = {
             "/users": { [RoleEnum.GUEST]: new Privileges(true, true, true), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, true) },
             "/tasks": { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, false) },
+            "/teams": { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(false, false, false) },
         };
 
         const request = context.switchToHttp().getRequest();

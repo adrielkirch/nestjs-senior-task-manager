@@ -111,7 +111,7 @@ export class TaskService {
         console.log('remindDate ->', data.remindDate)
         const isExpirationDateSameOrAfter = DateUtil.isSameOrAfter(data.expirationDate, data.remindDate);
         if (!isExpirationDateSameOrAfter) {
-            throw new Error(`expirationDate date must be same or after of remindDate`);
+            throw new BadRequestException(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
         const ms = DateUtil.timeDifferenceInMs(data.remindDate, now);
