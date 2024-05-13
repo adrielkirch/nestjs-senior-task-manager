@@ -70,6 +70,7 @@ function getTaskUpdateDataDto(taskId: string){
         userId: "456",
         expirationDate: "01/01/2100 01:01:01",
         remindDate: "01/01/2100 00:00:01",
+        teamId:"543",
     }
 }
 
@@ -83,6 +84,7 @@ function getTaskDataDto(taskId: string) {
         status: "TODO",
         assignTo: "John Doe",
         userId: "456",
+        teamId:"543",
         createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
         updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
     }

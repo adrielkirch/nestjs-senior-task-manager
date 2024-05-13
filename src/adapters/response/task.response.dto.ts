@@ -9,6 +9,12 @@ export class TaskResponseDto {
     id: string;
 
     @ApiProperty({
+        description: "The team's ID",
+        example: "d36cafe8-d930-43ed-b974-f3c6a4a69123"
+    })
+    teamId: string;
+
+    @ApiProperty({
         description: "The task's title",
         example: "Task Title"
     })

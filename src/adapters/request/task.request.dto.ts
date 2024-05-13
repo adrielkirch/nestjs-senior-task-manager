@@ -12,6 +12,13 @@ export class CreateRequestTaskDto {
     title: string;
 
     @ApiProperty({
+        description: "The ID of team",
+        example: "08afddc9-5b82-43ce-bcec-5187f319123"
+    })
+    @IsString()
+    teamId: string;
+
+    @ApiProperty({
         description: "The text description of the task",
         example: "Write a detailed proposal outlining the project scope, objectives, and timeline."
     })
