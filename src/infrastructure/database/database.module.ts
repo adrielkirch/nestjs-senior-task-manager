@@ -12,12 +12,17 @@ import {
   TaskModel,
   TaskSchema,
 } from "src/infrastructure/database/mongodb/models/task/task.model";
-import { TeamModel, TeamSchema } from "./mongodb/models/team/team.model";
+import { TeamModel, TeamSchema } from "src/infrastructure/database/mongodb/models/team/team.model";
 import {
   TeamUserModel,
   TeamUserSchema,
 } from "src/infrastructure/database/mongodb/models/team_user/team-user.model";
-import { MongodbTeamUserRepository } from "./mongodb/repositories/team_user/mongodb-team-user-repository";
+import { MongodbTeamUserRepository } from "src/infrastructure/database/mongodb/repositories/team_user/mongodb-team-user-repository";
+import {
+  CommentModel,
+  CommentSchema,
+} from "src/infrastructure/database/mongodb/models/comment/comment.model";
+import { MongodbCommentRepository } from "src/infrastructure/database/mongodb/repositories/comment/mongodb-comment-repository";
 
 @Module({
   imports: [
@@ -39,6 +44,10 @@ import { MongodbTeamUserRepository } from "./mongodb/repositories/team_user/mong
         name: TeamUserModel.name,
         schema: TeamUserSchema,
       },
+      {
+        name: CommentModel.name,
+        schema: CommentSchema,
+      },
     ]),
   ],
   exports: [
@@ -46,6 +55,7 @@ import { MongodbTeamUserRepository } from "./mongodb/repositories/team_user/mong
     MongodbTaskRepository,
     MongodbTeamRepository,
     MongodbTeamUserRepository,
+    MongodbCommentRepository,
     MongodbModule,
   ],
   providers: [
@@ -53,6 +63,7 @@ import { MongodbTeamUserRepository } from "./mongodb/repositories/team_user/mong
     MongodbTaskRepository,
     MongodbTeamRepository,
     MongodbTeamUserRepository,
+    MongodbCommentRepository
   ],
 })
-export class DatabaseModule {}
+export class DatabaseModule { }

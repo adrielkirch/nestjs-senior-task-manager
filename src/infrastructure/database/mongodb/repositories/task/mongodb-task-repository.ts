@@ -88,6 +88,4 @@ export class MongodbTaskRepository implements TaskRepositoryInterface {
   async delete(id: string): Promise<void> {
     await this.taskCollection.deleteOne({ _id: { $eq: id } });
   }
-
-
 }

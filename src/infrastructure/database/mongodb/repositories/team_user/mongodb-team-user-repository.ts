@@ -1,7 +1,7 @@
 import { InjectModel } from "@nestjs/mongoose";
 import { Model } from "mongoose";
 import { TeamUserRepositoryInterface } from "src/data/protocols/db/team_user/team-user-repository.interface";
-import { TeamUserModel } from "../../models/team_user/team-user.model";
+import { TeamUserModel } from "src/infrastructure/database/mongodb/models/team_user/team-user.model";
 import { TeamUser } from "src/domain/team_user/team-user";
 
 /**

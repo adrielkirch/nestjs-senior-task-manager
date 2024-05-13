@@ -1,11 +1,11 @@
 
  📋 Tasks domain 
 
-   TODO Refactor every flow to have a teamId property 
+   ✅ Refactor every flow to have a teamId property 
 
  📋 TDD
 
-   TODO All tasks TDD passing
+   ✅ All tasks TDD passing
    ✅ mongodb-user-team-repository.spec 
    ✅ mongodb-team-repository.spec
    ✅ team.service.spec

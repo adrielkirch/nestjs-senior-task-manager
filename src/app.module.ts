@@ -7,10 +7,11 @@ import { DefaultController } from 'src/controllers/default/default.controller';
 import { DefaultMiddleware } from 'src/middlewares/default.middleware';
 import { TaskModule } from 'src/infrastructure/ioc/task/task.module';
 import { TeamModule } from './infrastructure/ioc/team/team.module';
+import { CommentModule } from './infrastructure/ioc/comment/comment.module';
 
 
 @Module({
-  imports: [ConfigureModule, DatabaseModule, UserModule, TaskModule, TeamModule],
+  imports: [ConfigureModule, DatabaseModule, UserModule, TaskModule, TeamModule, CommentModule],
   controllers: [DefaultController],
   providers: [
     {
@@ -31,6 +32,7 @@ export class AppModule implements NestModule {
         '/users/*',
         '/tasks/*',
         '/teams/*',
+        '/comments/*',
       );
   }
 }

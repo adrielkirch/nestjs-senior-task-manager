@@ -1,6 +1,6 @@
 import { Model } from 'mongoose';
-import { MongodbTeamUserRepository } from './mongodb-team-user-repository';
-import { TeamUserModel } from '../../models/team_user/team-user.model';
+import { MongodbTeamUserRepository } from 'src/infrastructure/database/mongodb/repositories/team_user/mongodb-team-user-repository';
+import { TeamUserModel } from 'src/infrastructure/database/mongodb/models/team_user/team-user.model';
 import { TeamUser } from 'src/domain/team_user/team-user';
 
 const teamModelMock = {
