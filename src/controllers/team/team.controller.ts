@@ -1,5 +1,5 @@
 import { Body, Controller,Post, Req, SetMetadata, UseGuards} from '@nestjs/common';
-import { CreateRequestTeamDto, InviteRequestTeamDto, JoinRequestTeamDto } from 'src/adapters/request/team.request.dto';
+import { CreateRequestTeamDto, DissociateRequestUserFromTeamDto, InviteRequestTeamDto, JoinRequestTeamDto } from 'src/adapters/request/team.request.dto';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { TeamService } from 'src/services/team/team.service';
 import { DefaultMiddleware } from 'src/middlewares/default.middleware';
@@ -23,7 +23,6 @@ export class TeamController {
   })
   async create(@Body() dto: CreateRequestTeamDto, @Req() request: Request) {
     dto.userId = request.user;
-    console.log("userId: " + dto.userId);
     return await this.teamService.create(dto);
   }
 
@@ -37,7 +36,6 @@ export class TeamController {
   })
   async invite(@Body() dto: InviteRequestTeamDto, @Req() request: Request) {
     dto.userId = request.user;
-    console.log("userId: " + dto.userId);
     return await this.teamService.invite(dto);
   }
 
@@ -49,9 +47,22 @@ export class TeamController {
     type: TeamUserResponseDto
   })
   async join(@Body() dto: JoinRequestTeamDto, @Req() request: Request) {
-    console.log(request.user)
+ 
     dto.userId = request.user;
-    console.log("userId: " + dto.userId);
     return await this.teamService.join(dto);
+  }
+
+
+  
+  @Post('dissociate')
+  @UseGuards(DefaultMiddleware)
+  @ApiBearerAuth()
+  @ApiCreatedResponse({
+    description: "It should correctly return TeamUser",
+    type: TeamUserResponseDto
+  })
+  async dissociate(@Body() dto: DissociateRequestUserFromTeamDto, @Req() request: Request) {
+    dto.userId = request.user;
+    return await this.teamService.dissociate(dto);
   }
 }

@@ -36,6 +36,14 @@ export class InviteRequestTeamDto {
     @IsString()
     @IsOptional()
     userId?: string;
+
+    @ApiProperty({
+        description: "The ID of the team who is the team leader",
+        example: "9876543210",
+        required: false
+    })
+    @IsString()
+    teamId: string;
 }
 
 export class JoinRequestTeamDto {
@@ -49,6 +57,23 @@ export class JoinRequestTeamDto {
         description: "The ID of the user who will ne invited",
         example: "9876543210",
         required: false
+    })
+    @IsString()
+    @IsOptional()
+    userId?: string;
+}
+
+export class DissociateRequestUserFromTeamDto {
+    @ApiProperty({
+        description: "The ID of the team who will be dissociate",
+        example: "9876543211",
+    })
+    teamId: string;
+
+    @ApiProperty({
+        description: "The ID of the user who will be dissociate",
+        example: "9876543212",
+        required: true
     })
     @IsString()
     @IsOptional()

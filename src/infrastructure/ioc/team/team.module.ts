@@ -9,6 +9,8 @@ import { TeamService } from "src/services/team/team.service";
 import { AddTeamUseCase } from "src/usecases/team/add-team-usecase";
 import { FindByPropertyAndValueTeamsUseCase } from "src/usecases/team/find-by-property-and-value-team-usecase";
 import { AddTeamUserUseCase } from "src/usecases/team_user/add-team-user-usecase";
+import { DissociateTeamUserUseCase } from "src/usecases/team_user/dissociate-team-user-usecase";
+import { FindByUserAndTeam } from "src/usecases/team_user/find-by-userId-and-teamId-team-user-usecase";
 
 /**
  * The TeamModule is responsible for managing / inject team-related dependencies and controllers.
@@ -28,7 +30,9 @@ import { AddTeamUserUseCase } from "src/usecases/team_user/add-team-user-usecase
         return new TeamService(
           new AddTeamUseCase(teamRepo),
           new FindByPropertyAndValueTeamsUseCase(teamRepo),
-          new AddTeamUserUseCase(teamUserRepo)
+          new AddTeamUserUseCase(teamUserRepo),
+          new FindByUserAndTeam(teamUserRepo),
+          new DissociateTeamUserUseCase(teamUserRepo)
         );
       },
       inject: [MongodbTeamRepository, MongodbTeamUserRepository],

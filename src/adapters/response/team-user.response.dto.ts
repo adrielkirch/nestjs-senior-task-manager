@@ -15,12 +15,6 @@ export class TeamUserResponseDto {
     userId: string;
 
     @ApiProperty({
-        description: "The team's ID",
-        example: "08afddc9-1111-0000-bcec-5187f319131"
-    })
-    teamId: string;
-
-    @ApiProperty({
         description: "The timestamp when the team was created",
         example: "2024-05-08T12:00:00.000Z"
     })
@@ -32,3 +26,5 @@ export class TeamUserResponseDto {
     })
     updatedAt: Date;
 }
+
+

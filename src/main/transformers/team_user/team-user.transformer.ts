@@ -17,7 +17,6 @@ export class TeamUserTransformer {
     return {
       id: teamModel._id,
       userId: teamModel.userId,
-      teamId: teamModel.teamId,
       createdAt: teamModel.createdAt,
       updatedAt: teamModel.updatedAt,
     } as TeamUserResponseDto;
@@ -28,8 +27,7 @@ export class TeamUserTransformer {
    * @param teamModels An array of TeamModel objects to be transformed.
    * @returns An array of objects containing essential team properties for each team.
    */
-  static toTeams(teamModels: TeamModel[]): TeamUserResponseDto[] {
-    // Map each TeamModel object to a simplified team representation using the `toTeam` method.
+  static toTeams(teamModels: TeamUserModel[]): TeamUserResponseDto[] {
     return teamModels.map(this.toTeamUser);
   }
 }

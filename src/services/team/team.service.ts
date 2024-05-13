@@ -5,6 +5,7 @@ import {
 } from "@nestjs/common";
 import {
   CreateRequestTeamDto,
+  DissociateRequestUserFromTeamDto,
   InviteRequestTeamDto,
   JoinRequestTeamDto,
 } from "src/adapters/request/team.request.dto";
@@ -19,14 +20,18 @@ import { SecurityUtil } from "src/utils/util.security";
 import { AddTeamUserUseCase } from "src/usecases/team_user/add-team-user-usecase";
 import { TeamUser } from "src/domain/team_user/team-user";
 import { TeamUserResponseDto } from "src/adapters/response/team-user.response.dto";
+import { DissociateTeamUserUseCase } from "src/usecases/team_user/dissociate-team-user-usecase";
+import { FindByUserAndTeam } from "src/usecases/team_user/find-by-userId-and-teamId-team-user-usecase";
 
 @Injectable()
 export class TeamService {
   constructor(
     private readonly addTeamUseCase: AddTeamUseCase,
     private readonly findByPropertyAndValueTeamsUseCase: FindByPropertyAndValueTeamsUseCase,
-    private readonly addTeamUserUseCase: AddTeamUserUseCase
-  ) {}
+    private readonly addTeamUserUseCase: AddTeamUserUseCase,
+    private readonly findByUserAndTeam: FindByUserAndTeam,
+    private readonly dissociateTeamUserUseCase: DissociateTeamUserUseCase
+  ) { }
 
   async create(data: CreateRequestTeamDto): Promise<TeamResponseDto> {
     const existingTeamUserId = await this.findByPropertyAndValue(
@@ -39,13 +44,12 @@ export class TeamService {
     }
 
     const team = Team.create(data);
-    console.log(team)
     const teamResponse = await this.addTeamUseCase.create(team);
     const teamUserRequestDto = {
       userId: data.userId,
       teamId: team.id,
     };
-    
+
     const teamUser = TeamUser.create(teamUserRequestDto);
     this.addTeamUserUseCase.create(teamUser);
 
@@ -55,18 +59,27 @@ export class TeamService {
   async invite(data: InviteRequestTeamDto): Promise<InviteResponseDto> {
     const team = Team.create(data);
 
-    const existingTeam = await this.findByPropertyAndValue(
-      "userId",
-      data.userId
-    );
+    let existingTeam = await this.findByPropertyAndValue(
+      '_id',
+      data["teamId"]
+    )
 
     if (existingTeam && existingTeam.length == 0) {
-      throw new NotFoundException("Team with this userId do not exists");
+      throw new NotFoundException("Team with this Id do not exists");
+    }
+
+    existingTeam = await this.findByUserIdAndTeamId(
+      data.userId,
+      data.teamId
+    )
+
+    if (existingTeam && existingTeam.length > 0) {
+      throw new ConflictException("Team with this UserId already exists");
     }
 
     const seed = {
       email: data.email,
-      teamId: existingTeam[0].id,
+      teamId:data.teamId,
     };
 
     const jsonWebToken = SecurityUtil.generateJsonwebtoken(seed);
@@ -83,25 +96,62 @@ export class TeamService {
       throw new NotFoundException("Team with this userId do not exists");
     }
 
-    const existingTeam = await this.findByPropertyAndValue(
-      "userId",
+    let existingTeam = await this.findByPropertyAndValue(
+      '_id',
       decodedJsonWebToken["teamId"]
-    );
-
+    )
     if (existingTeam && existingTeam.length == 0) {
-      throw new NotFoundException("Team with this id do not exists");
+      throw new NotFoundException("Team with this Id do not exists");
     }
-    
-    console.log(data.userId)
+
+    existingTeam = await this.findByUserIdAndTeamId(
+      data['userId'],
+      decodedJsonWebToken["teamId"]
+    )
+
+    if (existingTeam && existingTeam.length > 0) {
+      throw new ConflictException("Team with this UserId already exists");
+    }
+
 
     const teamUser = TeamUser.create({
-      userId: data.userId,
+      userId: data['userId'],
       teamId: decodedJsonWebToken["teamId"],
     });
 
     const teamUserResponseDto = await this.addTeamUserUseCase.create(teamUser);
     return teamUserResponseDto;
   }
+
+
+  async dissociate(data: DissociateRequestUserFromTeamDto): Promise<TeamUserResponseDto> {
+    let existingTeam = await this.findByPropertyAndValue(
+      '_id',
+      data["teamId"]
+    )
+    if (existingTeam && existingTeam.length == 0) {
+      throw new NotFoundException("Team with this Id do not exists");
+    }
+
+    existingTeam = await this.findByUserIdAndTeamId(
+      data["userId"],
+      data["teamId"]
+    )
+
+    if (existingTeam && existingTeam.length > 0) {
+      throw new ConflictException("Team with this UserId already exists");
+    }
+
+    const teamUser = TeamUser.create({
+      userId: data["userId"],
+      teamId: data["teamId"],
+    });
+
+    const teamUserResponseDto = await this.dissociateTeamUserUseCase.dissociate(teamUser);
+    return teamUserResponseDto;
+
+  }
+
 
   async findByPropertyAndValue<T>(
     property: string,
@@ -110,6 +160,16 @@ export class TeamService {
     return await this.findByPropertyAndValueTeamsUseCase.findByPropertyAndValue(
       property,
       value
+    );
+  }
+
+  async findByUserIdAndTeamId(
+    userId: string,
+    teamId: string,
+  ): Promise<TeamResponseDto[]> {
+    return await this.findByUserAndTeam.findByUserAndTeam(
+      userId,
+      teamId,
     );
   }
 }

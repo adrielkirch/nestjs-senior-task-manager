@@ -14,4 +14,28 @@ export interface TeamUserRepositoryInterface {
    */
   create: (data: TeamUser) => Promise<TeamUserModel>;
 
+  /**
+  * Retrieves TeamUser from the data storage that match a specific property and value.
+  * @param property The property to search by.
+  * @param value The value to search for.
+  * @returns A Promise that resolves to an array of UserModel representing matching users.
+  */
+  findByPropertyAndValue: <T>(property: string, value: T) => Promise<TeamUserModel[]>;
+
+  /**
+  * Retrieves TeamUser from the data storage that match a specific property and value.
+  * @param property The property to search by.
+  * @param value The value to search for.
+  * @returns A Promise that resolves to an array of UserModel representing matching users.
+  */
+  findByUserAndTeam: (userId: string, teamId: string) => Promise<TeamUserModel[]>;
+
+
+   /**
+   * dissociate (delete) a new TeamUser in the data storage.
+   * @param data The team data to be deleted.
+   * @returns A Promise that resolves to the created TeamModel.
+   */
+   dissociate: (data: TeamUser) => Promise<TeamUserModel>;
+
 }
