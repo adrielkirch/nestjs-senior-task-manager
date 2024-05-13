@@ -5,7 +5,6 @@ import { FindByPropertyAndValueCommentsUseCase } from 'src/usecases/comment/find
 import { FindPaginatedCommentsUseCase } from 'src/usecases/comment/find-paginated-comment-usecase';
 import { CreateRequestCommentDto, UpdateRequestCommentDto } from 'src/adapters/request/comment.request.dto';
 import { UpdateCommentUseCase } from 'src/usecases/comment/update-comment-usecase';
-import DateUtil from 'src/utils/util.date';
 import { DeleteCommentByIdUseCase } from 'src/usecases/comment/delete-comment-usecase';
 import { CommentResponseDto } from 'src/adapters/response/comment.response.dto';
 import { Comment } from 'src/domain/comment/comment';

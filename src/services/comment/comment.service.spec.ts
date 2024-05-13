@@ -9,9 +9,6 @@ import DateUtil from 'src/utils/util.date';
 import { FindByIdCommentsUseCase } from 'src/usecases/comment/find-by-id-comment-usecase';
 import { FindPaginatedCommentsUseCase } from 'src/usecases/comment/find-paginated-comment-usecase';
 import { DeleteCommentByIdUseCase } from 'src/usecases/comment/delete-comment-usecase';
-import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
-
-const schedule = SchedulerService.getInstance();
 
 function getCommentData(commentId: string) {
     return {
@@ -142,8 +139,6 @@ describe('CommentService', () => {
             findByPropertyAndValueCommentsUseCase,
             deleteCommentByIdUseCase
         );
-
-
     });
 
     describe('create', () => {

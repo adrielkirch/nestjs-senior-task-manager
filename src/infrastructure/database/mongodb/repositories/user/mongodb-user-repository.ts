@@ -77,7 +77,7 @@ export class MongodbUserRepository implements UserRepositoryInterface {
   async update(dataUpdate: User): Promise<UserModel> {
     return await this.userCollection.findOneAndUpdate(
       { _id: { $eq: dataUpdate.id } },
-      { $set: dataUpdate },
+      { $set: dataUpdate.toJSON() },
       { new: true },
     );
   }

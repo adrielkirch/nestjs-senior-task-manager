@@ -64,7 +64,7 @@ export class MongodbTaskRepository implements TaskRepositoryInterface {
   async update(dataUpdate: Task): Promise<TaskModel> {
     return await this.taskCollection.findOneAndUpdate(
       { _id: { $eq: dataUpdate.id } },
-      { $set: dataUpdate },
+      { $set: dataUpdate.toJSON() },
       { new: true },
     );
   }
