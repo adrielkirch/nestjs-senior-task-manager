@@ -168,11 +168,9 @@ describe('TaskService', () => {
 
     describe('create', () => {
         it('should create a new task', async () => {
-            
             const result = await taskService.create(getTaskDataDto('123'));
             const expected = getTaskData('123');
             expect(result).toEqual(expected);
-            schedule.remove("123", () => console.log("task removed"), 1)
         });
     });
 
@@ -184,7 +182,7 @@ describe('TaskService', () => {
             const result = await taskService.update(getTaskUpdateDataDto('123'));
             const expected = getTaskUpdateData('123')
             expect(result).toEqual(expected);
-            schedule.remove("123", () => console.log("task removed"), 1)
+            
         });
     });
 
@@ -194,7 +192,7 @@ describe('TaskService', () => {
             const result = await taskService.findById('123');
             const expected = getTaskData('123');
             expect(result).toEqual(expected);
-            schedule.remove("123", () => console.log("task removed"), 1)
+            
         });
     });
 
@@ -203,7 +201,7 @@ describe('TaskService', () => {
             const result = await taskService.findPaginated(1, 1);
             const expected = [getTaskData('123')];    
             expect(result).toEqual(expected);
-            schedule.remove("123", () => console.log("task removed"), 1)
+            
         });
     });
 

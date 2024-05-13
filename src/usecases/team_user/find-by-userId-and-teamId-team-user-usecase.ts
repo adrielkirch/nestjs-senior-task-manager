@@ -3,7 +3,7 @@ import { TeamUserRepositoryInterface } from 'src/data/protocols/db/team_user/tea
 import { TeamUserTransformer } from 'src/main/transformers/team_user/team-user.transformer';
 
 
-export class FindByUserAndTeam {
+export class FindByUserAndTeamUseCases {
 
   constructor(private readonly teamUserRepo: TeamUserRepositoryInterface) { }
 

@@ -19,7 +19,7 @@ export default class SchedulerService {
     return SchedulerService.instance;
   }
 
-  add(name: string, callback: () => void, ms: number): void {
+  private add(name: string, callback: () => void, ms: number): void {
     const maxDelay = 2147483647;
     if (ms > maxDelay) {
       const intervals = Math.ceil(ms / maxDelay);
@@ -45,7 +45,7 @@ export default class SchedulerService {
   }
 
 
-  remove(name: string, callback: () => void, ms: number): void {
+  private remove(name: string, callback: () => void, ms: number): void {
     const timeoutId = this.schedulers.get(name);
     if (timeoutId) {
       clearTimeout(timeoutId);

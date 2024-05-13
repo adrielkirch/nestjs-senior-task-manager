@@ -21,7 +21,7 @@ import { AddTeamUserUseCase } from "src/usecases/team_user/add-team-user-usecase
 import { TeamUser } from "src/domain/team_user/team-user";
 import { TeamUserResponseDto } from "src/adapters/response/team-user.response.dto";
 import { DissociateTeamUserUseCase } from "src/usecases/team_user/dissociate-team-user-usecase";
-import { FindByUserAndTeam } from "src/usecases/team_user/find-by-userId-and-teamId-team-user-usecase";
+import { FindByUserAndTeamUseCases } from "src/usecases/team_user/find-by-userId-and-teamId-team-user-usecase";
 
 @Injectable()
 export class TeamService {
@@ -29,11 +29,12 @@ export class TeamService {
     private readonly addTeamUseCase: AddTeamUseCase,
     private readonly findByPropertyAndValueTeamsUseCase: FindByPropertyAndValueTeamsUseCase,
     private readonly addTeamUserUseCase: AddTeamUserUseCase,
-    private readonly findByUserAndTeam: FindByUserAndTeam,
+    private readonly findByUserAndTeamUseCase: FindByUserAndTeamUseCases,
     private readonly dissociateTeamUserUseCase: DissociateTeamUserUseCase
   ) { }
 
   async create(data: CreateRequestTeamDto): Promise<TeamResponseDto> {
+
     const existingTeamUserId = await this.findByPropertyAndValue(
       "userId",
       data.userId
@@ -77,12 +78,10 @@ export class TeamService {
       throw new ConflictException("Team with this UserId already exists");
     }
 
-    const seed = {
+    const jsonWebToken = SecurityUtil.generateJsonwebtoken({
       email: data.email,
-      teamId:data.teamId,
-    };
-
-    const jsonWebToken = SecurityUtil.generateJsonwebtoken(seed);
+      teamId: data.teamId,
+    })
 
     return {
       token: jsonWebToken,
@@ -167,7 +166,7 @@ export class TeamService {
     userId: string,
     teamId: string,
   ): Promise<TeamResponseDto[]> {
-    return await this.findByUserAndTeam.findByUserAndTeam(
+    return await this.findByUserAndTeamUseCase.findByUserAndTeam(
       userId,
       teamId,
     );

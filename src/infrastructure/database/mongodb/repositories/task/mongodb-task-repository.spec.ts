@@ -14,6 +14,7 @@ const taskModelMock = {
   deleteOne: jest.fn(),
 } as unknown as Model<TaskModel>;
 
+
 const newTask = {
   title: 'any_title',
   text: 'any_text',
@@ -23,7 +24,6 @@ const newTask = {
   assignTo: 'assignTo_id',
   userId: 'user_id',
 };
-
 
 describe('MongodbTaskRepository Unit Test', () => {
   let mongodbTaskRepository: MongodbTaskRepository;

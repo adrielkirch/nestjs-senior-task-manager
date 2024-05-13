@@ -1,0 +1,42 @@
+import { Model } from 'mongoose';
+import { MongodbTeamUserRepository } from './mongodb-team-user-repository';
+import { TeamUserModel } from '../../models/team_user/team-user.model';
+import { TeamUser } from 'src/domain/team_user/team-user';
+
+const teamModelMock = {
+  create: jest.fn(),
+  find: jest.fn(),
+} as unknown as Model<TeamUserModel>;
+
+const teamData = {
+  userId: '1235',
+  teamId: '1234',
+  description: 'Test team description',
+};
+
+describe('MongodbTeamRepository Unit Test', () => {
+  let mongodbTeamUserRepository: MongodbTeamUserRepository;
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+
+    mongodbTeamUserRepository = new MongodbTeamUserRepository(teamModelMock);
+  });
+
+  it('should be defined', () => {
+    expect(mongodbTeamUserRepository).toBeDefined();
+  });
+
+  it('should create a new team', async () => {
+    await mongodbTeamUserRepository.create( TeamUser.create(teamData));
+    expect(teamModelMock.create).toHaveBeenCalledTimes(1);
+  });
+
+  it('should find teams by property and value', async () => {
+    const propertyName = 'name';
+    const propertyValue = 'Test Team';
+
+    await mongodbTeamUserRepository.findByPropertyAndValue(propertyName, propertyValue);
+    expect(teamModelMock.find).toHaveBeenCalledWith({ [propertyName]: propertyValue });
+  });
+});
