@@ -16,6 +16,11 @@ export class TaskModel extends Document {
   @Prop({
     required: true,
   })
+  teamId: string;
+
+  @Prop({
+    required: true,
+  })
   title: string;
 
   @Prop({

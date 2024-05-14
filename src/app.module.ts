@@ -1,23 +1,23 @@
-import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
-import { ConfigureModule } from './infrastructure/configure/configure.module';
-import { DatabaseModule } from './infrastructure/database/database.module';
-import { UserModule } from './infrastructure/ioc/user/user.module';
-import { DefaultController } from './controllers/default/default.controller';
-import { DefaultMiddleware } from './middlewares/default.middleware';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { TaskModule } from './infrastructure/ioc/task/task.module';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
+import { ConfigureModule } from 'src/infrastructure/configure/configure.module';
+import { DatabaseModule } from 'src/infrastructure/database/database.module';
+import { UserModule } from 'src/infrastructure/ioc/user/user.module';
+import { DefaultController } from 'src/controllers/default/default.controller';
+import { DefaultMiddleware } from 'src/middlewares/default.middleware';
+import { TaskModule } from 'src/infrastructure/ioc/task/task.module';
+import { TeamModule } from './infrastructure/ioc/team/team.module';
+import { CommentModule } from './infrastructure/ioc/comment/comment.module';
 
 
 @Module({
-  imports: [ConfigureModule, DatabaseModule, UserModule, TaskModule],
+  imports: [ConfigureModule, DatabaseModule, UserModule, TaskModule, TeamModule, CommentModule],
   controllers: [DefaultController],
   providers: [
     {
       provide: APP_INTERCEPTOR,
       useClass: DefaultMiddleware,
     },
-
-
   ],
 })
 export class AppModule implements NestModule {
@@ -26,11 +26,13 @@ export class AppModule implements NestModule {
       .apply(DefaultMiddleware)
       .exclude(
         { path: '/users/login', method: RequestMethod.POST },
-        { path: '/users/signup', method: RequestMethod.POST },
+        { path: '/users/signup', method: RequestMethod.POST }
       )
       .forRoutes(
         '/users/*',
         '/tasks/*',
+        '/teams/*',
+        '/comments/*',
       );
   }
 }

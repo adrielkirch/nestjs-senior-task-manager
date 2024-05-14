@@ -7,7 +7,7 @@ import { UserService } from 'src/services/user/user.service';
 import { AddUserUseCase } from 'src/usecases/user/add-user-usecase';
 import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
 import { FindByPropertyAndValueUsersUseCase } from 'src/usecases/user/find-by-property-and-value-user-usecase';
-import { FindAllUsersUseCase } from 'src/usecases/user/find-all-users-usecase';
+
 import { LoginUserUseCase } from 'src/usecases/user/login-user-usecase';
 import { FindPaginatedUsersUseCase } from 'src/usecases/user/find-paginated-users-usecase';
 import { UpdateUserUseCase } from 'src/usecases/user/update-user-usecase';
@@ -27,7 +27,7 @@ import { UpdateUserUseCase } from 'src/usecases/user/update-user-usecase';
         return new UserService(
           new AddUserUseCase(userRepo),
           new UpdateUserUseCase(userRepo),
-          new FindAllUsersUseCase(userRepo),
+
           new FindByIdUsersUseCase(userRepo),
           new FindPaginatedUsersUseCase(userRepo),
           new FindByPropertyAndValueUsersUseCase(userRepo),

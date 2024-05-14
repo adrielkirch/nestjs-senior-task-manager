@@ -9,6 +9,7 @@ export interface TaskProps {
   status?: string;
   assignTo?: string;
   userId?: string;
+  teamId?: string;
 }
 
 export class Task {
@@ -100,6 +101,18 @@ export class Task {
 
   set userId(value: string) {
     this.props.userId = value;
+  }
+
+  updateTeamId(teamId: string) {
+    this.props.teamId = teamId;
+  }
+
+  get teamId() {
+    return this.props.teamId;
+  }
+
+  set teamId(value: string) {
+    this.props.teamId = value;
   }
 
   toJSON() {

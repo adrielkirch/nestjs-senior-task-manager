@@ -2,7 +2,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from 'src/domain/user/user';
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
-import { UserModel } from '../../models/user/user.model';
+import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
 
 
 /**
@@ -77,7 +77,7 @@ export class MongodbUserRepository implements UserRepositoryInterface {
   async update(dataUpdate: User): Promise<UserModel> {
     return await this.userCollection.findOneAndUpdate(
       { _id: { $eq: dataUpdate.id } },
-      { $set: dataUpdate },
+      { $set: dataUpdate.toJSON() },
       { new: true },
     );
   }
@@ -98,7 +98,7 @@ export class MongodbUserRepository implements UserRepositoryInterface {
    * @param id The ID of the user document to remove.
    * @returns A Promise that resolves when the user document is successfully removed.
    */
-  async remove(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.userCollection.deleteOne({ _id: { $eq: id } });
   }
 }

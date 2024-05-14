@@ -1,6 +1,6 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { MongooseModule } from '@nestjs/mongoose';
+import { Module } from "@nestjs/common";
+import { ConfigModule, ConfigService } from "@nestjs/config";
+import { MongooseModule } from "@nestjs/mongoose";
 
 @Module({
   imports: [
@@ -8,7 +8,7 @@ import { MongooseModule } from '@nestjs/mongoose';
       inject: [ConfigService],
       imports: [ConfigModule],
       useFactory: (config: ConfigService) => ({
-        uri: config.get<string>('MONGODB_URI'),
+        uri: config.get<string>("MONGODB_URI"),
       }),
     }),
   ],

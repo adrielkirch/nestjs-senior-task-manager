@@ -1,4 +1,4 @@
-import { User, UserProps } from './user';
+import { User, UserProps } from 'src/domain/user/user';
 
 const newUser = {
   name: 'any_name',

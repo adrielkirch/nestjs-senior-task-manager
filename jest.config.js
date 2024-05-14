@@ -1,3 +1,6 @@
+
+
+
 module.exports = {
   roots: ['<rootDir>/src'],
   collectCoverageFrom: [
@@ -22,6 +25,9 @@ module.exports = {
       lines: 80,
       statements: 80,
     },
+  },
+  moduleNameMapper: {
+    '^src/(.*)$': '<rootDir>/src/$1'
   },
   modulePaths: ['<rootDir>/src'],
 };

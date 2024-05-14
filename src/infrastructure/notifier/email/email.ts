@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { EmailServiceInterface } from '../../../data/protocols/notifier/email/email.interface';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { EmailServiceInterface } from 'src/data/protocols/notifier/email/email.interface';
 import nodemailer, { Transporter } from 'nodemailer';
 import { SMTP_HOST, SMTP_PORT, SMTP_USER_NAME, SMTP_PASSWORD } from 'src/config';
 
@@ -28,7 +28,7 @@ export class EmailServiceImpl implements EmailServiceInterface {
         html: html,
       });
     } catch (error) {
-      throw new Error(`Error sending email: ${error.message}`);
+      throw new InternalServerErrorException(`Error sending email: ${error.message}`);
     }
   }
 }

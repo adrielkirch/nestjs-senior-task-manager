@@ -1,62 +1,100 @@
-import { Injectable } from '@nestjs/common';
-import { EmailServiceInterface } from '../../data/protocols/notifier/email/email.interface';
-import { SmsServiceInterface } from '../../data/protocols/notifier/sms/sms.interface';
-import { PushNotificationServiceInterface } from '../../data/protocols/notifier/push_notification/push.notification.interface';
-import { NotifyRequestDto } from 'src/adapters/request/notification.request.dto';
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { EmailServiceInterface } from "src/data/protocols/notifier/email/email.interface";
+import { SmsServiceInterface } from "src/data/protocols/notifier/sms/sms.interface";
+import { PushNotificationServiceInterface } from "src/data/protocols/notifier/push_notification/push.notification.interface";
+import { NotifyRequestDto } from "src/adapters/request/notification.request.dto";
+import { EventEmitter } from "events";
 
 @Injectable()
 export class Notifier {
-    private static instance: Notifier;
-    private emailService: EmailServiceInterface;
-    private smsService: SmsServiceInterface;
-    private pushNotificationService: PushNotificationServiceInterface;
+  private static instance: Notifier;
+  private emailService: EmailServiceInterface;
+  private smsService: SmsServiceInterface;
+  private pushNotificationService: PushNotificationServiceInterface;
+  private eventEmitter: EventEmitter;
+  private constructor(
+    emailService: EmailServiceInterface,
+    smsService: SmsServiceInterface,
+    pushNotificationService: PushNotificationServiceInterface
+  ) {
+    this.emailService = emailService;
+    this.smsService = smsService;
+    this.pushNotificationService = pushNotificationService;
+    this.eventEmitter = new EventEmitter();
+  }
 
-    private constructor(
-        emailService: EmailServiceInterface,
-        smsService: SmsServiceInterface,
-        pushNotificationService: PushNotificationServiceInterface
-    ) {
-        this.emailService = emailService;
-        this.smsService = smsService;
-        this.pushNotificationService = pushNotificationService;
+  static getInstance(
+    emailService: EmailServiceInterface,
+    smsService: SmsServiceInterface,
+    pushNotificationService: PushNotificationServiceInterface
+  ): Notifier {
+    if (!Notifier.instance) {
+      Notifier.instance = new Notifier(
+        emailService,
+        smsService,
+        pushNotificationService
+      );
     }
+    return Notifier.instance;
+  }
 
-    static getInstance(
-        emailService: EmailServiceInterface,
-        smsService: SmsServiceInterface,
-        pushNotificationService: PushNotificationServiceInterface
-    ): Notifier {
-        if (!Notifier.instance) {
-            Notifier.instance = new Notifier(emailService, smsService, pushNotificationService);
-        }
-        return Notifier.instance;
-    }
+  emitNotifyEvent(name: string): void {
+    this.eventEmitter.emit("onNotify", name);
+  }
 
-    async notify(deliveryMethod: string, notificationData: NotifyRequestDto): Promise<void> {
-        switch (deliveryMethod) {
-            case 'email':
-                await this.sendEmail(notificationData.recipients, notificationData.subject, notificationData.message);
-                break;
-            case 'sms':
-                await this.sendSms(notificationData.recipients, notificationData.message);
-                break;
-            case 'notification':
-                await this.sendPushNotification(notificationData.recipients, notificationData.message);
-                break;
-            default:
-                throw new Error(`Unsupported notification type: ${deliveryMethod}`);
-        }
-    }
+  onAdd(eventName: string, notificationData: NotifyRequestDto): void {
+    this.eventEmitter.on("onAdd", () => {
+      this.notify(eventName, notificationData);
+    });
+  }
 
-    private async sendEmail(recipients: string[], subject: string, message: string): Promise<void> {
-        await this.emailService.send(recipients, subject, message);
+  private async notify(
+    eventName: string,
+    notificationData: NotifyRequestDto
+  ): Promise<void> {
+    switch (eventName) {
+      case "email":
+        await this.sendEmail(
+          notificationData.recipients,
+          notificationData.subject,
+          notificationData.message
+        );
+        break;
+      case "sms":
+        await this.sendSms(
+          notificationData.recipients,
+          notificationData.message
+        );
+        break;
+      case "notification":
+        await this.sendPushNotification(
+          notificationData.recipients,
+          notificationData.message
+        );
+        break;
+      default:
+        throw new BadRequestException(
+          `Unsupported notification type: ${eventName}`
+        );
     }
-    
-    private async sendSms(recipients: string[], message: string): Promise<void> {
-        await this.smsService.send(recipients, message);
-    }
-    
-    private async sendPushNotification(recipients: string[], message: string): Promise<void> {
-        await this.pushNotificationService.send(recipients, message);
-    }
+  }
+
+  private async sendEmail(
+    recipients: string[],
+    subject: string,
+    message: string
+  ): Promise<void> {
+    await this.emailService.send(recipients, subject, message);
+  }
+
+  private async sendSms(recipients: string[], message: string): Promise<void> {
+    await this.smsService.send(recipients, message);
+  }
+
+  private async sendPushNotification(
+    recipients: string[],
+    message: string
+  ): Promise<void> {
+    await this.pushNotificationService.send(recipients, message);
+  }
 }

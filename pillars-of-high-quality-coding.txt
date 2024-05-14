@@ -1,5 +1,13 @@
 🏛️ Pillars of high quality coding 🏛️
 
+    Multi-Tenant System:
+        Architecture designed to support multiple independent companies (tenants) within a single application instance.
+        Isolation of data, configurations, and user permissions between tenants to ensure privacy and security.
+        Use of partitioning strategies such as separate databases, schemas, or tables for each tenant.
+        Centralized management of tenant-specific settings, customization options, and user access controls.
+        Scalability to accommodate a growing number of tenants while maintaining performance and reliability.
+        Consideration of cross-tenant features and integrations while preserving tenant isolation and data integrity.
+        
     Absolute Path Usage:
         Utilize absolute paths instead of relative paths for importing modules and files.
         Configure your build tools or TypeScript compiler to support absolute paths by setting up path aliases in your tsconfig.json or build configuration.
@@ -51,7 +59,7 @@
         Multiple implementations of repository interfaces for different database technologies (e.g., SQL, NoSQL) or for different environments (e.g., production, testing).
         Dependency injection of repository implementations into application services or domain services.
 
-    Cybersecurity with Multiple Roles:
+    Cybersecurity:
         Role-based access contro defining permissions and access levels for different roles within the system.
         Authentication mechanisms such as JSON Web Tokens (JWT) for verifying the identity of users.
         Authorization middleware or filters enforcing access control policies based on the roles and permissions of authenticated users.

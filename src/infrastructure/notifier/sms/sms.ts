@@ -1,5 +1,5 @@
-import { Injectable } from '@nestjs/common';
-import { SmsServiceInterface } from '../../../data/protocols/notifier/sms/sms.interface';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { SmsServiceInterface } from 'src/data/protocols/notifier/sms/sms.interface';
 import twilio from 'twilio';
 
 @Injectable()
@@ -25,7 +25,7 @@ export class SmsServiceImpl implements SmsServiceInterface {
         }),
       );
     } catch (error) {
-      throw new Error(`Error sending SMS: ${error.message}`);
+      throw new InternalServerErrorException(`Error sending SMS: ${error.message}`);
     }
   }
 }

@@ -1,7 +1,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
-import { TaskModel } from '../../models/task/task.model';
+import { TaskModel } from 'src/infrastructure/database/mongodb/models/task/task.model';
 import { Task } from 'src/domain/task/task';
 
 /**
@@ -64,7 +64,7 @@ export class MongodbTaskRepository implements TaskRepositoryInterface {
   async update(dataUpdate: Task): Promise<TaskModel> {
     return await this.taskCollection.findOneAndUpdate(
       { _id: { $eq: dataUpdate.id } },
-      { $set: dataUpdate },
+      { $set: dataUpdate.toJSON() },
       { new: true },
     );
   }
@@ -88,6 +88,4 @@ export class MongodbTaskRepository implements TaskRepositoryInterface {
   async delete(id: string): Promise<void> {
     await this.taskCollection.deleteOne({ _id: { $eq: id } });
   }
-
-
 }

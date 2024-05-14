@@ -1,7 +1,7 @@
 import { Model } from 'mongoose';
-import { MongodbUserRepository } from './mongodb-user-repository';
-import { UserModel } from '../../models/user/user.model';
-import { User, UserProps } from '../../../../../domain/user/user';
+import { MongodbUserRepository } from 'src/infrastructure/database/mongodb/repositories/user/mongodb-user-repository';
+import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
+import { User, UserProps } from 'src/domain/user/user';
 
 const userModelMock = {
   create: jest.fn(),
@@ -72,7 +72,7 @@ describe('MongodbUserRepository Unit Test', () => {
     const user = User.create(userProps);
     await mongodbUserRepository.create(user);
 
-    await mongodbUserRepository.remove(user.id);
+    await mongodbUserRepository.delete(user.id);
     expect(userModelMock.deleteOne).toHaveBeenCalledTimes(1);
   });
 });

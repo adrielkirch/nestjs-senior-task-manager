@@ -1,5 +1,5 @@
-import DateUtil from '../../utils/util.date';
-import { Task, TaskProps } from './task';
+import DateUtil from 'src/utils/util.date';
+import { Task, TaskProps } from 'src/domain/task/task';
 
 
 describe('Task Unit Tests', () => {
@@ -11,7 +11,8 @@ describe('Task Unit Tests', () => {
       "expirationDate": DateUtil.futureDateByHours(11),
       "status": 'TODO',
       "assignTo": "5a4704c2-5d82-4522-9a61-ba30f7b9113d",
-      "userId": "5a4704c2-5d82-4522-9a61-ba30f7b9113d"
+      "userId": "5a4704c2-5d82-4522-9a61-ba30f7b9113d",
+      "teamId": "504704c2-5d82-4522-9a61-ba30f7b9113d",
     };
     let taskProps: TaskProps = newTask;
 
@@ -37,7 +38,7 @@ describe('Task Unit Tests', () => {
       "expirationDate": DateUtil.futureDateByHours(11),
       "status": "TODO",
       "assignTo": "5a4704c2-5d82-4522-9a61-ba30f7b9113d",
-      "userId": "5a4704c2-5d82-4522-9a61-ba30f7b9113d"
+      "userId": "5a4704c2-5d82-4522-9a61-ba30f7b9113d",
     };
     const task = Task.create(userProps);
     const newTitle = 'Lorem ipsum dolor tortor!';

@@ -19,11 +19,11 @@ export default class SchedulerService {
     return SchedulerService.instance;
   }
 
-  add(name: string, callback: () => void, delayInMs: number): void {
+  private add(name: string, callback: () => void, ms: number): void {
     const maxDelay = 2147483647;
-    if (delayInMs > maxDelay) {
-      const intervals = Math.ceil(delayInMs / maxDelay);
-      let remainingDelay = delayInMs;
+    if (ms > maxDelay) {
+      const intervals = Math.ceil(ms / maxDelay);
+      let remainingDelay = ms;
 
       for (let i = 0; i < intervals; i++) {
         const currentDelay = Math.min(remainingDelay, maxDelay);
@@ -37,36 +37,40 @@ export default class SchedulerService {
         setTimeout(cb, currentDelay);
         remainingDelay -= maxDelay;
       }
-      this.emitAddEvent(name, delayInMs); 
       return;
     }
-    const timeoutId = setTimeout(callback, delayInMs);
+    const timeoutId = setTimeout(callback, ms);
     this.schedulers.set(name, timeoutId);
-    this.emitAddEvent(name, delayInMs); 
+
   }
 
-  remove(name: string): void {
+
+  private remove(name: string, callback: () => void, ms: number): void {
     const timeoutId = this.schedulers.get(name);
     if (timeoutId) {
       clearTimeout(timeoutId);
+      setTimeout(callback, ms);
       this.schedulers.delete(name);
-      this.emitRemoveEvent(name); 
     }
   }
 
-  emitAddEvent(name: string, delayInMs: number): void {
-    this.eventEmitter.emit('onAdd', { name, delayInMs });
+  emitAddEvent(name: string): void {
+    this.eventEmitter.emit('onAdd', name);
   }
 
   emitRemoveEvent(name: string): void {
     this.eventEmitter.emit('onDelete', name);
   }
 
-  onAdd(callback: (data: { name: string, delayInMs: number }) => void): void {
-    this.eventEmitter.on('onAdd', callback);
+  onAdd(name: string, callback: () => void, ms: number): void {
+    this.eventEmitter.on('onAdd', () => {
+      this.add(name, callback, ms);
+    });
   }
 
-  onDelete(callback: (name: string) => void): void {
-    this.eventEmitter.on('onDelete', callback);
+  onDelete(name: string, callback: () => void, ms: number): void {
+    this.eventEmitter.on('onDelete', () => {
+      this.remove(name, callback, ms);
+    });
   }
 }

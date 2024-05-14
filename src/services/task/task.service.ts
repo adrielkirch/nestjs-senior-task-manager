@@ -2,7 +2,6 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { AddTaskUseCase } from 'src/usecases/task/add-task-usecase';
 import { FindByIdTasksUseCase } from 'src/usecases/task/find-by-id-task-usecase';
 import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/find-by-property-and-value-task-usecase';
-import { FindAllTasksUseCase } from 'src/usecases/task/find-all-task-usecase';
 import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-task-usecase';
 import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/task.request.dto';
 import { UpdateTaskUseCase } from 'src/usecases/task/update-task-usecase';
@@ -19,7 +18,6 @@ export class TaskService {
     constructor(
         private readonly addTaskUseCase: AddTaskUseCase,
         private readonly updateTaskUseCase: UpdateTaskUseCase,
-        private readonly FindAllTasksUseCase: FindAllTasksUseCase,
         private readonly findByIdTasksUseCase: FindByIdTasksUseCase,
         private readonly findPaginatedTasksUseCase: FindPaginatedTasksUseCase,
         private readonly findByPropertyAndValueTasksUseCase: FindByPropertyAndValueTasksUseCase,
@@ -28,11 +26,10 @@ export class TaskService {
 
     async create(data: CreateRequestTaskDto): Promise<TaskResponseDto> {
         const expirationDateISO = DateUtil.defaultFormatToISO(data.expirationDate.toString());
-        const remindDateISO = DateUtil.defaultFormatToISO(data.expirationDate.toString());
+        const remindDateISO = DateUtil.defaultFormatToISO(data.remindDate.toString());
         data.expirationDate = expirationDateISO;
         data.remindDate = remindDateISO;
-
-
+        
         const task = Task.create(data);
         const newTask = await this.addTaskUseCase.create(task);
         const taskId = newTask.id;
@@ -42,6 +39,7 @@ export class TaskService {
             throw new BadRequestException(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
+
         const isNowDateSameOrAfter = DateUtil.isSameOrAfter(now, remindDateISO);
         if (isNowDateSameOrAfter) {
             throw new BadRequestException(`Now date not must be same or after of remindDate`);
@@ -49,7 +47,7 @@ export class TaskService {
 
         const ms = DateUtil.timeDifferenceInMs(remindDateISO, now);
 
-        this.scheduler.add(taskId, async () => {
+        this.scheduler.onAdd(taskId, async () => {
             const taskFuture = await this.findById(taskId);
             if (!taskFuture) {
                 return;
@@ -64,8 +62,13 @@ export class TaskService {
             Status: ${taskFuture.status}\n
             `);
 
-            this.scheduler.remove(taskId);
+            this.scheduler.onDelete(taskId, async () => {
+                console.log(`Event ${taskId} removed successfully`);
+            }, 1000)
+            this.scheduler.emitRemoveEvent(taskId);
         }, ms);
+
+        this.scheduler.emitAddEvent(taskId)
 
         return newTask;
 
@@ -90,7 +93,10 @@ export class TaskService {
         const status = data.hasOwnProperty('status') ? data.status : existingTask.status;
 
         if (status === "DONE") {
-            this.scheduler.remove(taskId);
+            this.scheduler.onDelete(taskId, async () => {
+                console.log(`Event ${taskId} removed successfully`);
+            }, 1)
+            this.scheduler.emitRemoveEvent(taskId);
             return await this.updateTaskUseCase.update(task);
         } else if (!data.hasOwnProperty('remindDate')) {
             return await this.updateTaskUseCase.update(task);
@@ -101,14 +107,23 @@ export class TaskService {
         data.expirationDate = data.hasOwnProperty('expirationDate') ? DateUtil.defaultFormatToISO(data.expirationDate.toString()) : existingTask.expirationDate;
         data.remindDate = data.hasOwnProperty('remindDate') ? DateUtil.defaultFormatToISO(data.remindDate.toString()) : existingTask.remindDate;
 
+        console.log('expirationDate ->', data.expirationDate)
+        console.log('remindDate ->', data.remindDate)
         const isExpirationDateSameOrAfter = DateUtil.isSameOrAfter(data.expirationDate, data.remindDate);
         if (!isExpirationDateSameOrAfter) {
-            throw new Error(`expirationDate date must be same or after of remindDate`);
+            throw new BadRequestException(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
         const ms = DateUtil.timeDifferenceInMs(data.remindDate, now);
-        this.scheduler.remove(taskId);
-        this.scheduler.add(taskId, async () => {
+
+
+        this.scheduler.onDelete(taskId, async () => {
+            console.log(`Event ${taskId} removed successfully`);
+        }, 1)
+        this.scheduler.emitRemoveEvent(taskId);
+
+
+        this.scheduler.onAdd(taskId, async () => {
             const taskFuture = await this.findById(taskId);
             if (!taskFuture) {
                 return;
@@ -123,8 +138,13 @@ export class TaskService {
             Status: ${taskFuture.status}\n
             `);
 
-            this.scheduler.remove(taskId);
+            this.scheduler.onDelete(taskId, async () => {
+                console.log(`Event ${taskId} removed successfully`);
+            }, 1000)
+            this.scheduler.emitRemoveEvent(taskId);
         }, ms);
+
+        this.scheduler.emitAddEvent(taskId)
 
 
         return await this.updateTaskUseCase.update(task);
@@ -136,7 +156,10 @@ export class TaskService {
             throw new NotFoundException('Task not found');
         }
         await this.deleteTaskByIdUseCase.deleteById(id);
-        this.scheduler.remove(id);
+        this.scheduler.onDelete(id, async () => {
+            console.log(`Event ${id} removed successfully`);
+        }, 1000)
+        this.scheduler.emitRemoveEvent(id);
     }
 
 
@@ -157,7 +180,5 @@ export class TaskService {
         return await this.findByPropertyAndValueTasksUseCase.findByPropertyAndValue(property, value);
     }
 
-    async findAll(): Promise<TaskResponseDto[]> {
-        return await this.FindAllTasksUseCase.findAll();
-    }
+
 }
