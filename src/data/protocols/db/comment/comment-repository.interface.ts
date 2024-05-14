@@ -1,5 +1,6 @@
 
 
+import { Variables } from 'src/adapters/shared/request/variable.request.dto';
 import { Comment } from 'src/domain/comment/comment';
 import { CommentModel } from 'src/infrastructure/database/mongodb/models/comment/comment.model';
 
@@ -31,12 +32,13 @@ export interface CommentRepositoryInterface {
 
 
   /**
-   * Retrieves paginated comments from the data storage.
-   * @param page The page number for pagination.
-   * @param limit The limit of comments per page.
-   * @returns A Promise that resolves to an array of CommentModel representing comments for the specified page.
-   */
-  findPaginated: (page: number, limit: number) => Promise<CommentModel[]>;
+  * Retrieves paginated tasks from the data storage.
+  * @param page The page number for pagination.
+  * @param limit The limit of tasks per page.
+  * @param filter The filter object containing variables for filtering.
+  * @returns A Promise that resolves to an array of TaskModel representing tasks for the specified page.
+  */
+  findPaginated: <T>(page: number, limit: number, filter: Variables<T>) => Promise<CommentModel[]>;
 
   /**
   * Retrieves comments from the data storage that match a specific property and value.

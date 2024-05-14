@@ -3,6 +3,7 @@ import { Model } from 'mongoose';
 import { CommentRepositoryInterface } from 'src/data/protocols/db/comment/comment-repository.interface';
 import { CommentModel } from 'src/infrastructure/database/mongodb/models/comment/comment.model';
 import { Comment } from 'src/domain/comment/comment';
+import { Variables } from 'src/adapters/shared/request/variable.request.dto';
 
 /**
  * Repository implementation for MongoDB database.
@@ -68,17 +69,28 @@ export class MongodbCommentRepository implements CommentRepositoryInterface {
       { new: true },
     );
   }
-
   /**
-   * Retrieves paginated comments from the data storage.
-   * @param page The page number for pagination.
-   * @param limit The limit of comments per page.
-   * @returns A Promise that resolves to an array of CommentModel representing comments for the specified page.
-   */
-  async findPaginated(page: number, limit: number): Promise<CommentModel[]> {
+  * Retrieves paginated comments from the data storage.
+  * @param page The page number for pagination.
+  * @param limit The limit of comments per page.
+  * @param filter The filter object containing variables for filtering.
+  * @returns A Promise that resolves to an array of CommentModel representing comments for the specified page.
+  */
+  async findPaginated<T>(page: number, limit: number, filter: Variables<T>): Promise<CommentModel[]> {
     const skip = (page - 1) * limit;
-    return await this.commentCollection.find({}, { __v: false }).skip(skip).limit(limit);
+
+    let query = {};
+    if (filter.variable && filter.value) {
+      query = { [filter.variable]: filter.value };
+    }
+
+    return await this.commentCollection.find(query, { __v: false })
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
   }
+
+
 
   /**
    * Removes a comment document from the database.

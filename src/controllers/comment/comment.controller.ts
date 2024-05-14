@@ -6,7 +6,8 @@ import { CreateRequestCommentDto, UpdateRequestCommentDto } from 'src/adapters/r
 import { Request } from 'express';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CommentResponseDto } from 'src/adapters/response/comment.response.dto';
-import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
+import { Variables } from 'src/adapters/shared/request/variable.request.dto';
+
 
 @ApiTags('Comment')
 @Controller('comments')
@@ -46,8 +47,13 @@ export class CommentController {
     type: [CommentResponseDto]
   })
   @Get('paginated')
-  async findPaginated(@Query('page') page: number, @Query('limit') limit: number) {
-    return await this.commentService.findPaginated(page, limit);
+  async findPaginated(
+    @Query('page') page: number,
+    @Query('limit') limit: number,
+    @Query('property') property: string,
+    @Query('value') value: string) {
+    const filter = new Variables(property, value);
+    return await this.commentService.findPaginated(page, limit, filter);
   }
 
   @UseGuards(DefaultMiddleware, PermissionGuard)

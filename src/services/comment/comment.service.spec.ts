@@ -173,7 +173,7 @@ describe('CommentService', () => {
 
     describe('findPaginated', () => {
         it('should find paginated comments', async () => {
-            const result = await commentService.findPaginated(1, 1);
+            const result = await commentService.findPaginated(1, 1,null);
             const expected = [getCommentData('123')];
             expect(result).toEqual(expected);
 

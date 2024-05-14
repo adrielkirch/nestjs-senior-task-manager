@@ -8,6 +8,7 @@ import { UpdateCommentUseCase } from 'src/usecases/comment/update-comment-usecas
 import { DeleteCommentByIdUseCase } from 'src/usecases/comment/delete-comment-usecase';
 import { CommentResponseDto } from 'src/adapters/response/comment.response.dto';
 import { Comment } from 'src/domain/comment/comment';
+import { Variables } from 'src/adapters/shared/request/variable.request.dto';
 
 @Injectable()
 export class CommentService {
@@ -65,8 +66,8 @@ export class CommentService {
         return comment;
     }
 
-    async findPaginated(page: number, limit: number): Promise<CommentResponseDto[]> {
-        return await this.findPaginatedCommentsUseCase.findPaginated(page, limit);
+    async findPaginated<T>(page: number, limit: number, filter: Variables<T>): Promise<CommentResponseDto[]> {
+        return await this.findPaginatedCommentsUseCase.findPaginated(page, limit,filter);
     }
 
     async findByPropertyAndValue<T>(property: string, value: T): Promise<CommentResponseDto[]> {

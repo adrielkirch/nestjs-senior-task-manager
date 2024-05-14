@@ -1,4 +1,5 @@
 import { CommentResponseDto } from 'src/adapters/response/comment.response.dto';
+import { Variables } from 'src/adapters/shared/request/variable.request.dto';
 import { CommentRepositoryInterface } from 'src/data/protocols/db/comment/comment-repository.interface';
 import { CommentTransformer } from 'src/main/transformers/comment/comment.transformer';
 
@@ -18,8 +19,8 @@ export class FindPaginatedCommentsUseCase {
    * Loads paginated comments from the system.
    * @returns A Promise that resolves to an array of simplified comment representations.
    */
-  async findPaginated(page: number, limit: number): Promise<CommentResponseDto[]> {
-    const comments = await this.commentRepo.findPaginated(page, limit);
+  async findPaginated<T>(page: number, limit: number, filter: Variables<T>): Promise<CommentResponseDto[]> {
+    const comments = await this.commentRepo.findPaginated(page, limit,filter);
     return CommentTransformer.toComments(comments);
   }
 }
