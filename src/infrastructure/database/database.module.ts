@@ -24,6 +24,13 @@ import {
 } from "src/infrastructure/database/mongodb/models/comment/comment.model";
 import { MongodbCommentRepository } from "src/infrastructure/database/mongodb/repositories/comment/mongodb-comment-repository";
 
+import {
+  ProfileModel,
+  ProfileSchema,
+} from "src/infrastructure/database/mongodb/models/profile/profile.model";
+import { MongodbProfileRepository } from "src/infrastructure/database/mongodb/repositories/profile/mongodb-profile-repository";
+
+
 @Module({
   imports: [
     MongodbModule,
@@ -48,6 +55,10 @@ import { MongodbCommentRepository } from "src/infrastructure/database/mongodb/re
         name: CommentModel.name,
         schema: CommentSchema,
       },
+      {
+        name: ProfileModel.name,
+        schema: ProfileSchema,
+      },
     ]),
   ],
   exports: [
@@ -56,6 +67,7 @@ import { MongodbCommentRepository } from "src/infrastructure/database/mongodb/re
     MongodbTeamRepository,
     MongodbTeamUserRepository,
     MongodbCommentRepository,
+    MongodbProfileRepository,
     MongodbModule,
   ],
   providers: [
@@ -63,7 +75,8 @@ import { MongodbCommentRepository } from "src/infrastructure/database/mongodb/re
     MongodbTaskRepository,
     MongodbTeamRepository,
     MongodbTeamUserRepository,
-    MongodbCommentRepository
+    MongodbCommentRepository,
+    MongodbProfileRepository
   ],
 })
 export class DatabaseModule { }
