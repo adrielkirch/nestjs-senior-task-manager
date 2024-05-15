@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ExecutionContext, ForbiddenException } from '@nestjs/common';
 import { PermissionGuard } from 'src/middlewares/permissions.guard';
-import { RoleEnum } from 'src/domain/role/types';
+import { RoleEnum } from 'src/types/role/types';
 
 describe('PermissionGuard', () => {
   let guard: PermissionGuard;

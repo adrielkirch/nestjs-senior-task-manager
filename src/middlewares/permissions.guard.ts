@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
-import { RoleEnum } from 'src/domain/role/types';
+import { RoleEnum } from 'src/types/role/types';
 import { Privileges } from 'src/domain/privilege/privilege';
 
 export class PermissionGuard implements CanActivate {
