@@ -1,10 +1,11 @@
 
  📋 Tasks domain 
 
+
   TODO Implement a get user with profile in tasks to send notifications Add / Update
 
   TODO It should work for sms and email dinamic
-
-  TODO Create onAdd task async callback outised the main add / update service function 
    
   TODO Fix firebase connection, private key
+
+  ✅ Create onAdd task async callback outised the main add / update service function 

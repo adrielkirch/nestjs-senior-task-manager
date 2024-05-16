@@ -27,11 +27,6 @@ export class TaskService {
         private readonly findByPropertyAndValueTasksUseCase: FindByPropertyAndValueTasksUseCase,
         private readonly deleteTaskByIdUseCase: DeleteTaskByIdUseCase,
         private readonly notifierService: NotifierService
-        // private readonly emailServiceImpl: EmailServiceImpl,
-        // private readonly pushNotificationServiceImpl: PushNotificationServiceImpl,
-        // private readonly smsServiceImpl: SmsServiceImpl,
-
-
     ) { }
 
     private scheduler = SchedulerService.getInstance();
@@ -58,41 +53,9 @@ export class TaskService {
         }
 
         const ms = DateUtil.timeDifferenceInMs(remindDateISO, now);
-
-        this.scheduler.onAdd(taskId, async () => {
-            const taskFuture = await this.findById(taskId);
-            if (!taskFuture) {
-                return;
-            }
-            console.log(`\n
-            Reminding to complete task:\n
-            Now: ${new Date()}\n,
-            Id:${taskId}\n
-            Title:${taskFuture.title}\n
-            Text:${taskFuture.text}\n
-            Expiration:${taskFuture.expirationDate}\n
-            Status: ${taskFuture.status}\n
-            `);
-
-            this.scheduler.onDelete(taskId, async () => {
-                console.log(`Event ${taskId} removed successfully`);
-            }, 1000)
-            this.scheduler.emitRemoveEvent(taskId);
-
-            const notificationData = {
-                message: "Teste",
-                subject: "Subjected",
-                recipients: ["adriel.kirch.1@gmail.com"]
-            }
-
-            this.notifierService.onNotify("email", notificationData);
-            this.notifierService.emitNotifyEvent("onNotify");
-        }, ms);
-
-
+        const cb = this.schedulerCallBack(taskId)
+        this.scheduler.onAdd(taskId, cb, ms);
         this.scheduler.emitAddEvent(taskId)
-
-
         return newTask;
 
     }
@@ -145,42 +108,50 @@ export class TaskService {
         }, 1)
         this.scheduler.emitRemoveEvent(taskId);
 
-
-        this.scheduler.onAdd(taskId, async () => {
-            const taskFuture = await this.findById(taskId);
-            if (!taskFuture) {
-                return;
-            }
-            console.log(`\n
-            Reminding to complete task:\n
-            Now: ${new Date()}\n,
-            Id:${taskId}\n
-            Title:${taskFuture.title}\n
-            Text:${taskFuture.text}\n
-            Expiration:${taskFuture.expirationDate}\n
-            Status: ${taskFuture.status}\n
-            `);
-
-            this.scheduler.onDelete(taskId, async () => {
-                console.log(`Event ${taskId} removed successfully`);
-            }, 1000)
-            this.scheduler.emitRemoveEvent(taskId);
-
-            const notificationData = {
-                message: "Teste",
-                subject: "Subjected",
-                recipients: ["adriel.kirch.1@gmail.com"]
-            }
-
-            this.notifierService.onNotify("email", notificationData);
-            this.notifierService.emitNotifyEvent("onNotify");
-        }, ms);
+        const cb = this.schedulerCallBack(taskId)
+        this.scheduler.onAdd(taskId, cb, ms);
 
         this.scheduler.emitAddEvent(taskId)
 
 
         return await this.updateTaskUseCase.update(task);
     }
+
+
+    private schedulerCallBack(taskId: string): () => void {
+        return () => {
+            (async () => {
+                const taskFuture = await this.findById(taskId);
+                if (!taskFuture) {
+                    return;
+                }
+                console.log(`\n
+              Reminding to complete task:\n
+              Now: ${new Date()}\n,
+              Id:${taskId}\n
+              Title:${taskFuture.title}\n
+              Text:${taskFuture.text}\n
+              Expiration:${taskFuture.expirationDate}\n
+              Status: ${taskFuture.status}\n
+            `);
+
+                this.scheduler.onDelete(taskId, async () => {
+                    console.log(`Event ${taskId} removed successfully`);
+                }, 1000)
+                this.scheduler.emitRemoveEvent(taskId);
+
+                const notificationData = {
+                    message: "Teste",
+                    subject: "Subjected",
+                    recipients: ["adriel.kirch.1@gmail.com"]
+                }
+
+                this.notifierService.onNotify("email", notificationData);
+                this.notifierService.emitNotifyEvent("onNotify");
+            })();
+        }
+    }
+
 
     async delete(id: string) {
         const task = await this.findByIdTasksUseCase.findById(id);
