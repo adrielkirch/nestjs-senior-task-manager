@@ -1,13 +1,10 @@
 
  📋 Tasks domain 
 
-   ✅ Refactor every flow to have a teamId property 
+  TODO Implement a get user with profile in tasks to send notifications Add / Update
 
- 📋 TDD
+  TODO It should work for sms and email dinamic
 
-   ✅ All tasks TDD passing
-   ✅ mongodb-user-team-repository.spec 
-   ✅ mongodb-team-repository.spec
-   ✅ team.service.spec
-   ✅ user-team.service.spec
+  TODO Create onAdd task async callback outised the main add / update service function 
    
+  TODO Fix firebase connection, private key

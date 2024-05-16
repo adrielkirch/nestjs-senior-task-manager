@@ -6,6 +6,7 @@ const newUser = {
   email: 'email_any@mail.com',
   password: 'password_any',
   role: 'admin',
+  phone:"+18045551234"
 };
 
 describe('User Unit Tests', () => {
@@ -62,6 +63,7 @@ describe('User Unit Tests', () => {
       email: 'email_any@mail.com',
       password: 'password_any',
       role: 'admin',
+      phone:"+18045551234"
     });
   });
 });

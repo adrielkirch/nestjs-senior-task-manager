@@ -43,6 +43,12 @@ export class UserModel {
   role: string;
 
   @Prop({
+    type: String,
+    required: true,
+  })
+  phone: string;
+
+  @Prop({
     type: Date,
   })
   createdAt: Date;

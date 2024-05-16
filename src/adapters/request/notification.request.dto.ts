@@ -9,9 +9,7 @@ export class NotifyRequestDto {
     subject: string;
 
     @IsString()
-    recipients: string[];
-
-    
+    recipients: string[];    
 }
 
 

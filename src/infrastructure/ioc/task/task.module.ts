@@ -11,6 +11,10 @@ import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/find-by-pr
 import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-task-usecase';
 import { UpdateTaskUseCase } from 'src/usecases/task/update-task-usecase';
 import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete-task-usecase';
+import { NotifierService } from 'src/infrastructure/notifier/notifier';
+import { EmailServiceImpl } from 'src/infrastructure/notifier/email/email';
+import { SmsServiceImpl } from 'src/infrastructure/notifier/sms/sms';
+import { PushNotificationServiceImpl } from 'src/infrastructure/notifier/push_notification/push.notification';
 
 /**
  * The TaskModule is responsible for managing / inject task-related dependencies and controllers.
@@ -31,6 +35,11 @@ import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete-task-usecase';
           new FindPaginatedTasksUseCase(taskRepo),
           new FindByPropertyAndValueTasksUseCase(taskRepo),
           new DeleteTaskByIdUseCase(taskRepo),
+          NotifierService.getInstance(
+            new EmailServiceImpl(),
+            new SmsServiceImpl(),
+            // new PushNotificationServiceImpl()
+          )
         );
       },
       inject: [MongodbTaskRepository],

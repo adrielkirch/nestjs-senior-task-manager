@@ -7,6 +7,7 @@ export type UserProps = {
   email?: string;
   password?: string;
   role?: string; 
+  phone?: string; 
 };
 
 export class User {
@@ -72,11 +73,21 @@ export class User {
   }
 
   get role() {
-    return this.props.role; // Define getter for role
+    return this.props.role; 
+  }
+  set role(value: string) {
+    this.props.role = value; 
   }
 
-  set role(value: string) {
-    this.props.role = value; // Define setter for role
+  updatePhone(phone: string) {
+    this.phone = phone;
+  }
+  get phone() {
+    return this.props.phone;
+  }
+
+  set phone(value: string) {
+    this.props.phone = value; 
   }
 
   toJSON() {

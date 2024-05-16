@@ -16,6 +16,7 @@ const newUser = {
     name: "John",
     surname: "Doe",
     email: "john@doe.com",
+    phone:"+18045551234",
     password: "My_Test_Password123!",
     role: "guest",
     createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
@@ -28,6 +29,7 @@ const newUserUpdated: UserModel = {
     name: "John",
     surname: "Doe",
     password: "My_Test_Password123!",
+    phone:"+18045551234",
     role: "guest",
     createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
     updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:01"),
@@ -132,6 +134,7 @@ describe('UserService', () => {
                 id: newUser.id,
                 name: newUser.name,
                 surname: newUser.surname,
+                phone: newUser.phone,
                 email: newUser.email,
                 createdAt: newUser.createdAt,
                 updatedAt: newUser.updatedAt,
@@ -163,6 +166,7 @@ describe('UserService', () => {
                 surname: newUserUpdated.surname,
                 password: newUserUpdated.password,
                 role: newUserUpdated.role,
+                phone:  newUserUpdated.phone,
             }
             const expected = {
                 id: newUserUpdated.id,
@@ -172,6 +176,7 @@ describe('UserService', () => {
                 createdAt: newUserUpdated.createdAt,
                 updatedAt: newUserUpdated.updatedAt,
                 role: newUserUpdated.role,
+                phone:  newUserUpdated.phone,
             }
 
             await userService.create(newUser);
@@ -190,6 +195,7 @@ describe('UserService', () => {
                 createdAt: newUser.createdAt,
                 updatedAt: newUser.updatedAt,
                 role: newUser.role,
+                phone:  newUser.phone,
             }
             await userService.create(newUser);
             const result = await userService.findById(newUser.id);
@@ -207,6 +213,7 @@ describe('UserService', () => {
                 createdAt: newUser.createdAt,
                 updatedAt: newUser.updatedAt,
                 role: newUser.role,
+                phone:  newUser.phone,
             }];
             const result = await userService.findPaginated(1, 1);
             expect(result).toEqual(expected);

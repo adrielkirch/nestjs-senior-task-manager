@@ -13,6 +13,7 @@ export class ProfileController {
   constructor(private readonly profileService: ProfileService) { }
 
   @Post('create')
+  @UseGuards(DefaultMiddleware)
   @ApiCreatedResponse({
     description: "It should correctly return Profile",
     type: ProfileResponseDto
@@ -23,6 +24,7 @@ export class ProfileController {
   }
 
   @Put('')
+  @UseGuards(DefaultMiddleware, PermissionGuard)
   @ApiCreatedResponse({
     description: "It should correctly return Profile",
     type: ProfileResponseDto

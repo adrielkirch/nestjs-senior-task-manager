@@ -25,7 +25,6 @@ import { UpdateProfileUseCase } from 'src/usecases/profile/update-profile-usecas
         return new ProfileService(
           new AddProfileUseCase(profileRepo),
           new UpdateProfileUseCase(profileRepo),
-
           new FindByIdProfilesUseCase(profileRepo),
           new FindPaginatedProfilesUseCase(profileRepo),
           new FindByPropertyAndValueProfilesUseCase(profileRepo),

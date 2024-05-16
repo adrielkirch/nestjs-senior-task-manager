@@ -1,11 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { randomUUID } from 'crypto';
+import { Document } from 'mongoose';
 
 @Schema({
   collection: 'profiles',
   timestamps: true,
 })
-export class ProfileModel {
+export class ProfileModel extends Document {
   @Prop({
     type: String,
     default: () => randomUUID(),
@@ -19,7 +20,7 @@ export class ProfileModel {
   userId: string;
 
   @Prop({
-    type: String,
+    type: [String],
     required: true,
   })
   notifications: string[];

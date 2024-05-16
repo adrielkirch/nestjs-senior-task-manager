@@ -6,8 +6,8 @@ import { NotifyRequestDto } from "src/adapters/request/notification.request.dto"
 import { EventEmitter } from "events";
 
 @Injectable()
-export class Notifier {
-  private static instance: Notifier;
+export class NotifierService {
+  private static instance: NotifierService;
   private emailService: EmailServiceInterface;
   private smsService: SmsServiceInterface;
   private pushNotificationService: PushNotificationServiceInterface;
@@ -15,38 +15,40 @@ export class Notifier {
   private constructor(
     emailService: EmailServiceInterface,
     smsService: SmsServiceInterface,
-    pushNotificationService: PushNotificationServiceInterface
+    // pushNotificationService: PushNotificationServiceInterface
   ) {
     this.emailService = emailService;
     this.smsService = smsService;
-    this.pushNotificationService = pushNotificationService;
+    // this.pushNotificationService = pushNotificationService;
     this.eventEmitter = new EventEmitter();
   }
 
   static getInstance(
     emailService: EmailServiceInterface,
     smsService: SmsServiceInterface,
-    pushNotificationService: PushNotificationServiceInterface
-  ): Notifier {
-    if (!Notifier.instance) {
-      Notifier.instance = new Notifier(
+    // pushNotificationService: PushNotificationServiceInterface
+  ): NotifierService {
+    if (!NotifierService.instance) {
+      NotifierService.instance = new NotifierService(
         emailService,
         smsService,
-        pushNotificationService
+        // pushNotificationService
       );
     }
-    return Notifier.instance;
+    return NotifierService.instance;
   }
 
   emitNotifyEvent(name: string): void {
     this.eventEmitter.emit("onNotify", name);
   }
 
-  onAdd(eventName: string, notificationData: NotifyRequestDto): void {
-    this.eventEmitter.on("onAdd", () => {
+
+  onNotify(eventName: string, notificationData: NotifyRequestDto): void {
+    this.eventEmitter.on("onNotify", () => {
       this.notify(eventName, notificationData);
     });
   }
+
 
   private async notify(
     eventName: string,
@@ -66,12 +68,12 @@ export class Notifier {
           notificationData.message
         );
         break;
-      case "notification":
-        await this.sendPushNotification(
-          notificationData.recipients,
-          notificationData.message
-        );
-        break;
+      // case "notification":
+      //   await this.sendPushNotification(
+      //     notificationData.recipients,
+      //     notificationData.message
+      //   );
+      //   break;
       default:
         throw new BadRequestException(
           `Unsupported notification type: ${eventName}`

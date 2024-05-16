@@ -7,13 +7,17 @@ import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request
 import { UpdateTaskUseCase } from 'src/usecases/task/update-task-usecase';
 import DateUtil from 'src/utils/util.date';
 import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
+import { NotifierService } from 'src/infrastructure/notifier/notifier';
 import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete-task-usecase';
 import { TaskResponseDto } from 'src/adapters/response/task.response.dto';
 import { Task } from 'src/domain/task/task';
+import { EmailServiceImpl } from 'src/infrastructure/notifier/email/email';
+import { PushNotificationServiceImpl } from 'src/infrastructure/notifier/push_notification/push.notification';
+import { SmsServiceImpl } from 'src/infrastructure/notifier/sms/sms';
 
 @Injectable()
 export class TaskService {
-    private scheduler = SchedulerService.getInstance();
+
 
     constructor(
         private readonly addTaskUseCase: AddTaskUseCase,
@@ -22,14 +26,23 @@ export class TaskService {
         private readonly findPaginatedTasksUseCase: FindPaginatedTasksUseCase,
         private readonly findByPropertyAndValueTasksUseCase: FindByPropertyAndValueTasksUseCase,
         private readonly deleteTaskByIdUseCase: DeleteTaskByIdUseCase,
+        private readonly notifierService: NotifierService
+        // private readonly emailServiceImpl: EmailServiceImpl,
+        // private readonly pushNotificationServiceImpl: PushNotificationServiceImpl,
+        // private readonly smsServiceImpl: SmsServiceImpl,
+
+
     ) { }
+
+    private scheduler = SchedulerService.getInstance();
+
 
     async create(data: CreateRequestTaskDto): Promise<TaskResponseDto> {
         const expirationDateISO = DateUtil.defaultFormatToISO(data.expirationDate.toString());
         const remindDateISO = DateUtil.defaultFormatToISO(data.remindDate.toString());
         data.expirationDate = expirationDateISO;
         data.remindDate = remindDateISO;
-        
+
         const task = Task.create(data);
         const newTask = await this.addTaskUseCase.create(task);
         const taskId = newTask.id;
@@ -39,7 +52,6 @@ export class TaskService {
             throw new BadRequestException(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
-
         const isNowDateSameOrAfter = DateUtil.isSameOrAfter(now, remindDateISO);
         if (isNowDateSameOrAfter) {
             throw new BadRequestException(`Now date not must be same or after of remindDate`);
@@ -66,9 +78,20 @@ export class TaskService {
                 console.log(`Event ${taskId} removed successfully`);
             }, 1000)
             this.scheduler.emitRemoveEvent(taskId);
+
+            const notificationData = {
+                message: "Teste",
+                subject: "Subjected",
+                recipients: ["adriel.kirch.1@gmail.com"]
+            }
+
+            this.notifierService.onNotify("email", notificationData);
+            this.notifierService.emitNotifyEvent("onNotify");
         }, ms);
 
+
         this.scheduler.emitAddEvent(taskId)
+
 
         return newTask;
 
@@ -142,6 +165,15 @@ export class TaskService {
                 console.log(`Event ${taskId} removed successfully`);
             }, 1000)
             this.scheduler.emitRemoveEvent(taskId);
+
+            const notificationData = {
+                message: "Teste",
+                subject: "Subjected",
+                recipients: ["adriel.kirch.1@gmail.com"]
+            }
+
+            this.notifierService.onNotify("email", notificationData);
+            this.notifierService.emitNotifyEvent("onNotify");
         }, ms);
 
         this.scheduler.emitAddEvent(taskId)

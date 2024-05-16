@@ -42,7 +42,7 @@ export class UpdateProfileRequestDto {
 
     @ApiProperty({
         description: "The profile's notification preferences",
-        example: ["sms", "email"]
+        example: ["sms", "email","notification"]
     })
     @IsArray()
     notifications: string[];
