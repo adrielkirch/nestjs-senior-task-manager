@@ -2,10 +2,18 @@
  📋 Tasks domain 
 
 
-  TODO Implement a get user with profile in tasks to send notifications Add / Update
+  ✅ Implement a get user with profile in tasks to send notifications Add / Update
 
-  TODO It should work for sms and email dinamic
+  ✅ It should work for sms and email dynamic
+
+  ✅ Create onAdd task async callback outside the main add / update service function 
    
   TODO Fix firebase connection, private key
 
-  ✅ Create onAdd task async callback outised the main add / update service function 
+  TODO Save / get / update Crud Device Token from user
+  
+  TODO Fix all files which is not in correct pattern.
+  
+  TODO Eslint accept only '' and `` strings
+
+  TODO Do not accept ESlint two spaces
