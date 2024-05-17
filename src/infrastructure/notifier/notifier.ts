@@ -45,6 +45,7 @@ export class NotifierService {
 
   onNotify(eventName: string, notificationData: NotifyRequestDto): void {
     this.eventEmitter.on("onNotify", () => {
+      console.log("Notify event: " + eventName)
       this.notify(eventName, notificationData);
     });
   }

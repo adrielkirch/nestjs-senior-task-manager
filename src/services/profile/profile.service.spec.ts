@@ -10,8 +10,6 @@ import { ProfileRepositoryInterface } from 'src/data/protocols/db/profile/profil
 import { ProfileModel } from 'src/infrastructure/database/mongodb/models/profile/profile.model';
 import DateUtil from 'src/utils/util.date';
 
-
-
 const newProfile = {
     biography: 'Any biography',
     notifications: ['preference1', 'preference2'],
@@ -31,47 +29,39 @@ const newProfileUpdated: ProfileModel = {
     userId: '123',
     createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
     updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
-}
-
+} as ProfileModel;
 
 export class MockProfileRepository implements ProfileRepositoryInterface {
-
-
     async login(profile: Profile): Promise<ProfileModel | null> {
         const result: ProfileModel = {
             _id: "123",
             id: "123",
             ...newProfile
-        }
+        } as ProfileModel;
         return result;
     }
-
 
     async create(data: Profile): Promise<ProfileModel> {
         const result: ProfileModel = {
             _id: "123",
             id: "123",
             ...newProfile
-        }
+        } as ProfileModel;
         return result;
     }
-
-
 
     async findById(id: string): Promise<ProfileModel> {
         const result: ProfileModel = {
             _id: "123",
             id: "123",
             ...newProfile
-        }
+        } as ProfileModel;
         return result;
     }
 
     async findByPropertyAndValue<T>(property: string, value: T): Promise<ProfileModel[]> {
-
         return []
     }
-
 
     async update(dataUpdate: Profile): Promise<ProfileModel> {
         return newProfileUpdated
@@ -82,7 +72,7 @@ export class MockProfileRepository implements ProfileRepositoryInterface {
             _id: "123",
             id: "123",
             ...newProfile
-        }
+        } as ProfileModel;
         return [result];
     }
 
@@ -107,7 +97,7 @@ describe('ProfileService', () => {
         findByIdProfilesUseCase = new FindByIdProfilesUseCase(new MockProfileRepository());
         findPaginatedProfilesUseCase = new FindPaginatedProfilesUseCase(new MockProfileRepository());
         findByPropertyAndValueProfilesUseCase = new FindByPropertyAndValueProfilesUseCase(new MockProfileRepository());
-      
+
 
         profileService = new ProfileService(
             addProfileUseCase,
@@ -125,18 +115,18 @@ describe('ProfileService', () => {
             const expected = {
                 id: "123",
                 biography: newProfile.biography,
-                notifications:  newProfile.notifications,
-                gender:  newProfile.gender,
-                image:  newProfile.image,
-                userId:  newProfile.userId,
-                createdAt:  newProfile.createdAt,
-                updatedAt:  newProfile.updatedAt,
+                notifications: newProfile.notifications,
+                gender: newProfile.gender,
+                image: newProfile.image,
+                userId: newProfile.userId,
+                createdAt: newProfile.createdAt,
+                updatedAt: newProfile.updatedAt,
             }
             const result = await profileService.create(newProfile);
             expect(result).toEqual(expected);
         });
     });
-  
+
 
 
     describe('update', () => {
@@ -144,22 +134,22 @@ describe('ProfileService', () => {
             const data = {
                 id: "123",
                 biography: newProfileUpdated.biography,
-                notifications:  newProfileUpdated.notifications,
-                gender:  newProfileUpdated.gender,
-                image:  newProfileUpdated.image,
-                userId:  newProfileUpdated.userId,
-                createdAt:  newProfileUpdated.createdAt,
-                updatedAt:  newProfileUpdated.updatedAt,
+                notifications: newProfileUpdated.notifications,
+                gender: newProfileUpdated.gender,
+                image: newProfileUpdated.image,
+                userId: newProfileUpdated.userId,
+                createdAt: newProfileUpdated.createdAt,
+                updatedAt: newProfileUpdated.updatedAt,
             }
             const expected = {
                 id: newProfileUpdated.id,
                 biography: newProfileUpdated.biography,
-                notifications:  newProfileUpdated.notifications,
-                gender:  newProfileUpdated.gender,
-                image:  newProfileUpdated.image,
-                userId:  newProfileUpdated.userId,
-                createdAt:  newProfileUpdated.createdAt,
-                updatedAt:  newProfileUpdated.updatedAt,
+                notifications: newProfileUpdated.notifications,
+                gender: newProfileUpdated.gender,
+                image: newProfileUpdated.image,
+                userId: newProfileUpdated.userId,
+                createdAt: newProfileUpdated.createdAt,
+                updatedAt: newProfileUpdated.updatedAt,
             }
 
             await profileService.create(newProfile);
@@ -173,12 +163,12 @@ describe('ProfileService', () => {
             const expected = {
                 id: newProfileUpdated.id,
                 biography: newProfile.biography,
-                notifications:  newProfile.notifications,
-                gender:  newProfile.gender,
-                image:  newProfile.image,
-                userId:  newProfile.userId,
-                createdAt:  newProfile.createdAt,
-                updatedAt:  newProfile.updatedAt,
+                notifications: newProfile.notifications,
+                gender: newProfile.gender,
+                image: newProfile.image,
+                userId: newProfile.userId,
+                createdAt: newProfile.createdAt,
+                updatedAt: newProfile.updatedAt,
             }
             await profileService.create(newProfile);
             const result = await profileService.findById('123');
@@ -191,12 +181,12 @@ describe('ProfileService', () => {
             const expected = [{
                 id: newProfileUpdated.id,
                 biography: newProfile.biography,
-                notifications:  newProfile.notifications,
-                gender:  newProfile.gender,
-                image:  newProfile.image,
-                userId:  newProfile.userId,
-                createdAt:  newProfile.createdAt,
-                updatedAt:  newProfile.updatedAt,
+                notifications: newProfile.notifications,
+                gender: newProfile.gender,
+                image: newProfile.image,
+                userId: newProfile.userId,
+                createdAt: newProfile.createdAt,
+                updatedAt: newProfile.updatedAt,
             }];
             const result = await profileService.findPaginated(1, 1);
             expect(result).toEqual(expected);

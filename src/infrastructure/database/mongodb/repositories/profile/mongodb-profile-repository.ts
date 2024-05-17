@@ -25,7 +25,6 @@ export class MongodbProfileRepository implements ProfileRepositoryInterface {
    * @returns A Promise that resolves to the created profile document.
    */
   async create(data: Profile): Promise<ProfileModel> {
-    console.log(data.toJSON())
     const result = await this.profileCollection.create(data.toJSON());
     return result;
   }

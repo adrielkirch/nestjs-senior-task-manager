@@ -52,10 +52,6 @@ export class ProfileModel extends Document {
     type: Date,
   })
   updatedAt: Date;
-
-  get id(): string {
-    return this._id;
-  }
 }
 
 export const ProfileSchema = SchemaFactory.createForClass(ProfileModel);

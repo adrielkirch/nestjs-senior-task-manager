@@ -14,11 +14,11 @@ import { Task } from 'src/domain/task/task';
 import { EmailServiceImpl } from 'src/infrastructure/notifier/email/email';
 import { PushNotificationServiceImpl } from 'src/infrastructure/notifier/push_notification/push.notification';
 import { SmsServiceImpl } from 'src/infrastructure/notifier/sms/sms';
+import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
+import { FindByPropertyAndValueProfilesUseCase } from 'src/usecases/profile/find-by-property-and-value-profile-usecase';
 
 @Injectable()
 export class TaskService {
-
-
     constructor(
         private readonly addTaskUseCase: AddTaskUseCase,
         private readonly updateTaskUseCase: UpdateTaskUseCase,
@@ -26,7 +26,9 @@ export class TaskService {
         private readonly findPaginatedTasksUseCase: FindPaginatedTasksUseCase,
         private readonly findByPropertyAndValueTasksUseCase: FindByPropertyAndValueTasksUseCase,
         private readonly deleteTaskByIdUseCase: DeleteTaskByIdUseCase,
-        private readonly notifierService: NotifierService
+        private readonly notifierService: NotifierService,
+        private readonly findByIdUsersUseCase: FindByIdUsersUseCase,
+        private readonly findByPropertyAndValueProfilesUseCase: FindByPropertyAndValueProfilesUseCase,
     ) { }
 
     private scheduler = SchedulerService.getInstance();
@@ -47,13 +49,15 @@ export class TaskService {
             throw new BadRequestException(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
+        console.log("Now is " + now)
         const isNowDateSameOrAfter = DateUtil.isSameOrAfter(now, remindDateISO);
         if (isNowDateSameOrAfter) {
             throw new BadRequestException(`Now date not must be same or after of remindDate`);
         }
 
         const ms = DateUtil.timeDifferenceInMs(remindDateISO, now);
-        const cb = this.schedulerCallBack(taskId)
+        console.log('min ' + ms / 1000 / 60)
+        const cb = this.schedulerCallBack(taskId, task.assignTo)
         this.scheduler.onAdd(taskId, cb, ms);
         this.scheduler.emitAddEvent(taskId)
         return newTask;
@@ -100,17 +104,18 @@ export class TaskService {
             throw new BadRequestException(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
+        console.log('now ->', now)
         const ms = DateUtil.timeDifferenceInMs(data.remindDate, now);
 
+        console.log('min ' + ms / 1000 / 60)
 
         this.scheduler.onDelete(taskId, async () => {
             console.log(`Event ${taskId} removed successfully`);
         }, 1)
         this.scheduler.emitRemoveEvent(taskId);
 
-        const cb = this.schedulerCallBack(taskId)
+        const cb = this.schedulerCallBack(taskId, task.assignTo)
         this.scheduler.onAdd(taskId, cb, ms);
-
         this.scheduler.emitAddEvent(taskId)
 
 
@@ -118,36 +123,53 @@ export class TaskService {
     }
 
 
-    private schedulerCallBack(taskId: string): () => void {
+    private schedulerCallBack(taskId: string, userId: string): () => void {
         return () => {
             (async () => {
                 const taskFuture = await this.findById(taskId);
                 if (!taskFuture) {
                     return;
                 }
-                console.log(`\n
-              Reminding to complete task:\n
-              Now: ${new Date()}\n,
-              Id:${taskId}\n
-              Title:${taskFuture.title}\n
-              Text:${taskFuture.text}\n
-              Expiration:${taskFuture.expirationDate}\n
-              Status: ${taskFuture.status}\n
-            `);
+                const message = `\n
+                    Reminding to complete task:\n
+                    Now: ${new Date()}\n,
+                    Id:${taskId}\n
+                    Title:${taskFuture.title}\n
+                    Text:${taskFuture.text}\n
+                    Expiration:${taskFuture.expirationDate}\n
+                    Status: ${taskFuture.status}\n
+                `
+                console.log(message);
 
                 this.scheduler.onDelete(taskId, async () => {
                     console.log(`Event ${taskId} removed successfully`);
                 }, 1000)
                 this.scheduler.emitRemoveEvent(taskId);
 
+                const [user, profiles] = await Promise.all([
+                    this.findByIdUsersUseCase.findById(userId),
+                    this.findByPropertyAndValueProfilesUseCase.findByPropertyAndValue('userId', userId)
+                ]);
+                const profile = profiles[0];
+
                 const notificationData = {
-                    message: "Teste",
-                    subject: "Subjected",
-                    recipients: ["adriel.kirch.1@gmail.com"]
+                    message: `<b>Reminding to complete task:</b><br><p>${message.replaceAll("\n","<br>")}</p>`,
+                    subject: `Remeber to finish task: ${taskFuture.title}`,
+                    recipients: [user.email]
+                }
+                if (profile.notifications.includes("email")) {
+                    this.notifierService.onNotify("email", notificationData);
+                    this.notifierService.emitNotifyEvent("onNotify");
                 }
 
-                this.notifierService.onNotify("email", notificationData);
-                this.notifierService.emitNotifyEvent("onNotify");
+                if (profile.notifications.includes("sms")) {
+                    notificationData.recipients = [user.phone]
+                    notificationData.message = message;
+                    this.notifierService.onNotify("sms", notificationData);
+                    this.notifierService.emitNotifyEvent("onNotify");
+                }
+
+
             })();
         }
     }
