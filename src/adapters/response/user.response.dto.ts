@@ -56,4 +56,10 @@ export class UserResponseDto {
         example: "admin"
     })
     role: string;
+
+    @ApiProperty({
+        description: "The user's phone",
+        example: "+1804276289"
+    })
+    phone: string;
 }

@@ -1,5 +1,5 @@
 import { CanActivate, ExecutionContext, ForbiddenException } from '@nestjs/common';
-import { RoleEnum } from 'src/domain/role/types';
+import { RoleEnum } from 'src/types/role/types';
 import { Privileges } from 'src/domain/privilege/privilege';
 
 export class PermissionGuard implements CanActivate {
@@ -23,6 +23,7 @@ export class PermissionGuard implements CanActivate {
             "/tasks": { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, false) },
             "/comments": { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, false) },
             "/teams": { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(false, false, false) },
+            "/profiles": { [RoleEnum.GUEST]: new Privileges(true, true, true), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, true) },
         };
 
         const request = context.switchToHttp().getRequest();

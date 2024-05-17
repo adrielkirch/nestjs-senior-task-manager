@@ -43,7 +43,7 @@ export class Comment {
     this.props.userId = value;
   }
 
-  updateTaskId(taskId: string) { // Corrected method name to updateTaskId
+  updateTaskId(taskId: string) { 
     this.props.taskId = taskId;
   }
 

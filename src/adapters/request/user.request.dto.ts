@@ -58,6 +58,16 @@ export class CreateRequestUserDto {
   @IsOptional()
   @IsString()
   role: string = "guest";
+
+  @ApiProperty({
+    description: "The user's phone",
+    example: "+18045551234",
+  })
+  @IsString()
+  @Matches(/^\+\d{1,3}\d{10,14}$/, {
+    message: 'Phone number must be a valid international number',
+  })
+  phone: string;
 }
 
 export class UpdateRequestUserDto {
@@ -103,4 +113,15 @@ export class UpdateRequestUserDto {
     message: 'Password must be at least 8 characters long and contain at least one digit, one lowercase letter, one uppercase letter, and one special character.',
   })
   password?: string;
+
+  @ApiProperty({
+    description: "The user's phone",
+    example: "+18045551234",
+  })
+  @IsOptional()
+  @IsString()
+  @Matches(/^\+\d{1,3}\d{10,14}$/, {
+    message: 'Phone number must be a valid international number',
+  })
+  phone?: string;
 }

@@ -1,11 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { randomUUID } from 'crypto';
+import { Document } from 'mongoose';
 
 @Schema({
-  collection: 'users',
+  collection: 'profiles',
   timestamps: true,
 })
-export class UserModel {
+export class ProfileModel extends Document {
   @Prop({
     type: String,
     default: () => randomUUID(),
@@ -16,37 +17,31 @@ export class UserModel {
     type: String,
     required: true,
   })
-  name: string;
+  userId: string;
+
+  @Prop({
+    type: [String],
+    required: true,
+  })
+  notifications: string[];
 
   @Prop({
     type: String,
     required: true,
   })
-  surname: string;
+  gender: string;
 
   @Prop({
     type: String,
     required: true,
   })
-  email: string;
+  image: string;
 
   @Prop({
     type: String,
     required: true,
   })
-  password: string;
-
-  @Prop({
-    type: String,
-    required: true,
-  })
-  role: string;
-
-  @Prop({
-    type: String,
-    required: true,
-  })
-  phone: string;
+  biography: string;
 
   @Prop({
     type: Date,
@@ -57,10 +52,6 @@ export class UserModel {
     type: Date,
   })
   updatedAt: Date;
-
-  get id(): string {
-    return this._id;
-  }
 }
 
-export const UserSchema = SchemaFactory.createForClass(UserModel);
+export const ProfileSchema = SchemaFactory.createForClass(ProfileModel);

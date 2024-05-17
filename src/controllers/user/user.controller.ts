@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Query, Req, SetMetadata, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, Query, Req, HttpCode, SetMetadata, UseGuards } from '@nestjs/common';
 import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
 import { UserService } from 'src/services/user/user.service';
 import { DefaultMiddleware } from 'src/middlewares/default.middleware';
@@ -13,6 +13,7 @@ export class UserController {
   constructor(private readonly userService: UserService) { }
 
   @Post('signup')
+  @HttpCode(201)
   @ApiCreatedResponse({
     description: "It should correctly return User",
     type: UserResponseDto
@@ -22,6 +23,7 @@ export class UserController {
   }
 
   @Put('')
+  @HttpCode(200)
   @ApiCreatedResponse({
     description: "It should correctly return User",
     type: UserResponseDto
@@ -32,6 +34,7 @@ export class UserController {
   }
 
   @Post('login')
+  @HttpCode(200)
   @ApiOkResponse({
     description: "It should correctly return LoginResponseDto",
     type: LoginRequestDto
@@ -47,6 +50,7 @@ export class UserController {
     description: "It should correctly return Users[]",
     type: [UserResponseDto]
   })
+  @HttpCode(200)
   @Get('paginated')
   async findPaginated(@Query('page') page: number, @Query('limit') limit: number) {
     return await this.userService.findPaginated(page, limit);
@@ -59,6 +63,7 @@ export class UserController {
     description: "It should correctly return User",
     type: UserResponseDto
   })
+  @HttpCode(200)
   @Get('find-by-id')
   async findUserById(@Query('id') id: string,) {
     return await this.userService.findById(id);
@@ -70,6 +75,7 @@ export class UserController {
     description: "It should correctly return User",
     type: UserResponseDto
   })
+  @HttpCode(200)
   @Get('me')
   async findCurrentUser(@Req() request: Request) {
     return await this.userService.findById(request.user);

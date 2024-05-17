@@ -19,7 +19,8 @@ export class UserTransformer {
       email: user.email,            
       createdAt: user.createdAt,  
       updatedAt: user.updatedAt ,
-      role: user.role  
+      role: user.role,
+      phone: user.phone
     } as UserResponseDto;
   }
 

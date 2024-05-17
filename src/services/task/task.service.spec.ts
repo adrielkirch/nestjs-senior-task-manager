@@ -10,6 +10,17 @@ import { FindByIdTasksUseCase } from 'src/usecases/task/find-by-id-task-usecase'
 import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-task-usecase';
 import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete-task-usecase';
 import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
+import { NotifierService } from 'src/infrastructure/notifier/notifier';
+import { EmailServiceInterface } from 'src/data/protocols/notifier/email/email.interface';
+import { SmsServiceInterface } from 'src/data/protocols/notifier/sms/sms.interface';
+import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
+import { FindByPropertyAndValueProfilesUseCase } from 'src/usecases/profile/find-by-property-and-value-profile-usecase';
+import { ProfileModel } from 'src/infrastructure/database/mongodb/models/profile/profile.model';
+import { Profile } from 'src/domain/profile/profile';
+import { ProfileRepositoryInterface } from 'src/data/protocols/db/profile/profile-repository.interface';
+import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
+import { User } from 'src/domain/user/user';
+import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
 
 const schedule = SchedulerService.getInstance();
 
@@ -18,7 +29,7 @@ function getTaskData(taskId: string) {
         id: taskId,
         title: "Sample Task",
         text: "This is a sample task description.",
-        expirationDate: DateUtil.defaultFormatToISO("01/01/2099 00:00:00") ,
+        expirationDate: DateUtil.defaultFormatToISO("01/01/2099 00:00:00"),
         remindDate: DateUtil.defaultFormatToISO("01/01/2100 00:00:00"),
         status: "TODO",
         assignTo: "John Doe",
@@ -56,11 +67,24 @@ function getTaskUpdateData(taskId: string) {
         userId: "456",
         createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
         updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00")
-    } 
+    }
 }
 
 
-function getTaskUpdateDataDto(taskId: string){
+const newUserUpdated: UserModel = {
+    _id: "123",
+    id: "123",
+    email: "john@doe.com",
+    name: "John",
+    surname: "Doe",
+    password: "My_Test_Password123!",
+    phone: "+18045551234",
+    role: "guest",
+    createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+    updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:01"),
+}
+
+function getTaskUpdateDataDto(taskId: string) {
     return {
         id: taskId,
         title: "Simple Task!",
@@ -70,7 +94,7 @@ function getTaskUpdateDataDto(taskId: string){
         userId: "456",
         expirationDate: "01/01/2100 01:01:01",
         remindDate: "01/01/2100 00:00:01",
-        teamId:"543",
+        teamId: "543",
     }
 }
 
@@ -84,10 +108,44 @@ function getTaskDataDto(taskId: string) {
         status: "TODO",
         assignTo: "John Doe",
         userId: "456",
-        teamId:"543",
+        teamId: "543",
         createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
         updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
     }
+}
+
+
+const newProfile = {
+    biography: 'Any biography',
+    notifications: ['preference1', 'preference2'],
+    gender: 'female',
+    image: 'https://example.com/image.png',
+    userId: '123',
+    createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+    updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+}
+const newProfileUpdated: ProfileModel = {
+    _id: "123",
+    id: "123",
+    biography: 'Any biography',
+    notifications: ['preference1', 'preference2'],
+    gender: 'female',
+    image: 'https://example.com/image.png',
+    userId: '123',
+    createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+    updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+} as ProfileModel;
+
+const newUser = {
+    id: "123",
+    name: "John",
+    surname: "Doe",
+    email: "john@doe.com",
+    phone: "+18045551234",
+    password: "My_Test_Password123!",
+    role: "guest",
+    createdAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
+    updatedAt: DateUtil.defaultFormatToISO("01/01/2000 00:00:00"),
 }
 
 export class MockTaskRepository implements TaskRepositoryInterface {
@@ -140,6 +198,133 @@ export class MockTaskRepository implements TaskRepositoryInterface {
     }
 }
 
+export class EmailServiceMock implements EmailServiceInterface {
+    async send(recipients: string[], subject: string, html: string) {
+
+    }
+}
+
+export class SmsServiceMock implements SmsServiceInterface {
+    async send(recipients: string[], message: string) {
+
+    }
+}
+
+
+export class MockUserRepository implements UserRepositoryInterface {
+
+
+    async login(user: User): Promise<UserModel | null> {
+        const result: UserModel = {
+            _id: "123",
+            ...newUser
+        }
+        return result;
+    }
+
+
+    async create(data: User): Promise<UserModel> {
+        const result: UserModel = {
+            _id: "123",
+            ...newUser
+        }
+        return result;
+    }
+
+
+    async find(): Promise<UserModel[]> {
+        const result: UserModel = {
+            _id: "123",
+            ...newUser
+        }
+        return [result]
+    }
+
+
+    async findById(id: string): Promise<UserModel> {
+        const result: UserModel = {
+            _id: "123",
+            ...newUser
+        }
+        return result;
+    }
+
+    async findByPropertyAndValue<T>(property: string, value: T): Promise<UserModel[]> {
+
+        return []
+    }
+
+
+    async update(dataUpdate: User): Promise<UserModel> {
+        return newUserUpdated
+    }
+
+    async findPaginated(page: number, limit: number): Promise<UserModel[]> {
+        const result: UserModel = {
+            _id: "123",
+            ...newUser
+        }
+        return [result];
+    }
+
+    async delete(id: string): Promise<void> {
+
+    }
+}
+
+
+
+export class MockProfileRepository implements ProfileRepositoryInterface {
+    async login(profile: Profile): Promise<ProfileModel | null> {
+        const result: ProfileModel = {
+            _id: "123",
+            id: "123",
+            ...newProfile
+        } as ProfileModel;
+        return result;
+    }
+
+    async create(data: Profile): Promise<ProfileModel> {
+        const result: ProfileModel = {
+            _id: "123",
+            id: "123",
+            ...newProfile
+        } as ProfileModel;
+        return result;
+    }
+
+    async findById(id: string): Promise<ProfileModel> {
+        const result: ProfileModel = {
+            _id: "123",
+            id: "123",
+            ...newProfile
+        } as ProfileModel;
+        return result;
+    }
+
+    async findByPropertyAndValue<T>(property: string, value: T): Promise<ProfileModel[]> {
+        return []
+    }
+
+    async update(dataUpdate: Profile): Promise<ProfileModel> {
+        return newProfileUpdated
+    }
+
+    async findPaginated(page: number, limit: number): Promise<ProfileModel[]> {
+        const result: ProfileModel = {
+            _id: "123",
+            id: "123",
+            ...newProfile
+        } as ProfileModel;
+        return [result];
+    }
+
+    async delete(id: string): Promise<void> {
+
+    }
+}
+
+
 describe('TaskService', () => {
     let taskService: TaskService;
     let addTaskUseCase: AddTaskUseCase;
@@ -148,21 +333,32 @@ describe('TaskService', () => {
     let findPaginatedTasksUseCase: FindPaginatedTasksUseCase;
     let findByPropertyAndValueTasksUseCase: FindByPropertyAndValueTasksUseCase;
     let deleteTaskByIdUseCase: DeleteTaskByIdUseCase;
-
+    let notifierService: NotifierService;
+    let findByIdUsersUseCase: FindByIdUsersUseCase;
+    let findByPropertyAndValueProfilesUseCase: FindByPropertyAndValueProfilesUseCase;
     beforeEach(() => {
         addTaskUseCase = new AddTaskUseCase(new MockTaskRepository());
         updateTaskUseCase = new UpdateTaskUseCase(new MockTaskRepository());
         findByIdTasksUseCase = new FindByIdTasksUseCase(new MockTaskRepository());
         findPaginatedTasksUseCase = new FindPaginatedTasksUseCase(new MockTaskRepository());
         findByPropertyAndValueTasksUseCase = new FindByPropertyAndValueTasksUseCase(new MockTaskRepository())
-
+        findByIdUsersUseCase = new FindByIdUsersUseCase(new MockUserRepository());
+        findByPropertyAndValueProfilesUseCase = new FindByPropertyAndValueProfilesUseCase(new MockProfileRepository());
+        findByPropertyAndValueTasksUseCase = new FindByPropertyAndValueTasksUseCase(new MockTaskRepository())
+        notifierService = NotifierService.getInstance(
+            new EmailServiceMock(),
+            new SmsServiceMock(),
+        );
         taskService = new TaskService(
             addTaskUseCase,
             updateTaskUseCase,
             findByIdTasksUseCase,
             findPaginatedTasksUseCase,
             findByPropertyAndValueTasksUseCase,
-            deleteTaskByIdUseCase
+            deleteTaskByIdUseCase,
+            notifierService,
+            findByIdUsersUseCase,
+            findByPropertyAndValueProfilesUseCase
         );
 
 
@@ -184,7 +380,7 @@ describe('TaskService', () => {
             const result = await taskService.update(getTaskUpdateDataDto('123'));
             const expected = getTaskUpdateData('123')
             expect(result).toEqual(expected);
-            
+
         });
     });
 
@@ -194,16 +390,16 @@ describe('TaskService', () => {
             const result = await taskService.findById('123');
             const expected = getTaskData('123');
             expect(result).toEqual(expected);
-            
+
         });
     });
 
     describe('findPaginated', () => {
         it('should find paginated tasks', async () => {
             const result = await taskService.findPaginated(1, 1);
-            const expected = [getTaskData('123')];    
+            const expected = [getTaskData('123')];
             expect(result).toEqual(expected);
-            
+
         });
     });
 

@@ -1,13 +1,19 @@
 
  📋 Tasks domain 
 
-   ✅ Refactor every flow to have a teamId property 
 
- 📋 TDD
+  ✅ Implement a get user with profile in tasks to send notifications Add / Update
 
-   ✅ All tasks TDD passing
-   ✅ mongodb-user-team-repository.spec 
-   ✅ mongodb-team-repository.spec
-   ✅ team.service.spec
-   ✅ user-team.service.spec
+  ✅ It should work for sms and email dynamic
+
+  ✅ Create onAdd task async callback outside the main add / update service function 
    
+  TODO Fix firebase connection, private key
+
+  TODO Save / get / update Crud Device Token from user
+  
+  TODO Fix all files which is not in correct pattern.
+  
+  TODO Eslint accept only '' and `` strings
+
+  TODO Do not accept ESlint two spaces

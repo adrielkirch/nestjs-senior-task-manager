@@ -27,27 +27,18 @@ export class SecurityUtil {
       .digest("hex");
   }
 
-  private static genRandomBytes(len: number): string {
+  static genRandomBytes(len: number): string {
     const buf = crypto.randomBytes(len);
     return buf.toString("hex");
   }
 
-  static sensiviteDataField<T>(data: T, field: string): T {
-    delete data[field];
-    return data;
-  }
 
-  static isValidAuthorization(req: Request): boolean {
-    const authorizationHeader = req.headers.authorization;
-    if (
-      !authorizationHeader ||
-      !/^Bearer [a-zA-Z0-9-._~+/]+$/i.test(authorizationHeader)
-    ) {
-      return false;
-    }
-    const tokenLength = authorizationHeader.split(" ")[1].length;
-    const expectedTokenLength = 167;
-    return tokenLength === expectedTokenLength;
+  static deleteSensiviteDataField<T extends Record<string, T>>(
+    data: T,
+    field: keyof T
+  ): T {
+    Reflect.deleteProperty(data, field);
+    return data;
   }
 
   static strongPasswordRegex() {

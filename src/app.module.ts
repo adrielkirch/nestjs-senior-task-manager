@@ -6,12 +6,12 @@ import { UserModule } from 'src/infrastructure/ioc/user/user.module';
 import { DefaultController } from 'src/controllers/default/default.controller';
 import { DefaultMiddleware } from 'src/middlewares/default.middleware';
 import { TaskModule } from 'src/infrastructure/ioc/task/task.module';
-import { TeamModule } from './infrastructure/ioc/team/team.module';
-import { CommentModule } from './infrastructure/ioc/comment/comment.module';
-
+import { TeamModule } from 'src/infrastructure/ioc/team/team.module';
+import { CommentModule } from 'src/infrastructure/ioc/comment/comment.module';
+import { ProfileModule } from 'src/infrastructure/ioc/profile/profile.module';
 
 @Module({
-  imports: [ConfigureModule, DatabaseModule, UserModule, TaskModule, TeamModule, CommentModule],
+  imports: [ConfigureModule, DatabaseModule, UserModule, TaskModule, TeamModule, CommentModule, ProfileModule],
   controllers: [DefaultController],
   providers: [
     {
@@ -33,6 +33,7 @@ export class AppModule implements NestModule {
         '/tasks/*',
         '/teams/*',
         '/comments/*',
+        '/profiles/*',
       );
   }
 }
