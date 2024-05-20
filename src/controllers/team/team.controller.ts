@@ -6,7 +6,7 @@ import { DefaultMiddleware } from 'src/middlewares/default.middleware';
 import { PermissionGuard } from 'src/middlewares/permissions.guard';
 import { Request } from 'express';
 import { InviteResponseDto } from 'src/adapters/response/team.response.dto';
-import { TeamUserResponseDto } from 'src/adapters/response/team-user.response.dto';
+import { TeamUserResponseDto } from 'src/adapters/response/teamUser.response.dto';
 
 @ApiTags('Team')
 @Controller('teams')
@@ -18,7 +18,7 @@ export class TeamController {
   @SetMetadata('permissions', ['write:teams'])
   @ApiBearerAuth()
   @ApiCreatedResponse({
-    description: "It should correctly return Team",
+    description: 'It should correctly return Team',
     type: CreateRequestTeamDto
   })
   async create(@Body() dto: CreateRequestTeamDto, @Req() request: Request) {
@@ -31,7 +31,7 @@ export class TeamController {
   @SetMetadata('permissions', ['write:teams'])
   @ApiBearerAuth()
   @ApiCreatedResponse({
-    description: "It should correctly return Team",
+    description: 'It should correctly return Team',
     type: InviteResponseDto
   })
   async invite(@Body() dto: InviteRequestTeamDto, @Req() request: Request) {
@@ -43,7 +43,7 @@ export class TeamController {
   @UseGuards(DefaultMiddleware)
   @ApiBearerAuth()
   @ApiCreatedResponse({
-    description: "It should correctly return TeamUser",
+    description: 'It should correctly return TeamUser',
     type: TeamUserResponseDto
   })
   async join(@Body() dto: JoinRequestTeamDto, @Req() request: Request) {
@@ -58,7 +58,7 @@ export class TeamController {
   @UseGuards(DefaultMiddleware)
   @ApiBearerAuth()
   @ApiCreatedResponse({
-    description: "It should correctly return TeamUser",
+    description: 'It should correctly return TeamUser',
     type: TeamUserResponseDto
   })
   async dissociate(@Body() dto: DissociateRequestUserFromTeamDto, @Req() request: Request) {

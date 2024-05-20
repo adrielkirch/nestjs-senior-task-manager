@@ -1,11 +1,11 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { AddCommentUseCase } from 'src/usecases/comment/add-comment-usecase';
-import { FindByIdCommentsUseCase } from 'src/usecases/comment/find-by-id-comment-usecase';
-import { FindByPropertyAndValueCommentsUseCase } from 'src/usecases/comment/find-by-property-and-value-comment-usecase';
-import { FindPaginatedCommentsUseCase } from 'src/usecases/comment/find-paginated-comment-usecase';
+import {  Injectable, NotFoundException } from '@nestjs/common';
+import { AddCommentUseCase } from 'src/usecases/comment/add.comment.usecase';
+import { FindByIdCommentUseCase } from 'src/usecases/comment/findByIdComment.usecase';
+import { FindByPropertyAndValueCommentUseCase } from 'src/usecases/comment/findByPropertyAndValue.comment.usecase';
+import { FindPaginatedCommentUseCase } from 'src/usecases/comment/findPaginated.comment.usecase';
 import { CreateRequestCommentDto, UpdateRequestCommentDto } from 'src/adapters/request/comment.request.dto';
-import { UpdateCommentUseCase } from 'src/usecases/comment/update-comment-usecase';
-import { DeleteCommentByIdUseCase } from 'src/usecases/comment/delete-comment-usecase';
+import { UpdateCommentUseCase } from 'src/usecases/comment/update.comment.usecase';
+import { DeleteCommentByIdUseCase } from 'src/usecases/comment/delete.comment.usecase';
 import { CommentResponseDto } from 'src/adapters/response/comment.response.dto';
 import { Comment } from 'src/domain/comment/comment';
 import { Variables } from 'src/adapters/shared/request/variable.request.dto';
@@ -16,9 +16,9 @@ export class CommentService {
     constructor(
         private readonly addCommentUseCase: AddCommentUseCase,
         private readonly updateCommentUseCase: UpdateCommentUseCase,
-        private readonly findByIdCommentsUseCase: FindByIdCommentsUseCase,
-        private readonly findPaginatedCommentsUseCase: FindPaginatedCommentsUseCase,
-        private readonly findByPropertyAndValueCommentsUseCase: FindByPropertyAndValueCommentsUseCase,
+        private readonly findByIdCommentsUseCase: FindByIdCommentUseCase,
+        private readonly findPaginatedCommentsUseCase: FindPaginatedCommentUseCase,
+        private readonly findByPropertyAndValueCommentsUseCase: FindByPropertyAndValueCommentUseCase,
         private readonly deleteCommentByIdUseCase: DeleteCommentByIdUseCase,
     ) { }
 

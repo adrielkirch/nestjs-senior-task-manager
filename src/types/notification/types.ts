@@ -1,4 +1,4 @@
-export type NotifcationType = "guest" | "admin" | "writer";
+export type NotifcationType = 'guest' | 'admin' | 'writer';
 
 export enum NotifcationEnum {
     EMAIL = 'email',

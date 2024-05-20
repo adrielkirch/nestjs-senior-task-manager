@@ -11,7 +11,7 @@ import { PushNotificationServiceImpl } from 'src/infrastructure/notifier/push_no
             useFactory: (emailService: EmailServiceImpl, smsService: SmsServiceImpl, pushNotificationService: PushNotificationServiceImpl) => {
                 return NotifierService.getInstance(emailService, smsService, pushNotificationService);
             },
-            inject: [EmailServiceImpl],
+            inject: [EmailServiceImpl,SmsServiceImpl,PushNotificationServiceImpl],
         },
         EmailServiceImpl,
     ],

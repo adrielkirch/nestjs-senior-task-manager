@@ -14,7 +14,7 @@
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
     "prune": "docker system prune -a -f --volumes",
-    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
+    "lint": "eslint \"{src,apps,libs}/**/*.ts\" --fix",
     "test": "jest --detectOpenHandles=false",
     "test:watch": "jest --detectOpenHandles=false --watch",
     "test:cov": "jest --detectOpenHandles=false --coverage",

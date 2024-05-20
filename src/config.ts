@@ -1,6 +1,6 @@
 export const PORT: string | undefined = process.env.PORT;
-export const SALT: string | undefined = process.env.SALT || "MySalt";
-export const JWT_SECRET_KEY: string | undefined = process.env.JWT_SECRET_KEY || "MySecretKey";
+export const SALT: string | undefined = process.env.SALT || 'MySalt';
+export const JWT_SECRET_KEY: string | undefined = process.env.JWT_SECRET_KEY || 'MySecretKey';
 export const MONGO_URI: string | undefined = process.env.MONGO_URI;
 export const TZ: string = process.env.TZ || 'Europe/London';
 export const SMTP_SENDER_EMAIL = process.env.SMTP_SENDER_EMAIL;
@@ -11,6 +11,7 @@ export const SMTP_PASSWORD = process.env.SMTP_PASSWORD;
 export const FIREBASE_PRIVATE_KEY = process.env.FIREBASE_PRIVATE_KEY;
 export const FIREBASE_CLIENT_EMAIL = process.env.FIREBASE_CLIENT_EMAIL;
 export const FIREBASE_PROJECT_ID = process.env.FIREBASE_PROJECT_ID;
+export const FIREBASE_PRIVATE_KEY_ID = process.env.FIREBASE_PRIVATE_KEY_ID;
 export const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
 export const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
 export const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER;

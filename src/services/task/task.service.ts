@@ -1,34 +1,31 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
-import { AddTaskUseCase } from 'src/usecases/task/add-task-usecase';
-import { FindByIdTasksUseCase } from 'src/usecases/task/find-by-id-task-usecase';
-import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/find-by-property-and-value-task-usecase';
-import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-task-usecase';
+import { AddTaskUseCase } from 'src/usecases/task/add.task.usecase';
+import { FindByIdTaskUseCase } from 'src/usecases/task/findById.task.usecase';
+import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/findByPropertyAndValue.task.usecase';
+import { FindPaginatedTasksUseCase } from 'src/usecases/task/findPaginated.task.usecase';
 import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/task.request.dto';
-import { UpdateTaskUseCase } from 'src/usecases/task/update-task-usecase';
+import { UpdateTaskUseCase } from 'src/usecases/task/update.task.usecase';
 import DateUtil from 'src/utils/util.date';
 import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
 import { NotifierService } from 'src/infrastructure/notifier/notifier';
-import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete-task-usecase';
+import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete.task.usecase';
 import { TaskResponseDto } from 'src/adapters/response/task.response.dto';
 import { Task } from 'src/domain/task/task';
-import { EmailServiceImpl } from 'src/infrastructure/notifier/email/email';
-import { PushNotificationServiceImpl } from 'src/infrastructure/notifier/push_notification/push.notification';
-import { SmsServiceImpl } from 'src/infrastructure/notifier/sms/sms';
-import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
-import { FindByPropertyAndValueProfilesUseCase } from 'src/usecases/profile/find-by-property-and-value-profile-usecase';
+import { FindByIdUserUseCase } from 'src/usecases/user/findById.user.usecase';
+import { FindByPropertyAndValueProfileUseCase } from 'src/usecases/profile/findByPropertyAndValue.profile.usecase';
 
 @Injectable()
 export class TaskService {
     constructor(
         private readonly addTaskUseCase: AddTaskUseCase,
         private readonly updateTaskUseCase: UpdateTaskUseCase,
-        private readonly findByIdTasksUseCase: FindByIdTasksUseCase,
+        private readonly findByIdTasksUseCase: FindByIdTaskUseCase,
         private readonly findPaginatedTasksUseCase: FindPaginatedTasksUseCase,
         private readonly findByPropertyAndValueTasksUseCase: FindByPropertyAndValueTasksUseCase,
         private readonly deleteTaskByIdUseCase: DeleteTaskByIdUseCase,
         private readonly notifierService: NotifierService,
-        private readonly findByIdUsersUseCase: FindByIdUsersUseCase,
-        private readonly findByPropertyAndValueProfilesUseCase: FindByPropertyAndValueProfilesUseCase,
+        private readonly findByIdUsersUseCase: FindByIdUserUseCase,
+        private readonly findByPropertyAndValueProfilesUseCase: FindByPropertyAndValueProfileUseCase,
     ) { }
 
     private scheduler = SchedulerService.getInstance();
@@ -49,7 +46,7 @@ export class TaskService {
             throw new BadRequestException(`expirationDate date must be same or after of remindDate`);
         }
         const now = new Date();
-        console.log("Now is " + now)
+        console.log('Now is ' + now)
         const isNowDateSameOrAfter = DateUtil.isSameOrAfter(now, remindDateISO);
         if (isNowDateSameOrAfter) {
             throw new BadRequestException(`Now date not must be same or after of remindDate`);
@@ -82,7 +79,7 @@ export class TaskService {
         const task = Task.create(data, taskId);
         const status = data.hasOwnProperty('status') ? data.status : existingTask.status;
 
-        if (status === "DONE") {
+        if (status === 'DONE') {
             this.scheduler.onDelete(taskId, async () => {
                 console.log(`Event ${taskId} removed successfully`);
             }, 1)
@@ -153,20 +150,20 @@ export class TaskService {
                 const profile = profiles[0];
 
                 const notificationData = {
-                    message: `<b>Reminding to complete task:</b><br><p>${message.replaceAll("\n","<br>")}</p>`,
+                    message: `<b>Reminding to complete task:</b><br><p>${message.replaceAll('\n','<br>')}</p>`,
                     subject: `Remeber to finish task: ${taskFuture.title}`,
                     recipients: [user.email]
                 }
-                if (profile.notifications.includes("email")) {
-                    this.notifierService.onNotify("email", notificationData);
-                    this.notifierService.emitNotifyEvent("onNotify");
+                if (profile.notifications.includes('email')) {
+                    this.notifierService.onNotify('email', notificationData);
+                    this.notifierService.emitNotifyEvent('onNotify');
                 }
 
-                if (profile.notifications.includes("sms")) {
+                if (profile.notifications.includes('sms')) {
                     notificationData.recipients = [user.phone]
                     notificationData.message = message;
-                    this.notifierService.onNotify("sms", notificationData);
-                    this.notifierService.emitNotifyEvent("onNotify");
+                    this.notifierService.onNotify('sms', notificationData);
+                    this.notifierService.emitNotifyEvent('onNotify');
                 }
 
 

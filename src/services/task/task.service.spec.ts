@@ -1,26 +1,27 @@
 import { TaskService } from 'src/services/task/task.service';
-import { AddTaskUseCase } from 'src/usecases/task/add-task-usecase';
-import { UpdateTaskUseCase } from 'src/usecases/task/update-task-usecase';
-import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/find-by-property-and-value-task-usecase';
+import { AddTaskUseCase } from 'src/usecases/task/add.task.usecase';
+import { UpdateTaskUseCase } from 'src/usecases/task/update.task.usecase';
+import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/findByPropertyAndValue.task.usecase'
 import { Task } from 'src/domain/task/task';
-import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
+import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task.repository.interface';
 import { TaskModel } from 'src/infrastructure/database/mongodb/models/task/task.model';
 import DateUtil from 'src/utils/util.date';
-import { FindByIdTasksUseCase } from 'src/usecases/task/find-by-id-task-usecase';
-import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-task-usecase';
-import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete-task-usecase';
+import { FindByIdTaskUseCase } from 'src/usecases/task/findById.task.usecase';
+import { FindPaginatedTasksUseCase } from 'src/usecases/task/findPaginated.task.usecase';
+import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete.task.usecase';
 import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
 import { NotifierService } from 'src/infrastructure/notifier/notifier';
 import { EmailServiceInterface } from 'src/data/protocols/notifier/email/email.interface';
 import { SmsServiceInterface } from 'src/data/protocols/notifier/sms/sms.interface';
-import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
-import { FindByPropertyAndValueProfilesUseCase } from 'src/usecases/profile/find-by-property-and-value-profile-usecase';
+import { FindByIdUserUseCase } from 'src/usecases/user/findById.user.usecase';
+import { FindByPropertyAndValueProfileUseCase } from 'src/usecases/profile/findByPropertyAndValue.profile.usecase'
 import { ProfileModel } from 'src/infrastructure/database/mongodb/models/profile/profile.model';
 import { Profile } from 'src/domain/profile/profile';
 import { ProfileRepositoryInterface } from 'src/data/protocols/db/profile/profile-repository.interface';
 import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
 import { User } from 'src/domain/user/user';
-import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
+import { UserRepositoryInterface } from 'src/data/protocols/db/user/user.repository.interface';
+import { PushNotificationServiceInterface } from 'src/data/protocols/notifier/push_notification/push.notification.interface';
 
 const schedule = SchedulerService.getInstance();
 
@@ -210,6 +211,12 @@ export class SmsServiceMock implements SmsServiceInterface {
     }
 }
 
+export class PushNotificationServiceMock implements PushNotificationServiceInterface {
+    async send(recipients: string[], message: string) {
+
+    }
+}
+
 
 export class MockUserRepository implements UserRepositoryInterface {
 
@@ -329,24 +336,25 @@ describe('TaskService', () => {
     let taskService: TaskService;
     let addTaskUseCase: AddTaskUseCase;
     let updateTaskUseCase: UpdateTaskUseCase;
-    let findByIdTasksUseCase: FindByIdTasksUseCase;
+    let findByIdTasksUseCase: FindByIdTaskUseCase;
     let findPaginatedTasksUseCase: FindPaginatedTasksUseCase;
     let findByPropertyAndValueTasksUseCase: FindByPropertyAndValueTasksUseCase;
     let deleteTaskByIdUseCase: DeleteTaskByIdUseCase;
     let notifierService: NotifierService;
-    let findByIdUsersUseCase: FindByIdUsersUseCase;
-    let findByPropertyAndValueProfilesUseCase: FindByPropertyAndValueProfilesUseCase;
+    let findByIdUsersUseCase: FindByIdUserUseCase;
+    let findByPropertyAndValueProfilesUseCase: FindByPropertyAndValueProfileUseCase;
     beforeEach(() => {
         addTaskUseCase = new AddTaskUseCase(new MockTaskRepository());
         updateTaskUseCase = new UpdateTaskUseCase(new MockTaskRepository());
-        findByIdTasksUseCase = new FindByIdTasksUseCase(new MockTaskRepository());
+        findByIdTasksUseCase = new FindByIdTaskUseCase(new MockTaskRepository());
         findPaginatedTasksUseCase = new FindPaginatedTasksUseCase(new MockTaskRepository());
         findByPropertyAndValueTasksUseCase = new FindByPropertyAndValueTasksUseCase(new MockTaskRepository())
-        findByIdUsersUseCase = new FindByIdUsersUseCase(new MockUserRepository());
-        findByPropertyAndValueProfilesUseCase = new FindByPropertyAndValueProfilesUseCase(new MockProfileRepository());
+        findByIdUsersUseCase = new FindByIdUserUseCase(new MockUserRepository());
+        findByPropertyAndValueProfilesUseCase = new FindByPropertyAndValueProfileUseCase(new MockProfileRepository());
         findByPropertyAndValueTasksUseCase = new FindByPropertyAndValueTasksUseCase(new MockTaskRepository())
         notifierService = NotifierService.getInstance(
             new EmailServiceMock(),
+            new SmsServiceMock(),
             new SmsServiceMock(),
         );
         taskService = new TaskService(

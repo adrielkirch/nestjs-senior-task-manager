@@ -15,7 +15,7 @@ export class UserController {
   @Post('signup')
   @HttpCode(201)
   @ApiCreatedResponse({
-    description: "It should correctly return User",
+    description: 'It should correctly return User',
     type: UserResponseDto
   })
   async create(@Body() dto: CreateRequestUserDto) {
@@ -25,7 +25,7 @@ export class UserController {
   @Put('')
   @HttpCode(200)
   @ApiCreatedResponse({
-    description: "It should correctly return User",
+    description: 'It should correctly return User',
     type: UserResponseDto
   })
   async update(@Body() dto: UpdateRequestUserDto, @Req() request: Request) {
@@ -36,7 +36,7 @@ export class UserController {
   @Post('login')
   @HttpCode(200)
   @ApiOkResponse({
-    description: "It should correctly return LoginResponseDto",
+    description: 'It should correctly return LoginResponseDto',
     type: LoginRequestDto
   })
   async login(@Body() dto: LoginRequestDto) {
@@ -47,7 +47,7 @@ export class UserController {
   @SetMetadata('permissions', ['read:users'])
   @ApiBearerAuth()
   @ApiOkResponse({
-    description: "It should correctly return Users[]",
+    description: 'It should correctly return Users[]',
     type: [UserResponseDto]
   })
   @HttpCode(200)
@@ -60,7 +60,7 @@ export class UserController {
   @SetMetadata('permissions', ['read:users'])
   @ApiBearerAuth()
   @ApiOkResponse({
-    description: "It should correctly return User",
+    description: 'It should correctly return User',
     type: UserResponseDto
   })
   @HttpCode(200)
@@ -72,7 +72,7 @@ export class UserController {
   @UseGuards(DefaultMiddleware)
   @ApiBearerAuth()
   @ApiOkResponse({
-    description: "It should correctly return User",
+    description: 'It should correctly return User',
     type: UserResponseDto
   })
   @HttpCode(200)

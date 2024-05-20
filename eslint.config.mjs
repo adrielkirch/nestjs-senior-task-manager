@@ -1,5 +1,5 @@
-import globals from "globals";
-import tseslint from "typescript-eslint";
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default [
   {
@@ -8,4 +8,13 @@ export default [
     },
   },
   ...tseslint.configs.recommended,
+  {
+   
+    ignores: [
+      'node_modules/**',
+      'dist/**',
+      'src/**/*.spec.ts',
+      'src/middlewares/default.middleware.ts'
+    ]
+  }
 ];

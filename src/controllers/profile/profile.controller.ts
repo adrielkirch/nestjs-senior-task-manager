@@ -15,7 +15,7 @@ export class ProfileController {
   @Post('create')
   @UseGuards(DefaultMiddleware)
   @ApiCreatedResponse({
-    description: "It should correctly return Profile",
+    description: 'It should correctly return Profile',
     type: ProfileResponseDto
   })
   async create(@Body() dto: CreateProfileRequestDto, @Req() request: Request) {
@@ -26,7 +26,7 @@ export class ProfileController {
   @Put('')
   @UseGuards(DefaultMiddleware, PermissionGuard)
   @ApiCreatedResponse({
-    description: "It should correctly return Profile",
+    description: 'It should correctly return Profile',
     type: ProfileResponseDto
   })
   async update(@Body() dto: UpdateProfileRequestDto, @Req() request: Request) {
@@ -39,7 +39,7 @@ export class ProfileController {
   @SetMetadata('permissions', ['read:profiles'])
   @ApiBearerAuth()
   @ApiOkResponse({
-    description: "It should correctly return Profiles[]",
+    description: 'It should correctly return Profiles[]',
     type: [ProfileResponseDto]
   })
   @Get('paginated')
@@ -51,7 +51,7 @@ export class ProfileController {
   @SetMetadata('permissions', ['read:profiles'])
   @ApiBearerAuth()
   @ApiOkResponse({
-    description: "It should correctly return Profile",
+    description: 'It should correctly return Profile',
     type: ProfileResponseDto
   })
   @Get('find-by-id')

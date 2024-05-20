@@ -1,12 +1,12 @@
 import { UserService } from 'src/services/user/user.service';
-import { AddUserUseCase } from 'src/usecases/user/add-user-usecase';
-import { UpdateUserUseCase } from 'src/usecases/user/update-user-usecase';
-import { FindByIdUsersUseCase } from 'src/usecases/user/find-by-id-users-usecase';
-import { FindPaginatedUsersUseCase } from 'src/usecases/user/find-paginated-users-usecase';
-import { FindByPropertyAndValueUsersUseCase } from 'src/usecases/user/find-by-property-and-value-user-usecase';
-import { LoginUserUseCase } from 'src/usecases/user/login-user-usecase';
+import { AddUserUseCase } from 'src/usecases/user/add.user.usecase';
+import { UpdateUserUseCase } from 'src/usecases/user/update.user.usecase';
+import { FindByIdUserUseCase } from 'src/usecases/user/findById.user.usecase';
+import { FindPaginatedUsersUseCase } from 'src/usecases/user/findPaginated.user.usecase';
+import { FindByPropertyAndValueUsersUseCase } from 'src/usecases/user/findByPropertyAndValue.user.usecase';
+import { LoginUserUseCase } from 'src/usecases/user/login.user.usecase';
 import { User } from 'src/domain/user/user';
-import { UserRepositoryInterface } from 'src/data/protocols/db/user/user-repository.interface';
+import { UserRepositoryInterface } from 'src/data/protocols/db/user/user.repository.interface';
 import { UserModel } from 'src/infrastructure/database/mongodb/models/user/user.model';
 import DateUtil from 'src/utils/util.date';
 
@@ -102,7 +102,7 @@ describe('UserService', () => {
     let userService: UserService;
     let addUserUseCase: AddUserUseCase;
     let updateUserUseCase: UpdateUserUseCase;
-    let findByIdUsersUseCase: FindByIdUsersUseCase;
+    let findByIdUsersUseCase: FindByIdUserUseCase;
     let findPaginatedUsersUseCase: FindPaginatedUsersUseCase;
     let findByPropertyAndValueUsersUseCase: FindByPropertyAndValueUsersUseCase;
     let loginUserUseCase: LoginUserUseCase;
@@ -111,7 +111,7 @@ describe('UserService', () => {
         addUserUseCase = new AddUserUseCase(new MockUserRepository());
         updateUserUseCase = new UpdateUserUseCase(new MockUserRepository());
 
-        findByIdUsersUseCase = new FindByIdUsersUseCase(new MockUserRepository());
+        findByIdUsersUseCase = new FindByIdUserUseCase(new MockUserRepository());
         findPaginatedUsersUseCase = new FindPaginatedUsersUseCase(new MockUserRepository());
         findByPropertyAndValueUsersUseCase = new FindByPropertyAndValueUsersUseCase(new MockUserRepository());
         loginUserUseCase = new LoginUserUseCase(new MockUserRepository());

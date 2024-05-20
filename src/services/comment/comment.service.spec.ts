@@ -1,14 +1,14 @@
 import { CommentService } from 'src/services/comment/comment.service';
-import { AddCommentUseCase } from 'src/usecases/comment/add-comment-usecase';
-import { UpdateCommentUseCase } from 'src/usecases/comment/update-comment-usecase';
-import { FindByPropertyAndValueCommentsUseCase } from 'src/usecases/comment/find-by-property-and-value-comment-usecase';
+import { AddCommentUseCase } from 'src/usecases/comment/add.comment.usecase';
+import { UpdateCommentUseCase } from 'src/usecases/comment/update.comment.usecase';
+import { FindByPropertyAndValueCommentUseCase } from 'src/usecases/comment/findByPropertyAndValue.comment.usecase';
 import { Comment } from 'src/domain/comment/comment';
-import { CommentRepositoryInterface } from 'src/data/protocols/db/comment/comment-repository.interface';
+import { CommentRepositoryInterface } from 'src/data/protocols/db/comment/comment.repository.interface';
 import { CommentModel } from 'src/infrastructure/database/mongodb/models/comment/comment.model';
 import DateUtil from 'src/utils/util.date';
-import { FindByIdCommentsUseCase } from 'src/usecases/comment/find-by-id-comment-usecase';
-import { FindPaginatedCommentsUseCase } from 'src/usecases/comment/find-paginated-comment-usecase';
-import { DeleteCommentByIdUseCase } from 'src/usecases/comment/delete-comment-usecase';
+import { FindByIdCommentUseCase } from 'src/usecases/comment/findByIdComment.usecase';
+import { FindPaginatedCommentUseCase } from 'src/usecases/comment/findPaginated.comment.usecase';
+import { DeleteCommentByIdUseCase } from 'src/usecases/comment/delete.comment.usecase';
 
 function getCommentData(commentId: string) {
     return {
@@ -119,17 +119,17 @@ describe('CommentService', () => {
     let commentService: CommentService;
     let addCommentUseCase: AddCommentUseCase;
     let updateCommentUseCase: UpdateCommentUseCase;
-    let findByIdCommentsUseCase: FindByIdCommentsUseCase;
-    let findPaginatedCommentsUseCase: FindPaginatedCommentsUseCase;
-    let findByPropertyAndValueCommentsUseCase: FindByPropertyAndValueCommentsUseCase;
+    let findByIdCommentsUseCase: FindByIdCommentUseCase;
+    let findPaginatedCommentsUseCase: FindPaginatedCommentUseCase;
+    let findByPropertyAndValueCommentsUseCase: FindByPropertyAndValueCommentUseCase;
     let deleteCommentByIdUseCase: DeleteCommentByIdUseCase;
 
     beforeEach(() => {
         addCommentUseCase = new AddCommentUseCase(new MockCommentRepository());
         updateCommentUseCase = new UpdateCommentUseCase(new MockCommentRepository());
-        findByIdCommentsUseCase = new FindByIdCommentsUseCase(new MockCommentRepository());
-        findPaginatedCommentsUseCase = new FindPaginatedCommentsUseCase(new MockCommentRepository());
-        findByPropertyAndValueCommentsUseCase = new FindByPropertyAndValueCommentsUseCase(new MockCommentRepository())
+        findByIdCommentsUseCase = new FindByIdCommentUseCase(new MockCommentRepository());
+        findPaginatedCommentsUseCase = new FindPaginatedCommentUseCase(new MockCommentRepository());
+        findByPropertyAndValueCommentsUseCase = new FindByPropertyAndValueCommentUseCase(new MockCommentRepository())
 
         commentService = new CommentService(
             addCommentUseCase,

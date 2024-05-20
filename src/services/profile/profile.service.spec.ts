@@ -1,9 +1,9 @@
 import { ProfileService } from 'src/services/profile/profile.service';
-import { AddProfileUseCase } from 'src/usecases/profile/add-profile-usecase';
-import { UpdateProfileUseCase } from 'src/usecases/profile/update-profile-usecase';
-import { FindByIdProfilesUseCase } from 'src/usecases/profile/find-by-id-profile-usecase';
-import { FindPaginatedProfilesUseCase } from 'src/usecases/profile/find-paginated-profile-usecase';
-import { FindByPropertyAndValueProfilesUseCase } from 'src/usecases/profile/find-by-property-and-value-profile-usecase';
+import { AddProfileUseCase } from 'src/usecases/profile/add.profile.usecase';
+import { UpdateProfileUseCase } from 'src/usecases/profile/update.profile.usecase';
+import { FindByIdProfilesUseCase } from 'src/usecases/profile/findById.profile.usecase';
+import { FindPaginatedProfilesUseCase } from 'src/usecases/profile/findPaginated.profile.usecase';
+import { FindByPropertyAndValueProfileUseCase } from 'src/usecases/profile/findByPropertyAndValue.profile.usecase';
 
 import { Profile } from 'src/domain/profile/profile';
 import { ProfileRepositoryInterface } from 'src/data/protocols/db/profile/profile-repository.interface';
@@ -88,7 +88,7 @@ describe('ProfileService', () => {
     let updateProfileUseCase: UpdateProfileUseCase;
     let findByIdProfilesUseCase: FindByIdProfilesUseCase;
     let findPaginatedProfilesUseCase: FindPaginatedProfilesUseCase;
-    let findByPropertyAndValueProfilesUseCase: FindByPropertyAndValueProfilesUseCase;
+    let findByPropertyAndValueProfilesUseCase: FindByPropertyAndValueProfileUseCase;
 
     beforeEach(() => {
         addProfileUseCase = new AddProfileUseCase(new MockProfileRepository());
@@ -96,7 +96,7 @@ describe('ProfileService', () => {
 
         findByIdProfilesUseCase = new FindByIdProfilesUseCase(new MockProfileRepository());
         findPaginatedProfilesUseCase = new FindPaginatedProfilesUseCase(new MockProfileRepository());
-        findByPropertyAndValueProfilesUseCase = new FindByPropertyAndValueProfilesUseCase(new MockProfileRepository());
+        findByPropertyAndValueProfilesUseCase = new FindByPropertyAndValueProfileUseCase(new MockProfileRepository());
 
 
         profileService = new ProfileService(

@@ -1,8 +1,4 @@
-import jwt from "jsonwebtoken";
-import * as crypto from "crypto";
-import { Request } from "express";
 import { SecurityUtil } from "src/utils/util.security";
-import { JWT_SECRET_KEY, SALT } from "src/config";
 
 jest.mock("jsonwebtoken", () => ({
   sign: jest.fn(),

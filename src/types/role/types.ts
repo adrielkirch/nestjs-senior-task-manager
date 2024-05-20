@@ -1,4 +1,4 @@
-export type RoleType = "guest" | "admin" | "writer";
+export type RoleType = 'guest' | 'admin' | 'writer';
 
 export enum RoleEnum {
     GUEST = 'guest',
