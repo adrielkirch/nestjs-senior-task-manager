@@ -1,14 +1,14 @@
 import { TaskService } from 'src/services/task/task.service';
-import { AddTaskUseCase } from 'src/usecases/task/add-task-usecase';
-import { UpdateTaskUseCase } from 'src/usecases/task/update-task-usecase';
+import { AddTaskUseCase } from 'src/usecases/task/add.task.usecase';
+import { UpdateTaskUseCase } from 'src/usecases/task/update.task.usecase';
 import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/find-by-property-and-value-task-usecase';
 import { Task } from 'src/domain/task/task';
 import { TaskRepositoryInterface } from 'src/data/protocols/db/task/task-repository.interface';
 import { TaskModel } from 'src/infrastructure/database/mongodb/models/task/task.model';
 import DateUtil from 'src/utils/util.date';
-import { FindByIdTasksUseCase } from 'src/usecases/task/find-by-id-task-usecase';
+import { FindByIdTasksUseCase } from 'src/usecases/task/findById-task-usecase';
 import { FindPaginatedTasksUseCase } from 'src/usecases/task/find-paginated-task-usecase';
-import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete-task-usecase';
+import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete.task.usecase';
 import SchedulerService from 'src/infrastructure/scheduler/service.schedule';
 import { NotifierService } from 'src/infrastructure/notifier/notifier';
 import { EmailServiceInterface } from 'src/data/protocols/notifier/email/email.interface';

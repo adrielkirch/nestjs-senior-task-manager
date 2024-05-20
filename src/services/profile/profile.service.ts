@@ -1,18 +1,17 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import {
   CreateProfileRequestDto,
   UpdateProfileRequestDto
-} from "src/adapters/request/profile.request.dto";
-import { AddProfileUseCase } from "src/usecases/profile/add-profile-usecase";
-import { FindByIdProfilesUseCase } from "src/usecases/profile/find-by-id-profile-usecase";
-import { FindByPropertyAndValueProfilesUseCase } from "src/usecases/profile/find-by-property-and-value-profile-usecase";
-import { SecurityUtil } from "src/utils/util.security";
-import { FindPaginatedProfilesUseCase } from "src/usecases/profile/find-paginated-profile-usecase";
-import { UpdateProfileUseCase } from "src/usecases/profile/update-profile-usecase";
+} from 'src/adapters/request/profile.request.dto';
+import { AddProfileUseCase } from 'src/usecases/profile/add.profile.usecase';
+import { FindByIdProfilesUseCase } from 'src/usecases/profile/findById.profile.usecase';
+import { FindByPropertyAndValueProfilesUseCase } from 'src/usecases/profile/findByPropertyAndValue.profile.usecase';
+import { FindPaginatedProfilesUseCase } from 'src/usecases/profile/findPaginated.profile.usecase';
+import { UpdateProfileUseCase } from 'src/usecases/profile/update.profile.usecase'
 import {
   ProfileResponseDto,
-} from "src/adapters/response/profile.response.dto";
-import { Profile } from "src/domain/profile/profile";
+} from 'src/adapters/response/profile.response.dto';
+import { Profile } from 'src/domain/profile/profile';
 
 @Injectable()
 export class ProfileService {
@@ -26,12 +25,12 @@ export class ProfileService {
 
   async create(data: CreateProfileRequestDto): Promise<ProfileResponseDto> {
     const existingProfiles = await this.findByPropertyAndValue(
-      "userId",
+      'userId',
       data.userId
     );
 
     if (existingProfiles && existingProfiles.length > 0) {
-      throw new ConflictException("Profile with this userId already exists");
+      throw new ConflictException('Profile with this userId already exists');
     }
 
 
@@ -43,7 +42,7 @@ export class ProfileService {
     const existingProfile = await this.findById(data.id);
 
     if (!existingProfile) {
-      throw new NotFoundException("Profile does not exist");
+      throw new NotFoundException('Profile does not exist');
     }
 
     for (const key in data) {
@@ -62,7 +61,7 @@ export class ProfileService {
   async findById(id: string): Promise<ProfileResponseDto> {
     const profile = await this.findByIdProfilesUseCase.findById(id);
     if (!profile) {
-      throw new NotFoundException("Profile not found");
+      throw new NotFoundException('Profile not found');
     }
     return profile;
   }

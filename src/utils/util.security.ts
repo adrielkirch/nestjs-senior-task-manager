@@ -1,7 +1,6 @@
-import jwt from "jsonwebtoken";
-import * as crypto from "crypto";
-import { Request } from "express";
-import { JWT_SECRET_KEY, SALT } from "src/config";
+import jwt from 'jsonwebtoken';
+import * as crypto from 'crypto';
+import { JWT_SECRET_KEY, SALT } from 'src/config';
 
 export class SecurityUtil {
   static generateJsonwebtoken<T extends object>(data: T): string {
@@ -15,21 +14,21 @@ export class SecurityUtil {
 
   static generateHashWithSalt(data: string): string {
     return crypto
-      .createHash("sha512")
+      .createHash('sha512')
       .update(data + SALT)
-      .digest("hex");
+      .digest('hex');
   }
 
   static generateHashDigitalSignature(data: string): string {
     return crypto
-      .createHash("sha512")
+      .createHash('sha512')
       .update(data + new Date() + SecurityUtil.genRandomBytes(64))
-      .digest("hex");
+      .digest('hex');
   }
 
   static genRandomBytes(len: number): string {
     const buf = crypto.randomBytes(len);
-    return buf.toString("hex");
+    return buf.toString('hex');
   }
 
 

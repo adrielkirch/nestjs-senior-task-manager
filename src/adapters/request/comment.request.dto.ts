@@ -1,18 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsOptional, IsEmail } from 'class-validator';
+import { IsString, IsOptional} from 'class-validator';
 
 export class CreateRequestCommentDto {
     @ApiProperty({
-        description: "The text of the comment",
-        example: "Any comment ..."
+        description: 'The text of the comment',
+        example: 'Any comment ...'
     })
     @IsString()
     @IsOptional()
     text: string;
 
     @ApiProperty({
-        description: "The ID of the user who has commented",
-        example: "9876543210",
+        description: 'The ID of the user who has commented',
+        example: '9876543210',
         required: false
     })
     @IsString()
@@ -20,8 +20,8 @@ export class CreateRequestCommentDto {
     userId?: string;
 
     @ApiProperty({
-        description: "The ID of the task related to the comment",
-        example: "9876543210",
+        description: 'The ID of the task related to the comment',
+        example: '9876543210',
         required: false
     })
     @IsString()
@@ -31,15 +31,15 @@ export class CreateRequestCommentDto {
 
 export class UpdateRequestCommentDto {
     @ApiProperty({
-        description: "The ID of the comment to update",
-        example: "08afddc9-5b82-43ce-bcec-5187f31913a"
+        description: 'The ID of the comment to update',
+        example: '08afddc9-5b82-43ce-bcec-5187f31913a'
     })
     @IsString()
     id: string;
 
     @ApiProperty({
-        description: "The text the comment",
-        example: "Lorem ipsum dolor sit amet, consectetur adipis"
+        description: 'The text the comment',
+        example: 'Lorem ipsum dolor sit amet, consectetur adipis'
     })
     @IsString()
     text: string;

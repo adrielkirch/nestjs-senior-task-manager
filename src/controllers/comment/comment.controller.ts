@@ -18,7 +18,7 @@ export class CommentController {
   @SetMetadata('permissions', ['write:comments'])
   @ApiBearerAuth()
   @ApiCreatedResponse({
-    description: "Comment created successfully",
+    description: 'Comment created successfully',
     type: CommentResponseDto
   })
   @Post('create')
@@ -31,7 +31,7 @@ export class CommentController {
   @SetMetadata('permissions', ['write:comments'])
   @ApiBearerAuth()
   @ApiOkResponse({
-    description: "Comment updated successfully",
+    description: 'Comment updated successfully',
     type: CommentResponseDto
   })
   @Put('')
@@ -43,7 +43,7 @@ export class CommentController {
   @SetMetadata('permissions', ['read:comments'])
   @ApiBearerAuth()
   @ApiOkResponse({
-    description: "Comments found successfully",
+    description: 'Comments found successfully',
     type: [CommentResponseDto]
   })
   @Get('paginated')
@@ -60,7 +60,7 @@ export class CommentController {
   @SetMetadata('permissions', ['read:comments'])
   @ApiBearerAuth()
   @ApiOkResponse({
-    description: "Comment found successfully",
+    description: 'Comment found successfully',
     type: CommentResponseDto
   })
   @Get('find-by-id')
@@ -72,7 +72,7 @@ export class CommentController {
   @SetMetadata('permissions', ['delete:comments'])
   @ApiBearerAuth()
   @ApiOkResponse({
-    description: "Comment deleted successfully",
+    description: 'Comment deleted successfully',
   })
   @Delete('remove')
   async delete(@Query('id') id: string) {
