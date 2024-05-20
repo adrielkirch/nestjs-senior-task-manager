@@ -1,6 +1,6 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { AddTaskUseCase } from 'src/usecases/task/add.task.usecase';
-import { FindByIdTasksUseCase } from 'src/usecases/task/findById.task.usecase';
+import { FindByIdTaskUseCase } from 'src/usecases/task/findById.task.usecase';
 import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/findByPropertyAndValue.task.usecase';
 import { FindPaginatedTasksUseCase } from 'src/usecases/task/findPaginated.task.usecase';
 import { CreateRequestTaskDto, UpdateRequestTaskDto } from 'src/adapters/request/task.request.dto';
@@ -19,7 +19,7 @@ export class TaskService {
     constructor(
         private readonly addTaskUseCase: AddTaskUseCase,
         private readonly updateTaskUseCase: UpdateTaskUseCase,
-        private readonly findByIdTasksUseCase: FindByIdTasksUseCase,
+        private readonly findByIdTasksUseCase: FindByIdTaskUseCase,
         private readonly findPaginatedTasksUseCase: FindPaginatedTasksUseCase,
         private readonly findByPropertyAndValueTasksUseCase: FindByPropertyAndValueTasksUseCase,
         private readonly deleteTaskByIdUseCase: DeleteTaskByIdUseCase,

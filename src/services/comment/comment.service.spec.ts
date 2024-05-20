@@ -3,7 +3,7 @@ import { AddCommentUseCase } from 'src/usecases/comment/add.comment.usecase';
 import { UpdateCommentUseCase } from 'src/usecases/comment/update.comment.usecase';
 import { FindByPropertyAndValueCommentUseCase } from 'src/usecases/comment/findByPropertyAndValue.comment.usecase';
 import { Comment } from 'src/domain/comment/comment';
-import { CommentRepositoryInterface } from 'src/data/protocols/db/comment/commentRepository.interface';
+import { CommentRepositoryInterface } from 'src/data/protocols/db/comment/comment.repository.interface';
 import { CommentModel } from 'src/infrastructure/database/mongodb/models/comment/comment.model';
 import DateUtil from 'src/utils/util.date';
 import { FindByIdCommentUseCase } from 'src/usecases/comment/findByIdComment.usecase';

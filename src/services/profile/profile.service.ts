@@ -5,7 +5,7 @@ import {
 } from 'src/adapters/request/profile.request.dto';
 import { AddProfileUseCase } from 'src/usecases/profile/add.profile.usecase';
 import { FindByIdProfilesUseCase } from 'src/usecases/profile/findById.profile.usecase';
-import { FindByPropertyAndValueProfilesUseCase } from 'src/usecases/profile/findByPropertyAndValue.profile.usecase';
+import { FindByPropertyAndValueProfileUseCase } from 'src/usecases/profile/findByPropertyAndValue.profile.usecase';
 import { FindPaginatedProfilesUseCase } from 'src/usecases/profile/findPaginated.profile.usecase';
 import { UpdateProfileUseCase } from 'src/usecases/profile/update.profile.usecase'
 import {
@@ -20,7 +20,7 @@ export class ProfileService {
     private readonly updateProfileUseCase: UpdateProfileUseCase,
     private readonly findByIdProfilesUseCase: FindByIdProfilesUseCase,
     private readonly findPaginatedProfilesUseCase: FindPaginatedProfilesUseCase,
-    private readonly findByPropertyAndValueProfilesUseCase: FindByPropertyAndValueProfilesUseCase,
+    private readonly findByPropertyAndValueProfilesUseCase: FindByPropertyAndValueProfileUseCase,
   ) {}
 
   async create(data: CreateProfileRequestDto): Promise<ProfileResponseDto> {

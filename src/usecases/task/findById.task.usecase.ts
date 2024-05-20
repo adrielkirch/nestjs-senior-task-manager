@@ -7,9 +7,9 @@ import { TaskTransformer } from 'src/main/transformers/task/task.transformer';
  * This class interacts with the TaskRepositoryInterface to retrieve task data
  * and uses the TaskTransformer to convert the database model to a simplified task representation.
  */
-export class FindByIdTasksUseCase {
+export class FindByIdTaskUseCase {
   /**
-   * Constructs a new instance of the FindByIdTasksUseCase class.
+   * Constructs a new instance of the FindByIdTaskUseCase class.
    * @param taskRepo An instance of the TaskRepositoryInterface to interact with the task data storage.
    */
   constructor(private readonly taskRepo: TaskRepositoryInterface) { }

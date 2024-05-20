@@ -5,7 +5,7 @@ import { DatabaseModule } from 'src/infrastructure/database/database.module';
 import { MongodbTaskRepository } from 'src/infrastructure/database/mongodb/repositories/task/mongodb.task.repository';
 import { TaskService } from 'src/services/task/task.service';
 import { AddTaskUseCase } from 'src/usecases/task/add.task.usecase';
-import { FindByIdTasksUseCase } from 'src/usecases/task/findById.task.usecase';
+import { FindByIdTaskUseCase } from 'src/usecases/task/findById.task.usecase';
 import { FindByPropertyAndValueTasksUseCase } from 'src/usecases/task/findByPropertyAndValue.task.usecase'
 import { FindPaginatedTasksUseCase } from 'src/usecases/task/findPaginated.task.usecase';
 import { UpdateTaskUseCase } from 'src/usecases/task/update.task.usecase';
@@ -35,7 +35,7 @@ import { MongodbUserRepository } from 'src/infrastructure/database/mongodb/repos
         return new TaskService(
           new AddTaskUseCase(taskRepo),
           new UpdateTaskUseCase(taskRepo),
-          new FindByIdTasksUseCase(taskRepo),
+          new FindByIdTaskUseCase(taskRepo),
           new FindPaginatedTasksUseCase(taskRepo),
           new FindByPropertyAndValueTasksUseCase(taskRepo),
           new DeleteTaskByIdUseCase(taskRepo),
