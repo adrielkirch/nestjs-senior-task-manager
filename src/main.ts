@@ -13,6 +13,11 @@ import { swaggerConfig } from './main/config/docs/swagger-config';
 async function bootstrap() {
   const logger = new Logger('Main');
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.enableCors({
+    origin: true, 
+    credentials: true,
+  });
+
   swaggerConfig(app);
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   const config = app.get<ConfigService>(ConfigService);

@@ -64,9 +64,6 @@ export class CreateRequestUserDto {
     example: '+18045551234',
   })
   @IsString()
-  @Matches(/^\+\d{1,3}\d{10,14}$/, {
-    message: 'Phone number must be a valid international number',
-  })
   phone: string;
 }
 
