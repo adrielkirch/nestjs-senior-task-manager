@@ -22,6 +22,7 @@ export class UserController {
     return await this.userService.create(dto);
   }
 
+  @UseGuards(DefaultMiddleware)
   @Put('')
   @HttpCode(200)
   @ApiCreatedResponse({
@@ -29,6 +30,7 @@ export class UserController {
     type: UserResponseDto
   })
   async update(@Body() dto: UpdateRequestUserDto, @Req() request: Request) {
+    console.log(request.user)
     dto.id = request.user;
     return await this.userService.update(dto);
   }
