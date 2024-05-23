@@ -13,13 +13,11 @@ export class ProfileController {
   constructor(private readonly profileService: ProfileService) { }
 
   @Post('create')
-  @UseGuards(DefaultMiddleware)
   @ApiCreatedResponse({
     description: 'It should correctly return Profile',
     type: ProfileResponseDto
   })
   async create(@Body() dto: CreateProfileRequestDto, @Req() request: Request) {
-    dto.userId = request.user;
     return await this.profileService.create(dto);
   }
 

@@ -27,19 +27,19 @@ export class ProfileModel extends Document {
 
   @Prop({
     type: String,
-    required: true,
+    required: false,
   })
   gender: string;
 
   @Prop({
     type: String,
-    required: true,
+    required: false,
   })
   image: string;
 
   @Prop({
     type: String,
-    required: true,
+    required: false,
   })
   biography: string;
 

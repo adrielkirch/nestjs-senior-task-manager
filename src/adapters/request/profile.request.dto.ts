@@ -12,7 +12,7 @@ export class CreateProfileRequestDto {
 
     @ApiProperty({
         description: 'The profile\'s gender',
-        example: 'Doe'
+        example: 'Male'
     })
     @IsString()
     gender: string;

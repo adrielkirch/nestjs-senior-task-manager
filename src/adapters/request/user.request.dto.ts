@@ -104,12 +104,7 @@ export class UpdateRequestUserDto {
     description: 'The user\'s updated password',
     example: 'NewP@ssw0rd123',
   })
-  @IsOptional()
-  @IsString()
-  @Matches(SecurityUtil.strongPasswordRegex(), {
-    message: 'Password must be at least 8 characters long and contain at least one digit, one lowercase letter, one uppercase letter, and one special character.',
-  })
-  password?: string;
+ 
 
   @ApiProperty({
     description: 'The user\'s phone',
@@ -121,4 +116,33 @@ export class UpdateRequestUserDto {
     message: 'Phone number must be a valid international number',
   })
   phone?: string;
+}
+
+
+export class UpdatePasswordRequestUserDto {
+  @ApiProperty({
+    description: 'The unique identifier of the user',
+    example: '08afddc9-5b82-43ce-bcec-5187f31913a',
+  })
+  @IsOptional()
+  @IsString()
+  id: string;
+
+  @ApiProperty({
+    description: 'The user\'s current password',
+    example: 'Exemple123!',
+  })
+  @IsOptional()
+  @IsString()
+  currentPassword?: string;
+
+  @ApiProperty({
+    description: 'The user\'s new password',
+    example: 'Exemple123@',
+  })
+  @IsOptional()
+  @IsString()
+  password?: string;
+
+  
 }

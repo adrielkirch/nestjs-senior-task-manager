@@ -2,6 +2,7 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import {
   CreateRequestUserDto,
   LoginRequestDto,
+  UpdatePasswordRequestUserDto,
   UpdateRequestUserDto,
 } from 'src/adapters/request/user.request.dto';
 import { AddUserUseCase } from 'src/usecases/user/add.user.usecase';
@@ -26,7 +27,7 @@ export class UserService {
     private readonly findPaginatedUsersUseCase: FindPaginatedUsersUseCase,
     private readonly findByPropertyAndValueUsersUseCase: FindByPropertyAndValueUsersUseCase,
     private readonly loginUserUseCase: LoginUserUseCase
-  ) {}
+  ) { }
 
   async create(data: CreateRequestUserDto): Promise<UserResponseDto> {
     const existingUsers = await this.findByPropertyAndValue(
@@ -40,7 +41,6 @@ export class UserService {
 
     const hashPassword = SecurityUtil.generateHashWithSalt(data.password);
     data.password = hashPassword;
-    data.role = 'guest';
     const user = User.create(data);
 
     return await this.addUserUseCase.create(user);
@@ -61,11 +61,32 @@ export class UserService {
       }
     }
 
-    if (data.password) {
-      const hashPassword = SecurityUtil.generateHashWithSalt(data.password);
-      data.password = hashPassword;
-    }
     const user = User.create(data, existingUser.id);
+    return await this.updateUserUseCase.update(user);
+  }
+
+
+  async updatePassword(data: UpdatePasswordRequestUserDto): Promise<UserResponseDto> {
+    const existingUser = await this.findById(data.id);
+
+    if (!existingUser) {
+      throw new NotFoundException('User does not exist');
+    }
+
+    const userLogin = await this.loginUserUseCase.login(User.create({
+      email: existingUser.email,
+      password: SecurityUtil.generateHashWithSalt(data.currentPassword)
+    }));
+
+    if (!userLogin) {
+      throw new NotFoundException('Current password incorrect');
+    }
+
+    const password = SecurityUtil.generateHashWithSalt(data['password'])
+
+    const user = User.create({
+      password
+    }, existingUser.id);
     return await this.updateUserUseCase.update(user);
   }
 
@@ -95,6 +116,7 @@ export class UserService {
     if (!user) {
       throw new NotFoundException('User not found');
     }
+
     return user;
   }
 
