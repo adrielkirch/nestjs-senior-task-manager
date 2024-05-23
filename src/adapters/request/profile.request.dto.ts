@@ -25,6 +25,13 @@ export class CreateProfileRequestDto {
     image: string;
 
     @ApiProperty({
+        description: 'The profile\'s biography',
+        example: 'Profile description'
+    })
+    @IsString()
+    biography: string;
+
+    @ApiProperty({
         description: 'The user\'s ID',
         example: '08afddc9-5b82-43ce-bcec-5187f319131'
     })
@@ -62,10 +69,16 @@ export class UpdateProfileRequestDto {
     image: string;
 
     @ApiProperty({
-        description: 'The user\'s ID',
+        description: 'The profile\'s biography',
+        example: 'Profile description'
+    })
+    @IsString()
+    biography: string;
+
+    @ApiProperty({
+        description: 'The profile user\'s ID',
         example: '08afddc9-5b82-43ce-bcec-5187f319131'
     })
-
     @IsString()
     userId: string;
 }

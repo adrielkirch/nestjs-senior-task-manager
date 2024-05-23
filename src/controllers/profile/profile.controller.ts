@@ -32,7 +32,6 @@ export class ProfileController {
     return await this.profileService.update(dto);
   }
 
-
   @UseGuards(DefaultMiddleware, PermissionGuard)
   @SetMetadata('permissions', ['read:profiles'])
   @ApiBearerAuth()
@@ -55,5 +54,19 @@ export class ProfileController {
   @Get('find-by-id')
   async findProfileById(@Query('id') id: string,) {
     return await this.profileService.findById(id);
+  }
+
+  @UseGuards(DefaultMiddleware, PermissionGuard)
+  @SetMetadata('permissions', ['read:profiles'])
+  @ApiBearerAuth()
+  @ApiOkResponse({
+    description: 'It should correctly return Profile',
+    type: ProfileResponseDto
+  })
+  @Get('me')
+  async findMe(@Req() request: Request) {
+    const id = request.user;
+    const result = await this.profileService.findByPropertyAndValue('userId', id);
+    return result[0];
   }
 }

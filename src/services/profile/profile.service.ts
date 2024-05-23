@@ -64,6 +64,8 @@ export class ProfileService {
     return profile;
   }
 
+  
+
   async findPaginated(page: number, limit: number): Promise<ProfileResponseDto[]> {
     return await this.findPaginatedProfilesUseCase.findPaginated(page, limit);
   }

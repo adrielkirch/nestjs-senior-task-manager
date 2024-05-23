@@ -21,6 +21,13 @@ export class ProfileResponseDto {
     gender: string;
 
     @ApiProperty({
+        description: 'The profile\'s biography',
+        example: 'Doe'
+    })
+    biography: string;
+
+
+    @ApiProperty({
         description: 'The profile\'s image',
         example: 'Doe'
     })
