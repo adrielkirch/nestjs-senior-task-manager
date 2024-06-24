@@ -44,6 +44,12 @@ export class InviteRequestTeamDto {
     })
     @IsString()
     teamId: string;
+
+    @ApiProperty({
+        required: false
+    })
+    @IsString()
+    role: string;
 }
 
 export class JoinRequestTeamDto {
