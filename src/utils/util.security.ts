@@ -3,8 +3,9 @@ import * as crypto from 'crypto';
 import { JWT_SECRET_KEY, SALT } from 'src/config';
 
 export class SecurityUtil {
-  static generateJsonwebtoken<T extends object>(data: T): string {
-    return jwt.sign(data, JWT_SECRET_KEY);
+  static generateJsonwebtoken<T extends object>(data: T, expiresIn?: string): string {
+    const options: jwt.SignOptions = expiresIn ? { expiresIn } : {};
+    return jwt.sign(data, JWT_SECRET_KEY, options);
   }
 
   static decodedJsonwebtoken<T extends object>(token: string): T {

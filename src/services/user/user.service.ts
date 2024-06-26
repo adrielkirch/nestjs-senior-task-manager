@@ -100,14 +100,16 @@ export class UserService {
       throw new NotFoundException('E-mail or password incorrect(s)');
     }
     const id = userLogin.id;
+    const role =  userLogin.role;
     const token = SecurityUtil.generateJsonwebtoken({
       user: userLogin.id,
-      role: userLogin.role,
+      role
     });
 
     return {
       token,
       id,
+      role
     } as LoginResponseDto;
   }
 
