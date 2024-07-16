@@ -11,9 +11,9 @@ import { FindPaginatedTasksUseCase } from 'src/usecases/task/findPaginated.task.
 import { UpdateTaskUseCase } from 'src/usecases/task/update.task.usecase';
 import { DeleteTaskByIdUseCase } from 'src/usecases/task/delete.task.usecase';
 import { NotifierService } from 'src/infrastructure/notifier/notifier';
-import { EmailServiceImpl } from 'src/infrastructure/notifier/email/email';
-import { SmsServiceImpl } from 'src/infrastructure/notifier/sms/sms';
-import { PushNotificationServiceImpl } from 'src/infrastructure/notifier/push_notification/push.notification';
+import { EmailServiceImpl } from 'src/infrastructure/notifier/email/service/email.service'; 
+import { SmsServiceImpl } from 'src/infrastructure/notifier/sms/service/sms.service'; 
+import { PushNotificationServiceImpl } from 'src/infrastructure/notifier/push_notification/service/push_notification.service'; 
 import { FindByIdUserUseCase } from 'src/usecases/user/findById.user.usecase';
 import { UserRepositoryInterface } from 'src/data/protocols/db/user/user.repository.interface';
 import { FindByPropertyAndValueProfileUseCase } from 'src/usecases/profile/findByPropertyAndValue.profile.usecase';
