@@ -22,6 +22,8 @@ import { TeamUser } from 'src/domain/team_user/teamUser';
 import { TeamUserResponseDto } from 'src/adapters/response/teamUser.response.dto';
 import { DissociateTeamUserUseCase } from 'src/usecases/team_user/dissociate.teamUser.usecase';
 import { FindByUserAndTeamUseCases } from 'src/usecases/team_user/findByUserIdAndTeamId.teamUser.usecase';
+import { NotifierService } from 'src/infrastructure/notifier/notifier';
+import { FRONT_END_HOST } from 'src/config';
 
 @Injectable()
 export class TeamService {
@@ -30,7 +32,8 @@ export class TeamService {
     private readonly findByPropertyAndValueTeamsUseCase: FindByPropertyAndValueTeamsUseCase,
     private readonly addTeamUserUseCase: AddTeamUserUseCase,
     private readonly findByUserAndTeamUseCase: FindByUserAndTeamUseCases,
-    private readonly dissociateTeamUserUseCase: DissociateTeamUserUseCase
+    private readonly dissociateTeamUserUseCase: DissociateTeamUserUseCase,
+    private readonly notifierService: NotifierService,
   ) { }
 
   async create(data: CreateRequestTeamDto): Promise<TeamResponseDto> {
@@ -80,7 +83,16 @@ export class TeamService {
     const jsonWebToken = SecurityUtil.generateJsonwebtoken({
       email: data.email,
       teamId: data.teamId,
-    })
+    }, '1h')
+
+    const notificationData = {
+      message: `<b>You're invite to join task manager team:</b><br><a href="${FRONT_END_HOST}/invite?token=${jsonWebToken}">Click here to join</a>`,
+      subject: `Invitation to task manager team`,
+      recipients: [data.email]
+    }
+
+    this.notifierService.onNotify('email', notificationData);
+    this.notifierService.emitNotifyEvent('onNotify');
 
     return {
       token: jsonWebToken,
@@ -90,8 +102,10 @@ export class TeamService {
   async join(data: JoinRequestTeamDto): Promise<TeamUserResponseDto> {
     const decodedJsonWebToken = SecurityUtil.decodedJsonwebtoken(data.token);
 
+    console.log(decodedJsonWebToken)
+
     if (!decodedJsonWebToken['email'] || !decodedJsonWebToken['teamId']) {
-      throw new NotFoundException('Team with this userId do not exists');
+      throw new NotFoundException('Invalid token');
     }
 
     let existingTeam = await this.findByPropertyAndValue(

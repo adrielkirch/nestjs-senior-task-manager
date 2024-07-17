@@ -4,22 +4,28 @@ import { SmsServiceInterface } from 'src/data/protocols/notifier/sms/sms.interfa
 import { PushNotificationServiceInterface } from 'src/data/protocols/notifier/push_notification/push.notification.interface';
 import { NotifyRequestDto } from 'src/adapters/request/notification.request.dto';
 import { EventEmitter } from 'events';
+import { NotifierStrategy } from 'src/data/protocols/notifier/notifyStrategy.interface';
+import EmailNotifierStrategy from './email/strategy/email.strategy';
+import PushNotificationNotifierStrategy from './push_notification/strategy/push_notification.strategy';
+import SmsNotifierStrategy from './sms/strategy/sms.strategy';
+
 
 @Injectable()
 export class NotifierService {
   private static instance: NotifierService;
-  private emailService: EmailServiceInterface;
-  private smsService: SmsServiceInterface;
-  private pushNotificationService: PushNotificationServiceInterface;
   private eventEmitter: EventEmitter;
+  private strategies: Map<string, NotifierStrategy>;
+
   private constructor(
     emailService: EmailServiceInterface,
     smsService: SmsServiceInterface,
     pushNotificationService: PushNotificationServiceInterface
   ) {
-    this.emailService = emailService;
-    this.smsService = smsService;
-    this.pushNotificationService = pushNotificationService;
+    this.strategies = new Map<string, NotifierStrategy>([
+      ['email', new EmailNotifierStrategy(emailService)],
+      ['sms', new SmsNotifierStrategy(smsService)],
+      ['notification', new PushNotificationNotifierStrategy(pushNotificationService)]
+    ]);
     this.eventEmitter = new EventEmitter();
   }
 
@@ -45,59 +51,20 @@ export class NotifierService {
 
   onNotify(eventName: string, notificationData: NotifyRequestDto): void {
     this.eventEmitter.on('onNotify', () => {
-      console.log('Notify event: ' + eventName)
       this.notify(eventName, notificationData);
     });
   }
 
-
-  private async notify(
+  async notify(
     eventName: string,
     notificationData: NotifyRequestDto
   ): Promise<void> {
-    switch (eventName) {
-      case 'email':
-        await this.sendEmail(
-          notificationData.recipients,
-          notificationData.subject,
-          notificationData.message
-        );
-        break;
-      case 'sms':
-        await this.sendSms(
-          notificationData.recipients,
-          notificationData.message
-        );
-        break;
-      case 'notification':
-        await this.sendPushNotification(
-          notificationData.recipients,
-          notificationData.message
-        );
-        break;
-      default:
-        throw new BadRequestException(
-          `Unsupported notification type: ${eventName}`
-        );
+    const strategy = this.strategies.get(eventName);
+    if (!strategy) {
+      throw new BadRequestException(
+        `Unsupported notification type: ${eventName}`
+      );
     }
-  }
-
-  private async sendEmail(
-    recipients: string[],
-    subject: string,
-    message: string
-  ): Promise<void> {
-    await this.emailService.send(recipients, subject, message);
-  }
-
-  private async sendSms(recipients: string[], message: string): Promise<void> {
-    await this.smsService.send(recipients, message);
-  }
-
-  private async sendPushNotification(
-    recipients: string[],
-    message: string
-  ): Promise<void> {
-    await this.pushNotificationService.send(recipients, message);
+    await strategy.notify(notificationData);
   }
 }

@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { EmailServiceImpl } from 'src/infrastructure/notifier/email/email';
-import { NotifierService } from 'src/infrastructure/notifier/notifier';
-import { SmsServiceImpl } from 'src/infrastructure/notifier/sms/sms';
-import { PushNotificationServiceImpl } from 'src/infrastructure/notifier/push_notification/push.notification';
+import { EmailServiceImpl } from './email/service/email.service'; 
+import { NotifierService } from './notifier'; 
+import { SmsServiceImpl } from './sms/service/sms.service'; 
+import { PushNotificationServiceImpl } from './push_notification/service/push_notification.service'; 
 
 @Module({
     providers: [

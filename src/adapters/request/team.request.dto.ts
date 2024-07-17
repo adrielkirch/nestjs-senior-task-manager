@@ -44,12 +44,18 @@ export class InviteRequestTeamDto {
     })
     @IsString()
     teamId: string;
+
+    @ApiProperty({
+        required: false
+    })
+    @IsString()
+    role: string;
 }
 
 export class JoinRequestTeamDto {
     @ApiProperty({
-        description: 'The email to be invited in the team',
-        example: 'invite@example.com',
+        description: 'The token to be invited in the team',
+        example: 'EyHc-j...',
     })
     token: string;
 

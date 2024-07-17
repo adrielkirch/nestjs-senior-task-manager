@@ -24,18 +24,16 @@ export class ProfileService {
   ) {}
 
   async create(data: CreateProfileRequestDto): Promise<ProfileResponseDto> {
-    const existingProfiles = await this.findByPropertyAndValue(
-      'userId',
-      data.userId
-    );
-
-    if (existingProfiles && existingProfiles.length > 0) {
-      throw new ConflictException('Profile with this userId already exists');
-    }
-
-
-    const profile = Profile.create(data);
-    return await this.addProfileUseCase.create(profile);
+      const existingProfiles = await this.findByPropertyAndValue(
+        'userId',
+        data.userId
+      );
+      if (existingProfiles && existingProfiles.length > 0) {
+        throw new ConflictException('Profile with this userId already exists');
+      }
+  
+      const profile = Profile.create(data);
+      return await this.addProfileUseCase.create(profile);
   }
 
   async update(data: UpdateProfileRequestDto): Promise<ProfileResponseDto> {
@@ -65,6 +63,8 @@ export class ProfileService {
     }
     return profile;
   }
+
+  
 
   async findPaginated(page: number, limit: number): Promise<ProfileResponseDto[]> {
     return await this.findPaginatedProfilesUseCase.findPaginated(page, limit);

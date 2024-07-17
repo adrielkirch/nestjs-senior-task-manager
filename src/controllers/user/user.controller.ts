@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Post, Put, Query, Req, HttpCode, SetMetadata, UseGuards } from '@nestjs/common';
-import { CreateRequestUserDto, LoginRequestDto, UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
+import { CreateRequestUserDto, LoginRequestDto, UpdatePasswordRequestUserDto, UpdateRequestUserDto } from 'src/adapters/request/user.request.dto';
 import { UserService } from 'src/services/user/user.service';
 import { DefaultMiddleware } from 'src/middlewares/default.middleware';
 import { Request } from 'express';
@@ -22,6 +22,7 @@ export class UserController {
     return await this.userService.create(dto);
   }
 
+  @UseGuards(DefaultMiddleware)
   @Put('')
   @HttpCode(200)
   @ApiCreatedResponse({
@@ -31,6 +32,18 @@ export class UserController {
   async update(@Body() dto: UpdateRequestUserDto, @Req() request: Request) {
     dto.id = request.user;
     return await this.userService.update(dto);
+  }
+
+  @UseGuards(DefaultMiddleware)
+  @Put('update-password')
+  @HttpCode(200)
+  @ApiCreatedResponse({
+    description: 'It should correctly return User',
+    type: UserResponseDto
+  })
+  async updatePassword(@Body() dto: UpdatePasswordRequestUserDto, @Req() request: Request) {
+    dto.id = request.user;
+    return await this.userService.updatePassword(dto);
   }
 
   @Post('login')

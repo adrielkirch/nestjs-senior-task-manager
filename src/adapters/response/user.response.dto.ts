@@ -12,6 +12,12 @@ export class LoginResponseDto {
         example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiMDhhZmRkYzktNWI4Mi00M2NlLWJjZWMtNTE4N2YzMTkxM2ZiIiwicm8sZSI6ImFkbWluIiwiaWF0IjoxNzE1MDgxNzIxff.Yg1H7cb5kYUuMUjL2HNXOmKJHheMoosi6yIxIXTdeq4'
     })
     token: string;
+    
+    @ApiProperty({
+        description: 'The user\'s role',
+        example: 'admin'
+    })
+    role: string;
 }
 
 export class UserResponseDto {

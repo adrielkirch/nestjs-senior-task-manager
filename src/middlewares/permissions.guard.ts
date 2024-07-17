@@ -19,11 +19,11 @@ export class PermissionGuard implements CanActivate {
 
     private getRouteRoles(context: ExecutionContext): { [role in RoleEnum]: Privileges } {
         const routeRolesMap: { [route: string]: { [role in RoleEnum]: Privileges } } = {
-            '/users': { [RoleEnum.GUEST]: new Privileges(true, true, true), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, true) },
-            '/tasks': { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, false) },
-            '/comments': { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, false) },
-            '/teams': { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(false, false, false) },
-            '/profiles': { [RoleEnum.GUEST]: new Privileges(true, true, true), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, true) },
+            '/users': { [RoleEnum.GUEST]: new Privileges(true, true, true), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.SUPER_ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, true) },
+            '/tasks': { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.SUPER_ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, false) },
+            '/comments': { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.SUPER_ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, false) },
+            '/teams': { [RoleEnum.GUEST]: new Privileges(false, false, false), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.SUPER_ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(false, false, false) },
+            '/profiles': { [RoleEnum.GUEST]: new Privileges(true, true, true), [RoleEnum.ADMIN]: new Privileges(true, true, true), [RoleEnum.SUPER_ADMIN]: new Privileges(true, true, true), [RoleEnum.WRITER]: new Privileges(true, true, true) },
         };
 
         const request = context.switchToHttp().getRequest();
@@ -32,6 +32,7 @@ export class PermissionGuard implements CanActivate {
         return routeRolesMap[pathname] || {
             [RoleEnum.GUEST]: new Privileges(false, false, false),
             [RoleEnum.ADMIN]: new Privileges(false, false, false),
+            [RoleEnum.SUPER_ADMIN]: new Privileges(false, false, false),
             [RoleEnum.WRITER]: new Privileges(false, false, false)
         };
     }
